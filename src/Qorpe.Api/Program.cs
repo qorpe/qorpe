@@ -1,6 +1,7 @@
 using Qorpe.Api;
 using Qorpe.Application;
 using Qorpe.Infrastructure;
+using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,12 @@ builder.Services.AddApplicationServices();
 var app = builder.Build();
 
 app.MapReverseProxy();
+
+//app.Map("/update", context =>
+//{
+//    context.RequestServices.GetRequiredService<InMemoryConfigProvider>().Update(GetRoutes(), GetClusters());
+//    return Task.CompletedTask;
+//});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
