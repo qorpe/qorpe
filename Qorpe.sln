@@ -1,0 +1,59 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35208.52
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{C0863AE9-96A9-44DC-A83F-C78FD5D94F2A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{99EC3470-EF6A-44B6-9998-0939945C1261}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{EF1AF843-B56F-4788-9FC5-2902FEAACA56}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{A5C28070-298B-41EC-A470-D026C40A899A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Api", "src\Qorpe.Api\Qorpe.Api.csproj", "{C8C0410D-23EC-4E56-A5D5-0593BAF7949F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Domain", "src\Qorpe.Domain\Qorpe.Domain.csproj", "{2269A7DF-DBF5-4CDC-A444-37EDD41D8C85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Application", "src\Qorpe.Application\Qorpe.Application.csproj", "{0CA44029-3887-4066-84DD-D8AA580CF4D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Infrastructure", "src\Qorpe.Infrastructure\Qorpe.Infrastructure.csproj", "{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C8C0410D-23EC-4E56-A5D5-0593BAF7949F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8C0410D-23EC-4E56-A5D5-0593BAF7949F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8C0410D-23EC-4E56-A5D5-0593BAF7949F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8C0410D-23EC-4E56-A5D5-0593BAF7949F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2269A7DF-DBF5-4CDC-A444-37EDD41D8C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2269A7DF-DBF5-4CDC-A444-37EDD41D8C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2269A7DF-DBF5-4CDC-A444-37EDD41D8C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2269A7DF-DBF5-4CDC-A444-37EDD41D8C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CA44029-3887-4066-84DD-D8AA580CF4D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CA44029-3887-4066-84DD-D8AA580CF4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CA44029-3887-4066-84DD-D8AA580CF4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CA44029-3887-4066-84DD-D8AA580CF4D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C8C0410D-23EC-4E56-A5D5-0593BAF7949F} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
+		{2269A7DF-DBF5-4CDC-A444-37EDD41D8C85} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
+		{0CA44029-3887-4066-84DD-D8AA580CF4D6} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
+		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {732AC63C-87B2-4542-A9BE-982FF44D5D35}
+	EndGlobalSection
+EndGlobal
