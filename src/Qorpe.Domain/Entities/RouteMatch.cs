@@ -2,6 +2,8 @@
 
 public sealed class RouteMatch
 {
+    public long Id { get; set; }
+
     public IReadOnlyList<string>? Methods { get; init; }
 
     public IReadOnlyList<string>? Hosts { get; init; }

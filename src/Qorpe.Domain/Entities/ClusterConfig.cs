@@ -2,7 +2,9 @@
 
 public sealed class ClusterConfig
 {
-    public string ClusterId { get; init; } = default!;
+    public long Id { get; set; }
+
+    public required string ClusterId { get; init; } = default!;
 
     public string? LoadBalancingPolicy { get; init; }
 
@@ -14,7 +16,9 @@ public sealed class ClusterConfig
 
     public ForwarderRequestConfig? HttpRequest { get; init; }
 
-    public IReadOnlyDictionary<string, DestinationConfig>? Destinations { get; init; }
+    // public IReadOnlyDictionary<string, DestinationConfig>? Destinations { get; init; }
+    public ICollection<Destination>? Destinations { get; set; }
 
-    public IReadOnlyDictionary<string, string>? Metadata { get; init; }
+    // public IReadOnlyDictionary<string, string>? Metadata { get; init; }
+    public ICollection<Metadata>? Metadata { get; init; }
 }

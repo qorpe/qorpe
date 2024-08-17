@@ -2,6 +2,8 @@
 
 public sealed class RouteConfig
 {
+    public long Id { get; set; }
+
     public string RouteId { get; init; } = default!;
 
     public RouteMatch Match { get; init; } = default!;

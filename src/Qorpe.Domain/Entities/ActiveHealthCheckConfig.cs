@@ -2,6 +2,8 @@
 
 public sealed class ActiveHealthCheckConfig
 {
+    public long Id { get; set; }
+
     public bool? Enabled { get; init; }
 
     public TimeSpan? Interval { get; init; }
