@@ -3,11 +3,11 @@
 public sealed class HealthCheckConfig
 {
     public long Id { get; set; }
-    public PassiveHealthCheckConfig? Passive { get; init; }
+    public PassiveHealthCheckConfig? Passive { get; set; }
 
-    public ActiveHealthCheckConfig? Active { get; init; }
+    public ActiveHealthCheckConfig? Active { get; set; }
 
-    public string? AvailableDestinationsPolicy { get; init; }
+    public string? AvailableDestinationsPolicy { get; set; }
 
     // Foreign Key
     public long ClusterConfigId { get; set; }

@@ -8,19 +8,19 @@ public sealed class HttpClientConfig
 
     // public static readonly HttpClientConfig Empty = new();
 
-    public SslProtocols? SslProtocols { get; init; }
+    public SslProtocols? SslProtocols { get; set; }
 
-    public bool? DangerousAcceptAnyServerCertificate { get; init; }
+    public bool? DangerousAcceptAnyServerCertificate { get; set; }
 
-    public int? MaxConnectionsPerServer { get; init; }
+    public int? MaxConnectionsPerServer { get; set; }
 
-    public WebProxyConfig? WebProxy { get; init; }
+    public WebProxyConfig? WebProxy { get; set; }
 
-    public bool? EnableMultipleHttp2Connections { get; init; }
+    public bool? EnableMultipleHttp2Connections { get; set; }
 
-    public string? RequestHeaderEncoding { get; init; }
+    public string? RequestHeaderEncoding { get; set; }
 
-    public string? ResponseHeaderEncoding { get; init; }
+    public string? ResponseHeaderEncoding { get; set; }
 
     // Foreign Key
     public long ClusterConfigId { get; set; }

@@ -34,7 +34,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
         modelBuilder.Entity<ClusterConfig>(entity =>
         {
-            entity.HasKey(x => x.ClusterId);
+            entity.HasKey(x => x.Id);
 
             entity.HasOne(x => x.SessionAffinity)
                   .WithOne()

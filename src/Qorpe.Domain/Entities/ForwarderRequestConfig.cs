@@ -6,13 +6,14 @@ public sealed class ForwarderRequestConfig
     
     // public static ForwarderRequestConfig Empty { get; } = new();
 
-    public TimeSpan? ActivityTimeout { get; init; }
+    public TimeSpan? ActivityTimeout { get; set; }
 
-    public Version? Version { get; init; }
+    // Todo
+    // public Version? Version { get; set; }
 
-    public HttpVersionPolicy? VersionPolicy { get; init; }
+    public HttpVersionPolicy? VersionPolicy { get; set; }
 
-    public bool? AllowResponseBuffering { get; init; }
+    public bool? AllowResponseBuffering { get; set; }
 
     // Foreign Key
     public long ClusterConfigId { get; set; }

@@ -4,21 +4,21 @@ public sealed class ClusterConfig
 {
     public long Id { get; set; }
 
-    public required string ClusterId { get; init; } = default!;
+    public required string ClusterId { get; set; } = default!;
 
-    public string? LoadBalancingPolicy { get; init; }
+    public string? LoadBalancingPolicy { get; set; }
 
-    public SessionAffinityConfig? SessionAffinity { get; init; }
+    public SessionAffinityConfig? SessionAffinity { get; set; }
 
-    public HealthCheckConfig? HealthCheck { get; init; }
+    public HealthCheckConfig? HealthCheck { get; set; }
 
-    public HttpClientConfig? HttpClient { get; init; }
+    public HttpClientConfig? HttpClient { get; set; }
 
-    public ForwarderRequestConfig? HttpRequest { get; init; }
+    public ForwarderRequestConfig? HttpRequest { get; set; }
 
-    // public IReadOnlyDictionary<string, DestinationConfig>? Destinations { get; init; }
+    // public IReadOnlyDictionary<string, DestinationConfig>? Destinations { get; set; }
     public ICollection<Destination>? Destinations { get; set; }
 
-    // public IReadOnlyDictionary<string, string>? Metadata { get; init; }
-    public ICollection<Metadata>? Metadata { get; init; }
+    // public IReadOnlyDictionary<string, string>? Metadata { get; set; }
+    public ICollection<Metadata>? Metadata { get; set; }
 }

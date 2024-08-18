@@ -4,15 +4,15 @@ public sealed class SessionAffinityConfig
 {
     public long Id { get; set; }
 
-    public bool? Enabled { get; init; }
+    public bool? Enabled { get; set; }
 
-    public string? Policy { get; init; }
+    public string? Policy { get; set; }
 
-    public string? FailurePolicy { get; init; }
+    public string? FailurePolicy { get; set; }
 
-    public string AffinityKeyName { get; init; } = default!;
+    public string AffinityKeyName { get; set; } = default!;
 
-    public SessionAffinityCookieConfig? Cookie { get; init; }
+    public SessionAffinityCookieConfig? Cookie { get; set; }
 
     // Foreign Key
     public long ClusterConfigId { get; set; }
