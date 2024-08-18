@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Qorpe.Domain.Enums;
 
 namespace Qorpe.Domain.Entities;
 
