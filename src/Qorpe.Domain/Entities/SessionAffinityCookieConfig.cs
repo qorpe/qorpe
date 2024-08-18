@@ -21,4 +21,7 @@ public sealed class SessionAffinityCookieConfig
     public TimeSpan? MaxAge { get; init; }
 
     public bool? IsEssential { get; init; }
+
+    // Foreign Key
+    public long SessionAffinityConfigId { get; set; }
 }

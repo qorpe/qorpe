@@ -15,4 +15,7 @@ public sealed class ActiveHealthCheckConfig
     public string? Path { get; init; }
 
     public string? Query { get; init; }
+
+    // Foreign Key
+    public long HealthCheckConfigId { get; set; }
 }

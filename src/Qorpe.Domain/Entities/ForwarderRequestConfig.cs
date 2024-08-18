@@ -3,7 +3,8 @@
 public sealed class ForwarderRequestConfig
 {
     public long Id { get; set; }
-    public static ForwarderRequestConfig Empty { get; } = new();
+    
+    // public static ForwarderRequestConfig Empty { get; } = new();
 
     public TimeSpan? ActivityTimeout { get; init; }
 

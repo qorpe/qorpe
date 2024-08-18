@@ -5,7 +5,8 @@ namespace Qorpe.Domain.Entities;
 public sealed class HttpClientConfig
 {
     public long Id { get; set; }
-    public static readonly HttpClientConfig Empty = new();
+
+    // public static readonly HttpClientConfig Empty = new();
 
     public SslProtocols? SslProtocols { get; init; }
 

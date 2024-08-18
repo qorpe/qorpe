@@ -8,9 +8,12 @@ public sealed class RouteQueryParameter
 
     public string Name { get; init; } = default!;
 
-    public IReadOnlyList<string>? Values { get; init; }
+    public ICollection<string>? Values { get; init; }
 
     public QueryParameterMatchMode Mode { get; init; }
 
     public bool IsCaseSensitive { get; init; }
+
+    // Foreign Key
+    public long RouteMatchId { get; set; }
 }

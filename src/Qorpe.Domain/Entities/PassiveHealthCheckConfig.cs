@@ -9,4 +9,7 @@ public sealed class PassiveHealthCheckConfig
     public string? Policy { get; init; }
 
     public TimeSpan? ReactivationPeriod { get; init; }
+
+    // Foreign Key
+    public long HealthCheckConfigId { get; set; }
 }

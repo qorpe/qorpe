@@ -9,4 +9,7 @@ public sealed class WebProxyConfig
     public bool? BypassOnLocal { get; init; }
 
     public bool? UseDefaultCredentials { get; init; }
+
+    // Foreign Key
+    public long HttpClientConfigId { get; set; }
 }
