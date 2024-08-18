@@ -3,6 +3,7 @@
 public sealed class HealthCheckConfig
 {
     public long Id { get; set; }
+
     public PassiveHealthCheckConfig? Passive { get; set; }
 
     public ActiveHealthCheckConfig? Active { get; set; }

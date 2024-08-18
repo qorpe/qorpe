@@ -90,6 +90,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<ForwarderRequestConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Version)
+                  .HasConversion(
+                      x => x != null ? x.ToString() : null, // Version to string
+                      x => string.IsNullOrEmpty(x) ? new Version() : Version.Parse(x) // string to Version
+                  );
         });
 
         modelBuilder.Entity<HealthCheckConfig>(entity =>
@@ -195,6 +201,12 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<WebProxyConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Address)
+                  .HasConversion(
+                      x => x != null ? x.ToString() : null, // Uri to string
+                      x => x != null ? new Uri(x) : null // string to Uri
+                  );
         });
     }
 }

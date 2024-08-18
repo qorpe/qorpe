@@ -9,7 +9,7 @@ public sealed class ForwarderRequestConfig
     public TimeSpan? ActivityTimeout { get; set; }
 
     // Todo
-    // public Version? Version { get; set; }
+    public Version? Version { get; set; }
 
     public HttpVersionPolicy? VersionPolicy { get; set; }
 
