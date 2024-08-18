@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Qorpe.Api;
 using Qorpe.Application;
 using Qorpe.Infrastructure;
@@ -23,7 +24,18 @@ app.MapReverseProxy();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options =>
+    {
+        var descriptions = app.DescribeApiVersions();
+
+        // Build a swagger endpoint for each discovered API version
+        foreach (var description in descriptions)
+        {
+            var url = $"/swagger/{description.GroupName}/swagger.json";
+            var name = description.GroupName.ToUpperInvariant();
+            options.SwaggerEndpoint(url, name);
+        }
+    });
 }
 
 app.UseHttpsRedirection();

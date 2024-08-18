@@ -2,7 +2,7 @@
 
 namespace Qorpe.Api.Controllers;
 
-[Controller]
+[ApiController]
 public class BaseController : ControllerBase
 {
 }

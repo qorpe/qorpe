@@ -1,4 +1,5 @@
-﻿using Yarp.ReverseProxy.Configuration;
+﻿using Asp.Versioning;
+using Yarp.ReverseProxy.Configuration;
 
 namespace Qorpe.Api;
 
@@ -16,9 +17,35 @@ public static class DependencyInjection
         // services.AddSingleton(new InMemoryConfigProvider(routes, clusters));
         // services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<InMemoryConfigProvider>());
 
+        #region Api Versioning Configuration(s)
+        services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1, 0);
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ReportApiVersions = true;
+            options.ApiVersionReader = ApiVersionReader.Combine(new UrlSegmentApiVersionReader(),
+                                                            new QueryStringApiVersionReader("x-api-version"),
+                                                            new HeaderApiVersionReader("x-api-version"),
+                                                            new MediaTypeApiVersionReader("x-api-version"));
+        }).AddApiExplorer(options =>
+        {
+            // Add the versioned API explorer, which also adds IApiVersionDescriptionProvider service
+            // note: the specified format code will format the version as "'v'major[.minor][-status]"
+            options.GroupNameFormat = "'v'VVV";
+
+            // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+            // can also be used to control the format of the API version in route templates
+            options.SubstituteApiVersionInUrl = true;
+        });
+        #endregion
+
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(options =>
+        {
+            options.CustomSchemaIds(type => type.ToString());
+            options.CustomSchemaIds(type => type.FullName);
+        });
 
         return services;
     }
