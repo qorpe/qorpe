@@ -2,7 +2,7 @@
 
 public sealed class PassiveHealthCheckConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public bool? Enabled { get; set; }
 
@@ -11,5 +11,5 @@ public sealed class PassiveHealthCheckConfig
     public TimeSpan? ReactivationPeriod { get; set; }
 
     // Foreign Key
-    public long HealthCheckConfigId { get; set; }
+    public long? HealthCheckConfigId { get; set; }
 }

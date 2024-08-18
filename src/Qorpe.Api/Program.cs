@@ -1,8 +1,6 @@
-using Microsoft.AspNetCore.Builder;
 using Qorpe.Api;
 using Qorpe.Application;
 using Qorpe.Infrastructure;
-using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 

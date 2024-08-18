@@ -2,7 +2,7 @@
 
 public sealed class HealthCheckConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public PassiveHealthCheckConfig? Passive { get; set; }
 
@@ -11,7 +11,7 @@ public sealed class HealthCheckConfig
     public string? AvailableDestinationsPolicy { get; set; }
 
     // Foreign Key
-    public long ClusterConfigId { get; set; }
+    public long? ClusterConfigId { get; set; }
 
     // Navigation Property
     // public ClusterConfig? ClusterConfig { get; set; }

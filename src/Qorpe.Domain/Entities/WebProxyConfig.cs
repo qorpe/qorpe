@@ -2,7 +2,7 @@
 
 public sealed class WebProxyConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public Uri? Address { get; set; }
 
@@ -11,5 +11,5 @@ public sealed class WebProxyConfig
     public bool? UseDefaultCredentials { get; set; }
 
     // Foreign Key
-    public long HttpClientConfigId { get; set; }
+    public long? HttpClientConfigId { get; set; }
 }

@@ -1,5 +1,9 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
+using Qorpe.Application.Common.DTOs;
+using Qorpe.Application.Common.Models;
+using Qorpe.Application.Features.Routes.Commands.CreateRoute;
+using Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
 namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 
@@ -14,15 +18,23 @@ public class RoutesController : BaseController
     }
 
     [HttpGet]
-    public IActionResult GetRoutes()
+    public async Task<IActionResult> GetRoutes([FromQuery] GetRoutesQueryParameters queryParameters)
     {
-        return Ok();
+        GetRoutesQuery query = new()
+        {
+            QueryParameters = queryParameters,
+        };
+        return Ok(await Mediator.Send(query));
     }
 
     [HttpPost]
-    public IActionResult CreateRoute()
+    public async Task<IActionResult> CreateRoute([FromBody] RouteConfigDto body)
     {
-        return Ok();
+        CreateRouteCommand command = new()
+        {
+            Route = body,
+        };
+        return Ok(await Mediator.Send(command));
     }
 
     [HttpPut("{id}")]

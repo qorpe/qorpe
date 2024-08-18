@@ -4,7 +4,7 @@ namespace Qorpe.Domain.Entities;
 
 public sealed class SessionAffinityCookieConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public string? Path { get; set; }
 
@@ -23,5 +23,5 @@ public sealed class SessionAffinityCookieConfig
     public bool? IsEssential { get; set; }
 
     // Foreign Key
-    public long SessionAffinityConfigId { get; set; }
+    public long? SessionAffinityConfigId { get; set; }
 }

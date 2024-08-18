@@ -1,0 +1,25 @@
+﻿using AutoMapper;
+using Qorpe.Application.Common.DTOs;
+using Qorpe.Domain.Entities;
+
+namespace Qorpe.Application.Common.Mappings;
+
+public class RoutesMappingProfile : Profile
+{
+    public RoutesMappingProfile()
+    {
+        CreateMap<RouteConfig, RouteConfigDto>();
+        CreateMap<RouteHeader, RouteHeaderDto>();
+        CreateMap<RouteMatch, RouteMatchDto>();
+        CreateMap<RouteQueryParameter, RouteQueryParameterDto>();
+        CreateMap<Metadata, MetadataDto>();
+        CreateMap<Transform, TransformDto>();
+
+        CreateMap<RouteConfigDto, RouteConfig>();
+        CreateMap<RouteHeaderDto, RouteHeader>();
+        CreateMap<RouteMatchDto, RouteMatch>();
+        CreateMap<RouteQueryParameterDto, RouteQueryParameter>();
+        CreateMap<MetadataDto, Metadata>();
+        CreateMap<TransformDto, Transform>();
+    }
+}

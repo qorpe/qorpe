@@ -2,9 +2,9 @@
 
 public sealed class ClusterConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
-    public required string ClusterId { get; set; } = default!;
+    public string? ClusterId { get; set; } = default!;
 
     public string? LoadBalancingPolicy { get; set; }
 

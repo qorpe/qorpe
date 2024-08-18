@@ -4,7 +4,7 @@ namespace Qorpe.Domain.Entities;
 
 public sealed class RouteHeader
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public string Name { get; set; } = default!;
 

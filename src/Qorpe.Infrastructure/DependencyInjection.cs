@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Qorpe.Application.Common.Interfaces;
 using Qorpe.Domain.Constants;
 using Qorpe.Infrastructure.Data;
 
@@ -36,6 +37,8 @@ public static class DependencyInjection
             }
         });
         #endregion
+
+        services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
 
         return services;
     }

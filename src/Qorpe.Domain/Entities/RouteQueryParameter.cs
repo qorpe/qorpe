@@ -4,7 +4,7 @@ namespace Qorpe.Domain.Entities;
 
 public sealed class RouteQueryParameter
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public string Name { get; set; } = default!;
 
@@ -15,5 +15,5 @@ public sealed class RouteQueryParameter
     public bool IsCaseSensitive { get; set; }
 
     // Foreign Key
-    public long RouteMatchId { get; set; }
+    public long? RouteMatchId { get; set; }
 }

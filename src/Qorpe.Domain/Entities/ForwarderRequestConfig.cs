@@ -2,7 +2,7 @@
 
 public sealed class ForwarderRequestConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
     
     // public static ForwarderRequestConfig Empty { get; } = new();
 
@@ -16,7 +16,7 @@ public sealed class ForwarderRequestConfig
     public bool? AllowResponseBuffering { get; set; }
 
     // Foreign Key
-    public long ClusterConfigId { get; set; }
+    public long? ClusterConfigId { get; set; }
 
     // Navigation Property
     // public ClusterConfig? ClusterConfig { get; set; }

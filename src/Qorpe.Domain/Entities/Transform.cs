@@ -2,10 +2,10 @@
 
 public sealed class Transform
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public ICollection<Metadata>? Metadata { get; set; }
 
     // Foreign Key
-    public long RouteConfigId { get; set; }
+    public long? RouteConfigId { get; set; }
 }

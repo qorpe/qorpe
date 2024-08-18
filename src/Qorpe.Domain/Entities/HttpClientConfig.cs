@@ -4,7 +4,7 @@ namespace Qorpe.Domain.Entities;
 
 public sealed class HttpClientConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     // public static readonly HttpClientConfig Empty = new();
 
@@ -23,7 +23,7 @@ public sealed class HttpClientConfig
     public string? ResponseHeaderEncoding { get; set; }
 
     // Foreign Key
-    public long ClusterConfigId { get; set; }
+    public long? ClusterConfigId { get; set; }
 
     // Navigation Property
     // public ClusterConfig? ClusterConfig { get; set; }

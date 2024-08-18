@@ -2,7 +2,7 @@
 
 public sealed class DestinationConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public string Address { get; set; } = default!;
 
@@ -14,5 +14,5 @@ public sealed class DestinationConfig
     public string? Host { get; set; }
 
     // Foreign Key
-    public long DestinationId { get; set; }
+    public long? DestinationId { get; set; }
 }

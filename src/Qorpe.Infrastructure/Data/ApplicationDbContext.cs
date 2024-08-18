@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Qorpe.Application.Common.Interfaces;
 using Qorpe.Domain.Entities;
 
 namespace Qorpe.Infrastructure.Data;
 
-public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options)
+public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : DbContext(options), IApplicationDbContext
 {
     public DbSet<ActiveHealthCheckConfig> ActiveHealthCheckConfigs { get; set; }
     public DbSet<ClusterConfig> ClusterConfigs { get; set; }
@@ -27,14 +29,30 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
     {
         base.OnModelCreating(modelBuilder);
 
+        var timeSpanStringConverter = new ValueConverter<TimeSpan, string>(
+        v => v.ToString(), // TimeSpan -> String (örn: '01:30:00')
+        v => TimeSpan.Parse(v)); // String -> TimeSpan
+
         modelBuilder.Entity<ActiveHealthCheckConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.Interval)
+                  .HasConversion(timeSpanStringConverter);
+
+            entity.Property(x => x.Timeout)
+                  .HasConversion(timeSpanStringConverter);
         });
 
         modelBuilder.Entity<ClusterConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.HasOne(x => x.SessionAffinity)
                   .WithOne()
@@ -71,6 +89,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             entity.HasKey(x => x.Id);
 
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
+
             entity.HasOne(x => x.Value)
                   .WithOne()
                   .HasForeignKey<DestinationConfig>(x => x.DestinationId)
@@ -80,6 +101,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<DestinationConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.HasMany(x => x.Metadata)
                   .WithOne()
@@ -91,16 +115,25 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             entity.HasKey(x => x.Id);
 
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
+
             entity.Property(x => x.Version)
                   .HasConversion(
                       x => x != null ? x.ToString() : null, // Version to string
                       x => string.IsNullOrEmpty(x) ? new Version() : Version.Parse(x) // string to Version
                   );
+
+            entity.Property(x => x.ActivityTimeout)
+                  .HasConversion(timeSpanStringConverter);
         });
 
         modelBuilder.Entity<HealthCheckConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.HasOne(x => x.Passive)
                   .WithOne()
@@ -117,6 +150,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         {
             entity.HasKey(x => x.Id);
 
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
+
             entity.HasOne(x => x.WebProxy)
                   .WithOne()
                   .HasForeignKey<WebProxyConfig>(x => x.HttpClientConfigId)
@@ -126,16 +162,28 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<Metadata>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<PassiveHealthCheckConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.ReactivationPeriod)
+                  .HasConversion(timeSpanStringConverter);
         });
 
         modelBuilder.Entity<RouteConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.HasOne(x => x.Match)
                   .WithOne()
@@ -143,7 +191,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(x => x.Metadata)
-                  .WithOne()
+                  .WithOne()    
                   .HasForeignKey(x => x.ParentId)
                   .OnDelete(DeleteBehavior.Cascade);
 
@@ -151,16 +199,25 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .WithOne()
                   .HasForeignKey(x => x.RouteConfigId)
                   .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Property(x => x.Timeout)
+                  .HasConversion(timeSpanStringConverter);
         });
 
         modelBuilder.Entity<RouteHeader>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<RouteMatch>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.HasMany(x => x.QueryParameters)
                   .WithOne()
@@ -171,11 +228,17 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<RouteQueryParameter>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<SessionAffinityConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.HasOne(x => x.Cookie)
                   .WithOne()
@@ -186,11 +249,23 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<SessionAffinityCookieConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
+
+            entity.Property(x => x.Expiration)
+                  .HasConversion(timeSpanStringConverter);
+
+            entity.Property(x => x.MaxAge)
+                  .HasConversion(timeSpanStringConverter);
         });
 
         modelBuilder.Entity<Transform>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.HasMany(x => x.Metadata)
                   .WithOne()
@@ -201,6 +276,9 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         modelBuilder.Entity<WebProxyConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
 
             entity.Property(x => x.Address)
                   .HasConversion(

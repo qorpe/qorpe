@@ -2,11 +2,11 @@
 
 public sealed class RouteConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public string RouteId { get; set; } = default!;
 
-    public RouteMatch Match { get; set; } = default!;
+    public RouteMatch? Match { get; set; } = default!;
 
     public int? Order { get; set; }
 

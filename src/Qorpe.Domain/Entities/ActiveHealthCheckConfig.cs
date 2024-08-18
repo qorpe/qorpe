@@ -2,7 +2,7 @@
 
 public sealed class ActiveHealthCheckConfig
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public bool? Enabled { get; set; }
 
@@ -17,5 +17,5 @@ public sealed class ActiveHealthCheckConfig
     public string? Query { get; set; }
 
     // Foreign Key
-    public long HealthCheckConfigId { get; set; }
+    public long? HealthCheckConfigId { get; set; }
 }

@@ -2,7 +2,7 @@
 
 public sealed class RouteMatch
 {
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     public ICollection<string>? Methods { get; set; }
 
@@ -15,5 +15,5 @@ public sealed class RouteMatch
     public ICollection<RouteHeader>? Headers { get; set; }
 
     // Foreign Key
-    public long RouteConfigId { get; set; }
+    public long? RouteConfigId { get; set; }
 }
