@@ -9,20 +9,23 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 {
     public DbSet<ActiveHealthCheckConfig> ActiveHealthCheckConfigs { get; set; }
     public DbSet<ClusterConfig> ClusterConfigs { get; set; }
+    public DbSet<ClusterConfigMetadata> ClusterConfigMetadata { get; set; }
     public DbSet<Destination> Destinations { get; set; }
     public DbSet<DestinationConfig> DestinationConfigs { get; set; }
+    public DbSet<DestinationConfigMetadata> DestinationConfigMetadata { get; set; }
     public DbSet<ForwarderRequestConfig> ForwarderRequestConfigs { get; set; }
     public DbSet<HealthCheckConfig> HealthCheckConfigs { get; set; }
     public DbSet<HttpClientConfig> HttpClientConfigs { get; set; }
-    public DbSet<Metadata> Metadata { get; set; }
     public DbSet<PassiveHealthCheckConfig> PassiveHealthCheckConfigs { get; set; }
     public DbSet<RouteConfig> RouteConfigs { get; set; }
+    public DbSet<RouteConfigMetadata> RouteConfigMetadata { get; set; }
     public DbSet<RouteHeader> RouteHeaders { get; set; }
     public DbSet<RouteMatch> RouteMatches { get; set; }
     public DbSet<RouteQueryParameter> RouteQueryParameters { get; set; }
     public DbSet<SessionAffinityConfig> SessionAffinityConfigs { get; set; }
     public DbSet<SessionAffinityCookieConfig> SessionAffinityCookieConfigs { get; set; }
     public DbSet<Transform> Transforms { get; set; }
+    public DbSet<TransformMetadata> TransformMetadata { get; set; }
     public DbSet<WebProxyConfig> WebProxyConfigs { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -30,8 +33,8 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
         base.OnModelCreating(modelBuilder);
 
         var timeSpanStringConverter = new ValueConverter<TimeSpan, string>(
-        v => v.ToString(), // TimeSpan -> String (örn: '01:30:00')
-        v => TimeSpan.Parse(v)); // String -> TimeSpan
+        v => v.ToString(),
+        v => TimeSpan.Parse(v));
 
         modelBuilder.Entity<ActiveHealthCheckConfig>(entity =>
         {
@@ -85,6 +88,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
+        modelBuilder.Entity<ClusterConfigMetadata>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
+        });
+
         modelBuilder.Entity<Destination>(entity =>
         {
             entity.HasKey(x => x.Id);
@@ -109,6 +120,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .WithOne()
                   .HasForeignKey(x => x.ParentId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<DestinationConfigMetadata>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<ForwarderRequestConfig>(entity =>
@@ -159,14 +178,6 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .OnDelete(DeleteBehavior.Cascade);
         });
 
-        modelBuilder.Entity<Metadata>(entity =>
-        {
-            entity.HasKey(x => x.Id);
-
-            entity.Property(x => x.Id)
-                  .ValueGeneratedOnAdd();
-        });
-
         modelBuilder.Entity<PassiveHealthCheckConfig>(entity =>
         {
             entity.HasKey(x => x.Id);
@@ -191,7 +202,7 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasMany(x => x.Metadata)
-                  .WithOne()    
+                  .WithOne()
                   .HasForeignKey(x => x.ParentId)
                   .OnDelete(DeleteBehavior.Cascade);
 
@@ -202,6 +213,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
 
             entity.Property(x => x.Timeout)
                   .HasConversion(timeSpanStringConverter);
+        });
+
+        modelBuilder.Entity<RouteConfigMetadata>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<RouteHeader>(entity =>
@@ -271,6 +290,14 @@ public class ApplicationDbContext(DbContextOptions<ApplicationDbContext> options
                   .WithOne()
                   .HasForeignKey(x => x.ParentId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<TransformMetadata>(entity =>
+        {
+            entity.HasKey(x => x.Id);
+
+            entity.Property(x => x.Id)
+                  .ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<WebProxyConfig>(entity =>

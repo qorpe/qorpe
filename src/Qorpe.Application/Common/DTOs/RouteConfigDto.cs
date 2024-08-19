@@ -27,7 +27,7 @@ public sealed class RouteConfigDto
     public long? MaxRequestBodySize { get; set; }
 
     // public IReadOnlyDictionary<string, string>? Metadata { get; set; }
-    public ICollection<MetadataDto>? Metadata { get; set; }
+    public ICollection<RouteConfigMetadataDto>? Metadata { get; set; }
 
     // public IReadOnlyList<IReadOnlyDictionary<string, string>>? Transforms { get; set; }
     public ICollection<TransformDto>? Transforms { get; set; }

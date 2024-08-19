@@ -9,7 +9,7 @@ public sealed class DestinationConfigDto
     public string? Health { get; set; }
 
     // public IReadOnlyDictionary<string, string>? Metadata { get; set; }
-    public ICollection<MetadataDto>? Metadata { get; set; }
+    public ICollection<DestinationConfigMetadataDto>? Metadata { get; set; }
 
     public string? Host { get; set; }
 

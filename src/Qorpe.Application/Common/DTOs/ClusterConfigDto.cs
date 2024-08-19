@@ -20,5 +20,5 @@ public sealed class ClusterConfigDto
     public ICollection<DestinationDto>? Destinations { get; set; }
 
     // public IReadOnlyDictionary<string, string>? Metadata { get; set; }
-    public ICollection<MetadataDto>? Metadata { get; set; }
+    public ICollection<ClusterConfigMetadataDto>? Metadata { get; set; }
 }

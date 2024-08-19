@@ -16,7 +16,7 @@ namespace Qorpe.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ClusterId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClusterId = table.Column<string>(type: "TEXT", nullable: true),
                     LoadBalancingPolicy = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
@@ -47,12 +47,33 @@ namespace Qorpe.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ClusterConfigMetadata",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ParentId = table.Column<long>(type: "INTEGER", nullable: true),
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClusterConfigMetadata", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ClusterConfigMetadata_ClusterConfigs_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "ClusterConfigs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Destinations",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ParentId = table.Column<long>(type: "INTEGER", nullable: false),
+                    ParentId = table.Column<long>(type: "INTEGER", nullable: true),
                     Key = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
@@ -76,7 +97,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Version = table.Column<string>(type: "TEXT", nullable: true),
                     VersionPolicy = table.Column<int>(type: "INTEGER", nullable: true),
                     AllowResponseBuffering = table.Column<bool>(type: "INTEGER", nullable: true),
-                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -96,7 +117,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     AvailableDestinationsPolicy = table.Column<string>(type: "TEXT", nullable: true),
-                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -121,7 +142,7 @@ namespace Qorpe.Infrastructure.Migrations
                     EnableMultipleHttp2Connections = table.Column<bool>(type: "INTEGER", nullable: true),
                     RequestHeaderEncoding = table.Column<string>(type: "TEXT", nullable: true),
                     ResponseHeaderEncoding = table.Column<string>(type: "TEXT", nullable: true),
-                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -144,7 +165,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Policy = table.Column<string>(type: "TEXT", nullable: true),
                     FailurePolicy = table.Column<string>(type: "TEXT", nullable: true),
                     AffinityKeyName = table.Column<string>(type: "TEXT", nullable: false),
-                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    ClusterConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -158,6 +179,27 @@ namespace Qorpe.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "RouteConfigMetadata",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ParentId = table.Column<long>(type: "INTEGER", nullable: true),
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RouteConfigMetadata", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RouteConfigMetadata_RouteConfigs_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "RouteConfigs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RouteMatches",
                 columns: table => new
                 {
@@ -166,7 +208,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Methods = table.Column<string>(type: "TEXT", nullable: true),
                     Hosts = table.Column<string>(type: "TEXT", nullable: true),
                     Path = table.Column<string>(type: "TEXT", nullable: true),
-                    RouteConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    RouteConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -185,7 +227,7 @@ namespace Qorpe.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    RouteConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    RouteConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -207,7 +249,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Address = table.Column<string>(type: "TEXT", nullable: false),
                     Health = table.Column<string>(type: "TEXT", nullable: true),
                     Host = table.Column<string>(type: "TEXT", nullable: true),
-                    DestinationId = table.Column<long>(type: "INTEGER", nullable: false)
+                    DestinationId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -232,7 +274,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Policy = table.Column<string>(type: "TEXT", nullable: true),
                     Path = table.Column<string>(type: "TEXT", nullable: true),
                     Query = table.Column<string>(type: "TEXT", nullable: true),
-                    HealthCheckConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    HealthCheckConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -254,7 +296,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Enabled = table.Column<bool>(type: "INTEGER", nullable: true),
                     Policy = table.Column<string>(type: "TEXT", nullable: true),
                     ReactivationPeriod = table.Column<string>(type: "TEXT", nullable: true),
-                    HealthCheckConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    HealthCheckConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -276,7 +318,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Address = table.Column<string>(type: "TEXT", nullable: true),
                     BypassOnLocal = table.Column<bool>(type: "INTEGER", nullable: true),
                     UseDefaultCredentials = table.Column<bool>(type: "INTEGER", nullable: true),
-                    HttpClientConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    HttpClientConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -303,7 +345,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Expiration = table.Column<string>(type: "TEXT", nullable: true),
                     MaxAge = table.Column<string>(type: "TEXT", nullable: true),
                     IsEssential = table.Column<bool>(type: "INTEGER", nullable: true),
-                    SessionAffinityConfigId = table.Column<long>(type: "INTEGER", nullable: false)
+                    SessionAffinityConfigId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -348,7 +390,7 @@ namespace Qorpe.Infrastructure.Migrations
                     Values = table.Column<string>(type: "TEXT", nullable: true),
                     Mode = table.Column<int>(type: "INTEGER", nullable: false),
                     IsCaseSensitive = table.Column<bool>(type: "INTEGER", nullable: false),
-                    RouteMatchId = table.Column<long>(type: "INTEGER", nullable: false)
+                    RouteMatchId = table.Column<long>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -362,40 +404,43 @@ namespace Qorpe.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Metadata",
+                name: "TransformMetadata",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ParentId = table.Column<long>(type: "INTEGER", nullable: false),
+                    ParentId = table.Column<long>(type: "INTEGER", nullable: true),
                     Key = table.Column<string>(type: "TEXT", nullable: false),
                     Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Metadata", x => x.Id);
+                    table.PrimaryKey("PK_TransformMetadata", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Metadata_ClusterConfigs_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "ClusterConfigs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Metadata_DestinationConfigs_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "DestinationConfigs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Metadata_RouteConfigs_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "RouteConfigs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Metadata_Transforms_ParentId",
+                        name: "FK_TransformMetadata_Transforms_ParentId",
                         column: x => x.ParentId,
                         principalTable: "Transforms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DestinationConfigMetadata",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ParentId = table.Column<long>(type: "INTEGER", nullable: true),
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DestinationConfigMetadata", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DestinationConfigMetadata_DestinationConfigs_ParentId",
+                        column: x => x.ParentId,
+                        principalTable: "DestinationConfigs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -405,6 +450,16 @@ namespace Qorpe.Infrastructure.Migrations
                 table: "ActiveHealthCheckConfigs",
                 column: "HealthCheckConfigId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ClusterConfigMetadata_ParentId",
+                table: "ClusterConfigMetadata",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DestinationConfigMetadata_ParentId",
+                table: "DestinationConfigMetadata",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_DestinationConfigs_DestinationId",
@@ -436,15 +491,15 @@ namespace Qorpe.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Metadata_ParentId",
-                table: "Metadata",
-                column: "ParentId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PassiveHealthCheckConfigs_HealthCheckConfigId",
                 table: "PassiveHealthCheckConfigs",
                 column: "HealthCheckConfigId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RouteConfigMetadata_ParentId",
+                table: "RouteConfigMetadata",
+                column: "ParentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RouteHeaders_RouteMatchId",
@@ -475,6 +530,11 @@ namespace Qorpe.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_TransformMetadata_ParentId",
+                table: "TransformMetadata",
+                column: "ParentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Transforms_RouteConfigId",
                 table: "Transforms",
                 column: "RouteConfigId");
@@ -493,13 +553,19 @@ namespace Qorpe.Infrastructure.Migrations
                 name: "ActiveHealthCheckConfigs");
 
             migrationBuilder.DropTable(
+                name: "ClusterConfigMetadata");
+
+            migrationBuilder.DropTable(
+                name: "DestinationConfigMetadata");
+
+            migrationBuilder.DropTable(
                 name: "ForwarderRequestConfigs");
 
             migrationBuilder.DropTable(
-                name: "Metadata");
+                name: "PassiveHealthCheckConfigs");
 
             migrationBuilder.DropTable(
-                name: "PassiveHealthCheckConfigs");
+                name: "RouteConfigMetadata");
 
             migrationBuilder.DropTable(
                 name: "RouteHeaders");
@@ -511,13 +577,13 @@ namespace Qorpe.Infrastructure.Migrations
                 name: "SessionAffinityCookieConfigs");
 
             migrationBuilder.DropTable(
+                name: "TransformMetadata");
+
+            migrationBuilder.DropTable(
                 name: "WebProxyConfigs");
 
             migrationBuilder.DropTable(
                 name: "DestinationConfigs");
-
-            migrationBuilder.DropTable(
-                name: "Transforms");
 
             migrationBuilder.DropTable(
                 name: "HealthCheckConfigs");
@@ -527,6 +593,9 @@ namespace Qorpe.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "SessionAffinityConfigs");
+
+            migrationBuilder.DropTable(
+                name: "Transforms");
 
             migrationBuilder.DropTable(
                 name: "HttpClientConfigs");

@@ -1,6 +1,6 @@
-﻿namespace Qorpe.Application.Common.DTOs;
+﻿namespace Qorpe.Domain.Entities;
 
-public sealed class MetadataDto
+public sealed class TransformMetadata
 {
     public long? Id { get; set; }
 

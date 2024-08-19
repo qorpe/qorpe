@@ -11,7 +11,7 @@ using Qorpe.Infrastructure.Data;
 namespace Qorpe.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240818183902_InitialCreate")]
+    [Migration("20240819150637_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -29,7 +29,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.Property<bool?>("Enabled")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("HealthCheckConfigId")
+                    b.Property<long?>("HealthCheckConfigId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Interval")
@@ -62,7 +62,6 @@ namespace Qorpe.Infrastructure.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ClusterId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LoadBalancingPolicy")
@@ -71,6 +70,29 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ClusterConfigs");
+                });
+
+            modelBuilder.Entity("Qorpe.Domain.Entities.ClusterConfigMetadata", b =>
+                {
+                    b.Property<long?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("ClusterConfigMetadata");
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.Destination", b =>
@@ -83,7 +105,7 @@ namespace Qorpe.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("ParentId")
+                    b.Property<long?>("ParentId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -103,7 +125,7 @@ namespace Qorpe.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("DestinationId")
+                    b.Property<long?>("DestinationId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Health")
@@ -120,6 +142,29 @@ namespace Qorpe.Infrastructure.Migrations
                     b.ToTable("DestinationConfigs");
                 });
 
+            modelBuilder.Entity("Qorpe.Domain.Entities.DestinationConfigMetadata", b =>
+                {
+                    b.Property<long?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("DestinationConfigMetadata");
+                });
+
             modelBuilder.Entity("Qorpe.Domain.Entities.ForwarderRequestConfig", b =>
                 {
                     b.Property<long?>("Id")
@@ -132,7 +177,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.Property<bool?>("AllowResponseBuffering")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("ClusterConfigId")
+                    b.Property<long?>("ClusterConfigId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Version")
@@ -158,7 +203,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.Property<string>("AvailableDestinationsPolicy")
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("ClusterConfigId")
+                    b.Property<long?>("ClusterConfigId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -175,7 +220,7 @@ namespace Qorpe.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("ClusterConfigId")
+                    b.Property<long?>("ClusterConfigId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool?>("DangerousAcceptAnyServerCertificate")
@@ -204,29 +249,6 @@ namespace Qorpe.Infrastructure.Migrations
                     b.ToTable("HttpClientConfigs");
                 });
 
-            modelBuilder.Entity("Qorpe.Domain.Entities.Metadata", b =>
-                {
-                    b.Property<long?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Key")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("ParentId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Value")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParentId");
-
-                    b.ToTable("Metadata");
-                });
-
             modelBuilder.Entity("Qorpe.Domain.Entities.PassiveHealthCheckConfig", b =>
                 {
                     b.Property<long?>("Id")
@@ -236,7 +258,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.Property<bool?>("Enabled")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("HealthCheckConfigId")
+                    b.Property<long?>("HealthCheckConfigId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Policy")
@@ -295,6 +317,29 @@ namespace Qorpe.Infrastructure.Migrations
                     b.ToTable("RouteConfigs");
                 });
 
+            modelBuilder.Entity("Qorpe.Domain.Entities.RouteConfigMetadata", b =>
+                {
+                    b.Property<long?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("RouteConfigMetadata");
+                });
+
             modelBuilder.Entity("Qorpe.Domain.Entities.RouteHeader", b =>
                 {
                     b.Property<long?>("Id")
@@ -339,7 +384,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.Property<string>("Path")
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("RouteConfigId")
+                    b.Property<long?>("RouteConfigId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -366,7 +411,7 @@ namespace Qorpe.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("RouteMatchId")
+                    b.Property<long?>("RouteMatchId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Values")
@@ -389,7 +434,7 @@ namespace Qorpe.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<long>("ClusterConfigId")
+                    b.Property<long?>("ClusterConfigId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool?>("Enabled")
@@ -439,7 +484,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.Property<int?>("SecurePolicy")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("SessionAffinityConfigId")
+                    b.Property<long?>("SessionAffinityConfigId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -456,7 +501,7 @@ namespace Qorpe.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("RouteConfigId")
+                    b.Property<long?>("RouteConfigId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -464,6 +509,29 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasIndex("RouteConfigId");
 
                     b.ToTable("Transforms");
+                });
+
+            modelBuilder.Entity("Qorpe.Domain.Entities.TransformMetadata", b =>
+                {
+                    b.Property<long?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<long?>("ParentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentId");
+
+                    b.ToTable("TransformMetadata");
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.WebProxyConfig", b =>
@@ -478,7 +546,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.Property<bool?>("BypassOnLocal")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("HttpClientConfigId")
+                    b.Property<long?>("HttpClientConfigId")
                         .HasColumnType("INTEGER");
 
                     b.Property<bool?>("UseDefaultCredentials")
@@ -497,8 +565,15 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.HealthCheckConfig", null)
                         .WithOne("Active")
                         .HasForeignKey("Qorpe.Domain.Entities.ActiveHealthCheckConfig", "HealthCheckConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Qorpe.Domain.Entities.ClusterConfigMetadata", b =>
+                {
+                    b.HasOne("Qorpe.Domain.Entities.ClusterConfig", null)
+                        .WithMany("Metadata")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.Destination", b =>
@@ -506,8 +581,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.ClusterConfig", null)
                         .WithMany("Destinations")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.DestinationConfig", b =>
@@ -515,8 +589,15 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.Destination", null)
                         .WithOne("Value")
                         .HasForeignKey("Qorpe.Domain.Entities.DestinationConfig", "DestinationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Qorpe.Domain.Entities.DestinationConfigMetadata", b =>
+                {
+                    b.HasOne("Qorpe.Domain.Entities.DestinationConfig", null)
+                        .WithMany("Metadata")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.ForwarderRequestConfig", b =>
@@ -524,8 +605,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.ClusterConfig", null)
                         .WithOne("HttpRequest")
                         .HasForeignKey("Qorpe.Domain.Entities.ForwarderRequestConfig", "ClusterConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.HealthCheckConfig", b =>
@@ -533,8 +613,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.ClusterConfig", null)
                         .WithOne("HealthCheck")
                         .HasForeignKey("Qorpe.Domain.Entities.HealthCheckConfig", "ClusterConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.HttpClientConfig", b =>
@@ -542,35 +621,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.ClusterConfig", null)
                         .WithOne("HttpClient")
                         .HasForeignKey("Qorpe.Domain.Entities.HttpClientConfig", "ClusterConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Qorpe.Domain.Entities.Metadata", b =>
-                {
-                    b.HasOne("Qorpe.Domain.Entities.ClusterConfig", null)
-                        .WithMany("Metadata")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Qorpe.Domain.Entities.DestinationConfig", null)
-                        .WithMany("Metadata")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Qorpe.Domain.Entities.RouteConfig", null)
-                        .WithMany("Metadata")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Qorpe.Domain.Entities.Transform", null)
-                        .WithMany("Metadata")
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.PassiveHealthCheckConfig", b =>
@@ -578,8 +629,15 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.HealthCheckConfig", null)
                         .WithOne("Passive")
                         .HasForeignKey("Qorpe.Domain.Entities.PassiveHealthCheckConfig", "HealthCheckConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Qorpe.Domain.Entities.RouteConfigMetadata", b =>
+                {
+                    b.HasOne("Qorpe.Domain.Entities.RouteConfig", null)
+                        .WithMany("Metadata")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.RouteHeader", b =>
@@ -594,8 +652,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.RouteConfig", null)
                         .WithOne("Match")
                         .HasForeignKey("Qorpe.Domain.Entities.RouteMatch", "RouteConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.RouteQueryParameter", b =>
@@ -603,8 +660,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.RouteMatch", null)
                         .WithMany("QueryParameters")
                         .HasForeignKey("RouteMatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.SessionAffinityConfig", b =>
@@ -612,8 +668,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.ClusterConfig", null)
                         .WithOne("SessionAffinity")
                         .HasForeignKey("Qorpe.Domain.Entities.SessionAffinityConfig", "ClusterConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.SessionAffinityCookieConfig", b =>
@@ -621,8 +676,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.SessionAffinityConfig", null)
                         .WithOne("Cookie")
                         .HasForeignKey("Qorpe.Domain.Entities.SessionAffinityCookieConfig", "SessionAffinityConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.Transform", b =>
@@ -630,8 +684,15 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.RouteConfig", null)
                         .WithMany("Transforms")
                         .HasForeignKey("RouteConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Qorpe.Domain.Entities.TransformMetadata", b =>
+                {
+                    b.HasOne("Qorpe.Domain.Entities.Transform", null)
+                        .WithMany("Metadata")
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.WebProxyConfig", b =>
@@ -639,8 +700,7 @@ namespace Qorpe.Infrastructure.Migrations
                     b.HasOne("Qorpe.Domain.Entities.HttpClientConfig", null)
                         .WithOne("WebProxy")
                         .HasForeignKey("Qorpe.Domain.Entities.WebProxyConfig", "HttpClientConfigId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Qorpe.Domain.Entities.ClusterConfig", b =>
@@ -682,8 +742,7 @@ namespace Qorpe.Infrastructure.Migrations
 
             modelBuilder.Entity("Qorpe.Domain.Entities.RouteConfig", b =>
                 {
-                    b.Navigation("Match")
-                        .IsRequired();
+                    b.Navigation("Match");
 
                     b.Navigation("Metadata");
 

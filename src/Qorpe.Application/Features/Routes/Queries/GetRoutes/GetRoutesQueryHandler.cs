@@ -18,7 +18,7 @@ public class GetRoutesQueryHandler(IApplicationDbContext context, InMemoryConfig
 
         if (fromCache.HasValue) 
         {
-            if (fromCache == true) 
+            if (fromCache is true) 
             {
                 var result = await FromCache(request);
                 return result;
@@ -42,9 +42,9 @@ public class GetRoutesQueryHandler(IApplicationDbContext context, InMemoryConfig
         int pageNumber = request?.QueryParameters?.PageNumber ?? 1;
         int pageSize = request?.QueryParameters?.PageSize ?? 10;
 
-        var query = context.RouteConfigs.AsQueryable().AsNoTracking();
+        var query = context.RouteConfigs.AsQueryable();
 
-        if (request != null && request.QueryParameters != null)
+        if (request is not null && request.QueryParameters is not null)
         {
             if (request.QueryParameters.Id.HasValue)
             {
@@ -111,7 +111,6 @@ public class GetRoutesQueryHandler(IApplicationDbContext context, InMemoryConfig
                 {
                     query = query.OrderBy(item => EF.Property<object>(item, request.QueryParameters.SortBy));
                 }
-
             }
         }
 

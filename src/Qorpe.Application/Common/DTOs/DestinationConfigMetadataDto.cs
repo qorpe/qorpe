@@ -1,6 +1,6 @@
-﻿namespace Qorpe.Domain.Entities;
+﻿namespace Qorpe.Application.Common.DTOs;
 
-public sealed class Metadata
+public sealed class DestinationConfigMetadataDto
 {
     public long? Id { get; set; }
 
