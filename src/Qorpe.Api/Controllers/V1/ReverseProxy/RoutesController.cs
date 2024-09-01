@@ -1,7 +1,6 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Qorpe.Application.Common.DTOs;
-using Qorpe.Application.Common.Models;
 using Qorpe.Application.Features.Routes.Commands.CreateRoute;
 using Qorpe.Application.Features.Routes.Queries.GetRoutes;
 

@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace Qorpe.Application.Common.Models;
+﻿namespace Qorpe.Application.Common.Models;
 
 public class PaginationList<T>(IReadOnlyCollection<T> items, int count, int pageNumber, int pageSize)
 {
@@ -8,15 +6,13 @@ public class PaginationList<T>(IReadOnlyCollection<T> items, int count, int page
     public int PageNumber { get; } = pageNumber;
     public int TotalPages { get; } = (int)Math.Ceiling(count / (double)pageSize);
     public int TotalCount { get; } = count;
-
     public bool HasPreviousPage => PageNumber > 1;
-
     public bool HasNextPage => PageNumber < TotalPages;
 
     public static async Task<PaginationList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
     {
-        var count = await source.CountAsync();
-        var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
+        var count = 10;
+        var items = new List<T>();
 
         return new PaginationList<T>(items, count, pageNumber, pageSize);
     }
