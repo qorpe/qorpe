@@ -22,13 +22,13 @@ public interface IRepository<TDocument> where TDocument : Document
 
     Task<TDocument> FindByIdAsync(string id);
 
-    void InsertOne(TDocument document);
+    TDocument InsertOne(TDocument document);
 
-    Task InsertOneAsync(TDocument document);
+    Task<TDocument> InsertOneAsync(TDocument document);
 
-    void InsertMany(ICollection<TDocument> documents);
+    ICollection<TDocument> InsertMany(ICollection<TDocument> documents);
 
-    Task InsertManyAsync(ICollection<TDocument> documents);
+    Task<ICollection<TDocument>> InsertManyAsync(ICollection<TDocument> documents);
 
     void ReplaceOne(TDocument document);
 
