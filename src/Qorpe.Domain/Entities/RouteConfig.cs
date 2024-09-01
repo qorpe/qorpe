@@ -1,6 +1,8 @@
-﻿namespace Qorpe.Domain.Entities;
+﻿using Qorpe.Domain.Common;
 
-public sealed class RouteConfig
+namespace Qorpe.Domain.Entities;
+
+public sealed class RouteConfig : BaseAuditableEntity
 {
     public string RouteId { get; set; } = default!;
     public RouteMatch? Match { get; set; } = default!;

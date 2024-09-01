@@ -1,9 +1,11 @@
-﻿namespace Qorpe.Application.Common.DTOs;
+﻿using Qorpe.Domain.Common;
 
-public sealed class RouteConfigDto
+namespace Qorpe.Application.Common.DTOs;
+
+public sealed class RouteConfigDto : BaseAuditableEntity
 {
-    public string RouteId { get; set; } = default!;
-    public RouteMatchDto? Match { get; set; } = default!;
+    public string? RouteId { get; set; }
+    public RouteMatchDto? Match { get; set; }
     public int? Order { get; set; }
     public string? ClusterId { get; set; }
     public string? AuthorizationPolicy { get; set; }

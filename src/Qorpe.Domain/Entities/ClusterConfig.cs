@@ -1,6 +1,8 @@
-﻿namespace Qorpe.Domain.Entities;
+﻿using Qorpe.Domain.Common;
 
-public sealed class ClusterConfig
+namespace Qorpe.Domain.Entities;
+
+public sealed class ClusterConfig : BaseAuditableEntity
 {
     public string? ClusterId { get; set; } = default!;
     public string? LoadBalancingPolicy { get; set; }
