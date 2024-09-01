@@ -2,10 +2,10 @@
 
 namespace Qorpe.Domain.Entities;
 
-public sealed class RouteConfig : BaseAuditableEntity
+public sealed class RouteConfig : Document
 {
-    public string RouteId { get; set; } = default!;
-    public RouteMatch? Match { get; set; } = default!;
+    public string? RouteId { get; set; }
+    public RouteMatch? Match { get; set; }
     public int? Order { get; set; }
     public string? ClusterId { get; set; }
     public string? AuthorizationPolicy { get; set; }

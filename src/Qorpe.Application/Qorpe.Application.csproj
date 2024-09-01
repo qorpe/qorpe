@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Extensions\" />
-    <Folder Include="Common\Interfaces\" />
     <Folder Include="Common\Models\" />
     <Folder Include="Features\Clusters\" />
     <Folder Include="Features\Routes\Commands\DeleteRoute\" />

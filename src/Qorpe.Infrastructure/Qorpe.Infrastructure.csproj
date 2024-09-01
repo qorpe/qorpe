@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Qorpe.Application\Qorpe.Application.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
-
 </Project>
