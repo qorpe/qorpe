@@ -2,7 +2,7 @@
 
 namespace Qorpe.Application.Common.DTOs;
 
-public sealed class ClusterConfigDto : BaseAuditableEntity
+public sealed class ClusterConfigDto : Document
 {
     public string ClusterId { get; set; } = default!;
     public string? LoadBalancingPolicy { get; set; }

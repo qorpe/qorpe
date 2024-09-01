@@ -10,6 +10,10 @@ public static class DependencyInjection
 
     public static IServiceCollection AddApiServices(this IServiceCollection services, ConfigurationManager configuration)
     {
+        ArgumentNullException.ThrowIfNull(services);
+
+        ArgumentNullException.ThrowIfNull(configuration);
+
         services.AddReverseProxy()
                 // .LoadFromConfig(configuration.GetSection("ReverseProxy"))
                 .LoadFromMemory(GetRoutes(), GetClusters());

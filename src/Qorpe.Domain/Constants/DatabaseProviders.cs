@@ -3,4 +3,5 @@
 public class DatabaseProviders
 {
     public const string LiteDB = "litedb";
+    public const string MongoDB = "mongodb";
 }

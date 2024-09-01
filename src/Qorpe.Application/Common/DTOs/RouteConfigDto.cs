@@ -2,7 +2,7 @@
 
 namespace Qorpe.Application.Common.DTOs;
 
-public sealed class RouteConfigDto : BaseAuditableEntity
+public sealed class RouteConfigDto : Document
 {
     public string? RouteId { get; set; }
     public RouteMatchDto? Match { get; set; }
