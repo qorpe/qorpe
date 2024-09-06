@@ -53,6 +53,11 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         return true;
     }
 
+    /// <summary>
+    /// Maps the exception to a status code, title, and detail.
+    /// </summary>
+    /// <param name="exception">The exception to map.</param>
+    /// <returns>A tuple containing the status code, title, and detail.</returns>
     private static (int statusCode, string? title, string? detail) MapException(Exception? exception)
     {
         return exception switch
