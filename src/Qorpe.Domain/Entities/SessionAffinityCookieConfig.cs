@@ -1,6 +1,6 @@
 ﻿using Qorpe.Domain.Enums;
 
-namespace Qorpe.Domain.Entities.Lite;
+namespace Qorpe.Domain.Entities;
 
 public sealed class SessionAffinityCookieConfig
 {

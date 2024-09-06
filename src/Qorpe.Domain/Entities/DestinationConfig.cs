@@ -1,4 +1,4 @@
-﻿namespace Qorpe.Domain.Entities.Mongo;
+﻿namespace Qorpe.Domain.Entities;
 
 public sealed class DestinationConfig
 {

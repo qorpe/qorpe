@@ -11,7 +11,7 @@ namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 public class RoutesController : BaseController
 {
     [HttpGet("{id}")]
-    public IActionResult GetRoute(long id)
+    public IActionResult GetRoute(string id)
     {
         return Ok(id);
     }
@@ -37,13 +37,13 @@ public class RoutesController : BaseController
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateRoute(long id)
+    public IActionResult UpdateRoute(string id)
     {
         return Ok(id);
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteRoute(long id)
+    public IActionResult DeleteRoute(string id)
     {
         return Ok(id);
     }

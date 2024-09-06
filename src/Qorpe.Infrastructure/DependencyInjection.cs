@@ -8,6 +8,7 @@ using Lite = Qorpe.Infrastructure.Data.Lite;
 using LiteDB;
 using Mongo_Entities = Qorpe.Domain.Entities.Mongo;
 using Lite_Entities = Qorpe.Domain.Entities.Lite;
+using Qorpe.Domain.Entities;
 
 namespace Qorpe.Infrastructure;
 
@@ -33,8 +34,8 @@ public static class DependencyInjection
         else if (databaseProvider == DatabaseProviders.LiteDB)
         {
             services.AddSingleton<ILiteDatabase>(provider => new LiteDatabase("mydatabase.db"));
-            services.AddScoped<IClusterRepository<Lite_Entities.ClusterConfig>, Lite.ClusterRepository>();
-            services.AddScoped<IRouteRepository<Lite_Entities.RouteConfig>, Lite.RouteRepository>();
+            services.AddScoped<IClusterRepository<ClusterConfig>, Lite.ClusterRepository>();
+            services.AddScoped<IRouteRepository<RouteConfig>, Lite.RouteRepository>();
         }
         #endregion
 

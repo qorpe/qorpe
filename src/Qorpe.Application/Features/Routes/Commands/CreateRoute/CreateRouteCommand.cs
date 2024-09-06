@@ -5,5 +5,5 @@ namespace Qorpe.Application.Features.Routes.Commands.CreateRoute;
 
 public class CreateRouteCommand : IRequest<RouteConfigDto>
 {
-    public RouteConfigDto? Route { get; set; }
+    public required RouteConfigDto Route { get; set; }
 }

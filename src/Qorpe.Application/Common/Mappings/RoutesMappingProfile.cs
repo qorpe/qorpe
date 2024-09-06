@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Qorpe.Application.Common.DTOs;
-using Qorpe.Domain.Entities.Lite;
+using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Common.Mappings;
 

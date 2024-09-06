@@ -1,6 +1,6 @@
 ﻿using LiteDB;
 using Qorpe.Application.Common.Interfaces.Repositories;
-using Qorpe.Domain.Entities.Lite;
+using Qorpe.Domain.Entities;
 
 namespace Qorpe.Infrastructure.Data.Lite;
 

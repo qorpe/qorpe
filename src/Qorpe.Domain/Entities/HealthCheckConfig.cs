@@ -1,4 +1,4 @@
-﻿namespace Qorpe.Domain.Entities.Lite;
+﻿namespace Qorpe.Domain.Entities;
 
 public sealed class HealthCheckConfig
 {

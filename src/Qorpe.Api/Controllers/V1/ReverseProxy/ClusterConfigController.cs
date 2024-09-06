@@ -1,7 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Qorpe.Application.Common.Interfaces.Repositories;
-using Qorpe.Domain.Entities.Lite;
+using Qorpe.Domain.Entities;
 
 namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 

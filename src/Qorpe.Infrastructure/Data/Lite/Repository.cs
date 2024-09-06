@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace Qorpe.Infrastructure.Data.Lite;
 
 public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocument>
-    where TDocument : DocumentLite
+    where TDocument : Document
 {
     private readonly ILiteCollection<TDocument> _collection 
         = database.GetCollection<TDocument>($"tenant_{typeof(TDocument).Name}"); // Todo - Tenant Id
@@ -138,7 +138,7 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
         });
     }
 
-    private BsonExpression ConvertExpression<T>(Expression<Func<T, bool>> expression)
+    private static BsonExpression ConvertExpression<T>(Expression<Func<T, bool>> expression)
     {
         if (expression.Body is BinaryExpression binaryExpression)
         {

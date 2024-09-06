@@ -1,10 +1,10 @@
 ﻿using Qorpe.Domain.Common;
 
-namespace Qorpe.Domain.Entities.Mongo;
+namespace Qorpe.Domain.Entities;
 
-public sealed class ClusterConfig : DocumentMongo
+public sealed class ClusterConfig : Document
 {
-    public string? ClusterId { get; set; } = default!;
+    public string? ClusterId { get; set; }
     public string? LoadBalancingPolicy { get; set; }
     public SessionAffinityConfig? SessionAffinity { get; set; }
     public HealthCheckConfig? HealthCheck { get; set; }

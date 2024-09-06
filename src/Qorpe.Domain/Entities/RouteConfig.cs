@@ -1,8 +1,8 @@
 ﻿using Qorpe.Domain.Common;
 
-namespace Qorpe.Domain.Entities.Mongo;
+namespace Qorpe.Domain.Entities;
 
-public sealed class RouteConfig : DocumentMongo
+public sealed class RouteConfig : Document
 {
     public string? RouteId { get; set; }
     public RouteMatch? Match { get; set; }
