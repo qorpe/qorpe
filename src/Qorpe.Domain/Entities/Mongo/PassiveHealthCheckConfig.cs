@@ -1,4 +1,4 @@
-﻿namespace Qorpe.Domain.Entities;
+﻿namespace Qorpe.Domain.Entities.Mongo;
 
 public sealed class PassiveHealthCheckConfig
 {

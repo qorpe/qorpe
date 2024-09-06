@@ -1,16 +1,15 @@
-﻿using MongoDB.Bson;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
 using Qorpe.Application.Common.Interfaces.Repositories;
 using Qorpe.Domain.Common;
 using System.Linq.Expressions;
 
 namespace Qorpe.Infrastructure.Data.Mongo;
 
-public class Repository<TDocument>(IMongoDatabase database, string tenantId) : IRepository<TDocument>
-    where TDocument : Document
+public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocument>
+    where TDocument : DocumentMongo
 {
     private readonly IMongoCollection<TDocument> _collection 
-        = database.GetCollection<TDocument>($"{tenantId}_{typeof(TDocument).Name}");
+        = database.GetCollection<TDocument>($"tenant1_{typeof(TDocument).Name}"); // Todo - Tenant Id
 
     public virtual IQueryable<TDocument> AsQueryable()
     {
@@ -42,8 +41,8 @@ public class Repository<TDocument>(IMongoDatabase database, string tenantId) : I
 
     public virtual TDocument FindById(string id)
     {
-        var objectId = new ObjectId(id);
-        var filter = Builders<TDocument>.Filter.Eq(doc => doc.MongoId, objectId);
+        // var objectId = new ObjectId(id);
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
         return _collection.Find(filter).SingleOrDefault();
     }
 
@@ -51,12 +50,11 @@ public class Repository<TDocument>(IMongoDatabase database, string tenantId) : I
     {
         return Task.Run(() =>
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.MongoId, objectId);
+            // var objectId = new ObjectId(id);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
             return _collection.Find(filter).SingleOrDefaultAsync();
         });
     }
-
 
     public virtual TDocument InsertOne(TDocument document)
     {
@@ -84,13 +82,13 @@ public class Repository<TDocument>(IMongoDatabase database, string tenantId) : I
 
     public void ReplaceOne(TDocument document)
     {
-        var filter = Builders<TDocument>.Filter.Eq(doc => doc.MongoId, document.MongoId);
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
         _collection.FindOneAndReplace(filter, document);
     }
 
     public virtual async Task ReplaceOneAsync(TDocument document)
     {
-        var filter = Builders<TDocument>.Filter.Eq(doc => doc.MongoId, document.MongoId);
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
         await _collection.FindOneAndReplaceAsync(filter, document);
     }
 
@@ -106,8 +104,8 @@ public class Repository<TDocument>(IMongoDatabase database, string tenantId) : I
 
     public void DeleteById(string id)
     {
-        var objectId = new ObjectId(id);
-        var filter = Builders<TDocument>.Filter.Eq(doc => doc.MongoId, objectId);
+        // var objectId = new ObjectId(id);
+        var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
         _collection.FindOneAndDelete(filter);
     }
 
@@ -115,8 +113,8 @@ public class Repository<TDocument>(IMongoDatabase database, string tenantId) : I
     {
         return Task.Run(() =>
         {
-            var objectId = new ObjectId(id);
-            var filter = Builders<TDocument>.Filter.Eq(doc => doc.MongoId, objectId);
+            // var objectId = new ObjectId(id);
+            var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
             _collection.FindOneAndDeleteAsync(filter);
         });
     }

@@ -5,11 +5,11 @@ using System.Linq.Expressions;
 
 namespace Qorpe.Infrastructure.Data.Lite;
 
-public class Repository<TDocument>(ILiteDatabase database, string tenantId) : IRepository<TDocument>
-    where TDocument : Document
+public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocument>
+    where TDocument : DocumentLite
 {
     private readonly ILiteCollection<TDocument> _collection 
-        = database.GetCollection<TDocument>($"{tenantId}_{typeof(TDocument).Name}");
+        = database.GetCollection<TDocument>($"tenant_{typeof(TDocument).Name}"); // Todo - Tenant Id
 
     public virtual IQueryable<TDocument> AsQueryable()
     {
@@ -96,7 +96,7 @@ public class Repository<TDocument>(ILiteDatabase database, string tenantId) : IR
         var document = _collection.FindOne(filter);
         if (document != null)
         {
-            _collection.Delete(document.LiteId);
+            _collection.Delete(document.Id);
         }
     }
 
@@ -108,7 +108,7 @@ public class Repository<TDocument>(ILiteDatabase database, string tenantId) : IR
             var document = _collection.FindOne(filter);
             if (document != null)
             {
-                _collection.Delete(document.LiteId);
+                _collection.Delete(document.Id);
             }
         });
     }

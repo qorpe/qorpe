@@ -1,8 +1,8 @@
 ﻿using Qorpe.Domain.Common;
 
-namespace Qorpe.Domain.Entities;
+namespace Qorpe.Domain.Entities.Mongo;
 
-public sealed class ClusterConfig : Document
+public sealed class ClusterConfig : DocumentMongo
 {
     public string? ClusterId { get; set; } = default!;
     public string? LoadBalancingPolicy { get; set; }

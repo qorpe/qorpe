@@ -1,9 +1,8 @@
-﻿using Qorpe.Domain.Common;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Qorpe.Application.Common.Interfaces.Repositories;
 
-public interface IRepository<TDocument> where TDocument : Document
+public interface IRepository<TDocument> where TDocument : class
 {
     IQueryable<TDocument> AsQueryable();
 

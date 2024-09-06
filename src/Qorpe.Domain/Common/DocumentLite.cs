@@ -5,5 +5,5 @@ namespace Qorpe.Domain.Common;
 public class DocumentLite : Document
 {
     [BsonId]
-    public new string? Id { get; set; }
+    public Guid Id { get; set; } = Guid.NewGuid();
 }

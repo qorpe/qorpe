@@ -1,7 +1,7 @@
-﻿namespace Qorpe.Domain.Entities;
+﻿namespace Qorpe.Domain.Entities.Mongo;
 
 public sealed class ForwarderRequestConfig
-{    
+{
     public TimeSpan? ActivityTimeout { get; set; }
     public Version? Version { get; set; }
     public HttpVersionPolicy? VersionPolicy { get; set; }

@@ -6,6 +6,6 @@ namespace Qorpe.Domain.Common;
 public class DocumentMongo : Document
 {
     [BsonId]
-    [BsonRepresentation(BsonType.String)]
-    public new string? Id { get; set; }
+    [BsonRepresentation(BsonType.ObjectId)]
+    public string? Id { get; set; }
 }
