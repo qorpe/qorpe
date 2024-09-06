@@ -4,7 +4,7 @@ namespace Qorpe.Application.Common.DTOs;
 
 public sealed class ClusterConfigDto : Document
 {
-    public string ClusterId { get; set; } = default!;
+    public string? ClusterId { get; set; }
     public string? LoadBalancingPolicy { get; set; }
     public SessionAffinityConfigDto? SessionAffinity { get; set; }
     public HealthCheckConfigDto? HealthCheck { get; set; }

@@ -4,7 +4,6 @@ namespace Qorpe.Application.Common.DTOs;
 
 public sealed class RouteConfigDto : Document
 {
-    public string? Id { get; set; }
     public string? RouteId { get; set; }
     public RouteMatchDto? Match { get; set; }
     public int? Order { get; set; }

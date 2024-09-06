@@ -6,8 +6,6 @@ using Qorpe.Domain.Constants;
 using Mongo = Qorpe.Infrastructure.Data.Mongo;
 using Lite = Qorpe.Infrastructure.Data.Lite;
 using LiteDB;
-using Mongo_Entities = Qorpe.Domain.Entities.Mongo;
-using Lite_Entities = Qorpe.Domain.Entities.Lite;
 using Qorpe.Domain.Entities;
 
 namespace Qorpe.Infrastructure;
@@ -24,12 +22,13 @@ public static class DependencyInjection
         {
             services.AddSingleton(provider =>
             {
-                var client = new MongoClient("mongodb://localhost:27017");
-                return client.GetDatabase("your-database");
+                var client = new MongoClient("mongodb+srv://celikomr:TajULARyFqvRmNDT@cluster.0xru5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster");
+                return client.GetDatabase("Cluster");
             });
 
-            services.AddScoped<IClusterRepository<Mongo_Entities.ClusterConfig>, Mongo.ClusterRepository>();
-            services.AddScoped<IRepository<Mongo_Entities.RouteConfig>, Mongo.RouteRepository>();
+            services.AddScoped<IClusterRepository<ClusterConfig>, Mongo.ClusterRepository>();
+            services.AddScoped<IRouteRepository<RouteConfig>, Mongo.RouteRepository>();
+            services.AddScoped<IRepository<RouteConfig>, Mongo.RouteRepository>();
         }
         else if (databaseProvider == DatabaseProviders.LiteDB)
         {

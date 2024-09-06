@@ -52,6 +52,10 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
 
     public virtual TDocument InsertOne(TDocument document)
     {
+        if (string.IsNullOrEmpty(document.Id))
+        {
+            document.Id = Guid.NewGuid().ToString();
+        }
         _collection.Insert(document);
         return document;
     }

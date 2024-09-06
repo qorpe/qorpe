@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
 using Qorpe.Application.Common.Interfaces.Repositories;
 using Qorpe.Domain.Common;
 using System.Linq.Expressions;
@@ -6,7 +7,7 @@ using System.Linq.Expressions;
 namespace Qorpe.Infrastructure.Data.Mongo;
 
 public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocument>
-    where TDocument : DocumentMongo
+    where TDocument : Document
 {
     private readonly IMongoCollection<TDocument> _collection 
         = database.GetCollection<TDocument>($"tenant1_{typeof(TDocument).Name}"); // Todo - Tenant Id
@@ -58,6 +59,11 @@ public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocum
 
     public virtual TDocument InsertOne(TDocument document)
     {
+        if (!ObjectId.TryParse(document.Id, out _))
+        {
+            document.Id = ObjectId.GenerateNewId().ToString();
+        }
+
         _collection.InsertOne(document);
         return document;
     }

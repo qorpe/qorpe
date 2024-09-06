@@ -10,9 +10,9 @@ namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 public class ClusterConfigController(IRouteRepository<RouteConfig> routeRepository) : BaseController
 {
     [HttpPost]
-    public IActionResult Index([FromBody] RouteConfig routeConfig)
+    public IActionResult Index([FromQuery] string id)
     {
-        routeRepository.InsertOne(routeConfig);
-        return Ok(routeConfig);
+        var a = routeRepository.FindById(id);
+        return Ok(a);
     }
 }

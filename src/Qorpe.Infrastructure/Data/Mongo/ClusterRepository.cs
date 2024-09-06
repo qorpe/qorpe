@@ -1,6 +1,6 @@
 ﻿using MongoDB.Driver;
 using Qorpe.Application.Common.Interfaces.Repositories;
-using Qorpe.Domain.Entities.Mongo;
+using Qorpe.Domain.Entities;
 
 namespace Qorpe.Infrastructure.Data.Mongo;
 
