@@ -1,4 +1,5 @@
 ﻿using Asp.Versioning;
+using Qorpe.Api.Handlers;
 using Yarp.ReverseProxy.Configuration;
 
 namespace Qorpe.Api;
@@ -21,6 +22,9 @@ public static class DependencyInjection
         // services.AddSingleton(new InMemoryConfigProvider(routes, clusters));
         // services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<InMemoryConfigProvider>());
 
+        services.AddExceptionHandler<GlobalExceptionHandler>();
+        services.AddProblemDetails();
+
         #region Api Versioning Configuration(s)
         services.AddApiVersioning(options =>
         {
@@ -34,11 +38,11 @@ public static class DependencyInjection
         }).AddApiExplorer(options =>
         {
             // Add the versioned API explorer, which also adds IApiVersionDescriptionProvider service
-            // note: the specified format code will format the version as "'v'major[.minor][-status]"
+            // Note: the specified format code will format the version as "'v'major[.minor][-status]"
             options.GroupNameFormat = "'v'VVV";
 
-            // note: this option is only necessary when versioning by url segment. the SubstitutionFormat
-            // can also be used to control the format of the API version in route templates
+            // Note: this option is only necessary when versioning by url segment. the SubstitutionFormat
+            // Can also be used to control the format of the API version in route templates
             options.SubstituteApiVersionInUrl = true;
         });
         #endregion
