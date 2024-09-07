@@ -70,6 +70,11 @@ public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocum
 
     public virtual async Task<TDocument> InsertOneAsync(TDocument document)
     {
+        if (!ObjectId.TryParse(document.Id, out _))
+        {
+            document.Id = ObjectId.GenerateNewId().ToString();
+        }
+
         await _collection.InsertOneAsync(document);
         return document;
     }
