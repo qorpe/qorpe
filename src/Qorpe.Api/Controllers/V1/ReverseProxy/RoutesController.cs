@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Qorpe.Application.Common.DTOs;
 using Qorpe.Application.Features.Routes.Commands.CreateRoute;
+using Qorpe.Application.Features.Routes.Commands.UpdateRoute;
 using Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
 namespace Qorpe.Api.Controllers.V1.ReverseProxy;
@@ -10,6 +11,7 @@ namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 [ApiVersion("1.0")]
 public class RoutesController : BaseController
 {
+    #region Route(s)
     [HttpGet("{id}")]
     public IActionResult GetRoute(string id)
     {
@@ -23,7 +25,8 @@ public class RoutesController : BaseController
         {
             QueryParameters = queryParameters,
         };
-        return Ok(await Mediator.Send(query));
+        var response = await Mediator.Send(query);
+        return Ok(response);
     }
 
     [HttpPost]
@@ -33,13 +36,19 @@ public class RoutesController : BaseController
         {
             Route = body,
         };
-        return Ok(await Mediator.Send(command));
+        var response = await Mediator.Send(command);
+        return Ok(response);
     }
 
-    [HttpPut("{id}")]
-    public IActionResult UpdateRoute(string id)
+    [HttpPut]
+    public async Task<IActionResult> UpdateRoute([FromBody] RouteConfigDto body)
     {
-        return Ok(id);
+        UpdateRouteCommand command = new()
+        {
+            Route = body,
+        };
+        await Mediator.Send(command);
+        return Ok();
     }
 
     [HttpDelete("{id}")]
@@ -47,4 +56,5 @@ public class RoutesController : BaseController
     {
         return Ok(id);
     }
+    #endregion
 }

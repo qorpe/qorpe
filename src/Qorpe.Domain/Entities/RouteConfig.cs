@@ -1,7 +1,9 @@
-﻿using Qorpe.Domain.Common;
+﻿using Qorpe.Domain.Attributes;
+using Qorpe.Domain.Common;
 
 namespace Qorpe.Domain.Entities;
 
+[CollectionName("routes")]
 public sealed class RouteConfig : Document
 {
     public string? RouteId { get; set; }

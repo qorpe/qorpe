@@ -1,7 +1,9 @@
-﻿using Qorpe.Domain.Common;
+﻿using Qorpe.Domain.Attributes;
+using Qorpe.Domain.Common;
 
 namespace Qorpe.Domain.Entities;
 
+[CollectionName("clusters")]
 public sealed class ClusterConfig : Document
 {
     public string? ClusterId { get; set; }

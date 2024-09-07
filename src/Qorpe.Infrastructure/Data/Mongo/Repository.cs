@@ -1,16 +1,46 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.Http;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Qorpe.Application.Common.Interfaces.Repositories;
+using Qorpe.Domain.Attributes;
 using Qorpe.Domain.Common;
 using System.Linq.Expressions;
 
 namespace Qorpe.Infrastructure.Data.Mongo;
 
-public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocument>
+public class Repository<TDocument> : IRepository<TDocument>
     where TDocument : Document
 {
-    private readonly IMongoCollection<TDocument> _collection 
-        = database.GetCollection<TDocument>($"tenant1_{typeof(TDocument).Name}"); // Todo - Tenant Id
+    private readonly IMongoDatabase _database;
+    private readonly IMongoCollection<TDocument> _collection;
+    private readonly string _collectionName = GetCollectionName(typeof(TDocument));
+    private readonly string? _databaseName;
+    private readonly string? _tenantId;
+
+    public Repository(IMongoClient mongoClient, IHttpContextAccessor httpContextAccessor)
+    {
+        ArgumentNullException.ThrowIfNull(httpContextAccessor);
+        ArgumentNullException.ThrowIfNull(httpContextAccessor.HttpContext);
+
+        _databaseName = httpContextAccessor?.HttpContext.Request?.Headers["DatabaseName"].ToString();
+        _tenantId = httpContextAccessor?.HttpContext.Request.Headers["TenantId"].ToString();
+
+        ArgumentNullException.ThrowIfNull(_tenantId);
+
+        // If no database name is provided, use the default 'shared' database
+        _database = mongoClient.GetDatabase(string.IsNullOrEmpty(_databaseName) ? "shared" : _databaseName);
+
+        // Collection name is customized
+        _collection = _database.GetCollection<TDocument>(_collectionName);
+    }
+
+    private static string GetCollectionName(Type type)
+    {
+        var attribute = type.GetCustomAttributes(typeof(CollectionNameAttribute), false)
+                            .Cast<CollectionNameAttribute>()
+                            .FirstOrDefault();
+        return attribute?.CollectionName ?? type.Name.ToLower();
+    }
 
     public virtual IQueryable<TDocument> AsQueryable()
     {

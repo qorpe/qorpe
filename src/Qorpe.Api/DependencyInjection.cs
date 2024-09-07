@@ -22,6 +22,7 @@ public static class DependencyInjection
         // services.AddSingleton(new InMemoryConfigProvider(routes, clusters));
         // services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<InMemoryConfigProvider>());
 
+        services.AddHttpContextAccessor();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
 

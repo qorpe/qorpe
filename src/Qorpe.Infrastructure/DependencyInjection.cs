@@ -20,15 +20,14 @@ public static class DependencyInjection
 
         if (databaseProvider == DatabaseProviders.MongoDB)
         {
-            services.AddSingleton(provider =>
+            services.AddSingleton<IMongoClient>(provider =>
             {
                 var client = new MongoClient("mongodb+srv://celikomr:TajULARyFqvRmNDT@cluster.0xru5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster");
-                return client.GetDatabase("Cluster");
+                return client;
             });
 
             services.AddScoped<IClusterRepository<ClusterConfig>, Mongo.ClusterRepository>();
             services.AddScoped<IRouteRepository<RouteConfig>, Mongo.RouteRepository>();
-            services.AddScoped<IRepository<RouteConfig>, Mongo.RouteRepository>();
         }
         else if (databaseProvider == DatabaseProviders.LiteDB)
         {
