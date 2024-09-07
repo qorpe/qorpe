@@ -31,7 +31,7 @@ public static class DependencyInjection
         }
         else if (databaseProvider == DatabaseProviders.LiteDB)
         {
-            services.AddSingleton<ILiteDatabase>(provider => new LiteDatabase("mydatabase.db"));
+            services.AddSingleton<ILiteDatabase>(provider => new LiteDatabase("shared.db"));
             services.AddScoped<IClusterRepository<ClusterConfig>, Lite.ClusterRepository>();
             services.AddScoped<IRouteRepository<RouteConfig>, Lite.RouteRepository>();
         }

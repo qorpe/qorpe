@@ -93,6 +93,7 @@ public class Repository<TDocument> : IRepository<TDocument>
         {
             document.Id = ObjectId.GenerateNewId().ToString();
         }
+        document.TenantId = _tenantId;
 
         _collection.InsertOne(document);
         return document;
@@ -104,6 +105,7 @@ public class Repository<TDocument> : IRepository<TDocument>
         {
             document.Id = ObjectId.GenerateNewId().ToString();
         }
+        document.TenantId = _tenantId;
 
         await _collection.InsertOneAsync(document);
         return document;
@@ -111,12 +113,30 @@ public class Repository<TDocument> : IRepository<TDocument>
 
     public ICollection<TDocument> InsertMany(ICollection<TDocument> documents)
     {
+        foreach (var document in documents)
+        {
+            if (!ObjectId.TryParse(document.Id, out _))
+            {
+                document.Id = ObjectId.GenerateNewId().ToString();
+            }
+            document.TenantId = _tenantId;
+        }
+
         _collection.InsertMany(documents);
         return documents;
     }
 
     public virtual async Task<ICollection<TDocument>> InsertManyAsync(ICollection<TDocument> documents)
     {
+        foreach (var document in documents)
+        {
+            if (!ObjectId.TryParse(document.Id, out _))
+            {
+                document.Id = ObjectId.GenerateNewId().ToString();
+            }
+            document.TenantId = _tenantId;
+        }
+
         await _collection.InsertManyAsync(documents);
         return documents;
     }

@@ -1,15 +1,46 @@
 ﻿using LiteDB;
+using Microsoft.AspNetCore.Http;
+using MongoDB.Driver;
 using Qorpe.Application.Common.Interfaces.Repositories;
+using Qorpe.Domain.Attributes;
 using Qorpe.Domain.Common;
 using System.Linq.Expressions;
 
 namespace Qorpe.Infrastructure.Data.Lite;
 
-public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocument>
+public class Repository<TDocument> : IRepository<TDocument>
     where TDocument : Document
 {
-    private readonly ILiteCollection<TDocument> _collection 
-        = database.GetCollection<TDocument>($"tenant_{typeof(TDocument).Name}"); // Todo - Tenant Id
+    private readonly ILiteDatabase _database;
+    private readonly ILiteCollection<TDocument> _collection;
+    private readonly string _collectionName = GetCollectionName(typeof(TDocument));
+    private readonly string? _databaseName;
+    private readonly string? _tenantId;
+
+    public Repository(ILiteDatabase database, IHttpContextAccessor httpContextAccessor)
+    {
+        ArgumentNullException.ThrowIfNull(httpContextAccessor);
+        ArgumentNullException.ThrowIfNull(httpContextAccessor.HttpContext);
+
+        _databaseName = httpContextAccessor?.HttpContext.Request?.Headers["DatabaseName"].ToString();
+        _tenantId = httpContextAccessor?.HttpContext.Request.Headers["TenantId"].ToString();
+
+        ArgumentNullException.ThrowIfNull(_tenantId);
+
+        // If no database name is provided, use the default 'shared' database
+        _database = string.IsNullOrEmpty(_databaseName) ? database : new LiteDatabase($"{_databaseName}.db");
+
+        // Collection name is customized
+        _collection = _database.GetCollection<TDocument>(_collectionName);
+    }
+
+    private static string GetCollectionName(Type type)
+    {
+        var attribute = type.GetCustomAttributes(typeof(CollectionNameAttribute), false)
+                            .Cast<CollectionNameAttribute>()
+                            .FirstOrDefault();
+        return attribute?.CollectionName ?? type.Name.ToLower();
+    }
 
     public virtual IQueryable<TDocument> AsQueryable()
     {
@@ -56,6 +87,7 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
         {
             document.Id = Guid.NewGuid().ToString();
         }
+        document.TenantId = _tenantId;
         _collection.Insert(document);
         return document;
     }
@@ -64,6 +96,11 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
     {
         return Task.Run(() =>
         {
+            if (string.IsNullOrEmpty(document.Id))
+            {
+                document.Id = Guid.NewGuid().ToString();
+            }
+            document.TenantId = _tenantId;
             _collection.Insert(document);
             return document;
         });
@@ -71,6 +108,14 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
 
     public ICollection<TDocument> InsertMany(ICollection<TDocument> documents)
     {
+        foreach (var document in documents) 
+        {
+            if (string.IsNullOrEmpty(document.Id))
+            {
+                document.Id = Guid.NewGuid().ToString();
+            }
+            document.TenantId = _tenantId;
+        }
         _collection.Insert(documents);
         return documents;
     }
@@ -79,6 +124,14 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
     {
         return Task.Run(() =>
         {
+            foreach (var document in documents)
+            {
+                if (string.IsNullOrEmpty(document.Id))
+                {
+                    document.Id = Guid.NewGuid().ToString();
+                }
+                document.TenantId = _tenantId;
+            }
             _collection.Insert(documents);
             return documents;
         });
