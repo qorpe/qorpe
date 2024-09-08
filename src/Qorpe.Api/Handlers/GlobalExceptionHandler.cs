@@ -65,11 +65,11 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
             // 400 Bad Request
             ArgumentNullException or ArgumentException or ApplicationException or
             InvalidOperationException or FormatException or DivideByZeroException =>
-                (StatusCodes.Status400BadRequest, "Bad Request", "An error occurred with the request."),
+                (StatusCodes.Status400BadRequest, "Bad Request", exception.Message),
 
             // 401 Unauthorized
             UnauthorizedAccessException or AuthenticationException /*or TokenExpiredException*/ =>
-                (StatusCodes.Status401Unauthorized, "Unauthorized", "Access to the requested resource is denied."),
+                (StatusCodes.Status401Unauthorized, "Unauthorized", exception.Message),
 
             // 403 Forbidden
             // ForbiddenException =>
@@ -77,11 +77,11 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
             // 404 Not Found
             KeyNotFoundException or FileNotFoundException or DirectoryNotFoundException =>
-                (StatusCodes.Status404NotFound, "Not Found", "The requested resource was not found."),
+                (StatusCodes.Status404NotFound, "Not Found", exception.Message),
 
             // 408 Request Timeout
             TimeoutException or TaskCanceledException =>
-                (StatusCodes.Status408RequestTimeout, "Request Timeout", "The request timed out."),
+                (StatusCodes.Status408RequestTimeout, "Request Timeout", exception.Message),
 
             // 409 Conflict
             // DbUpdateConcurrencyException =>
@@ -89,22 +89,22 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
             // 422 Unprocessable Entity
             ValidationException =>
-                (StatusCodes.Status422UnprocessableEntity, "Unprocessable Entity", "The request was well-formed but contains semantic errors."),
+                (StatusCodes.Status422UnprocessableEntity, "Unprocessable Entity", exception.Message),
 
             // 501 Not Implemented
             NotImplementedException =>
-                (StatusCodes.Status501NotImplemented, "Not Implemented", "The requested method is not implemented."),
+                (StatusCodes.Status501NotImplemented, "Not Implemented", exception.Message),
 
             // 503 Service Unavailable
             HttpRequestException or ExternalException =>
-                (StatusCodes.Status503ServiceUnavailable, "Service Unavailable", "The service is temporarily unavailable."),
+                (StatusCodes.Status503ServiceUnavailable, "Service Unavailable", exception.Message),
 
             // 500 Internal Server Error
             StackOverflowException or OutOfMemoryException =>
-                (StatusCodes.Status500InternalServerError, "Internal Server Error", "A critical system error occurred."),
+                (StatusCodes.Status500InternalServerError, "Internal Server Error", exception.Message),
 
             _ =>
-                (StatusCodes.Status500InternalServerError, "Internal Server Error", "An unexpected error occurred.")
+                (StatusCodes.Status500InternalServerError, "Internal Server Error", exception?.Message)
         };
     }
 }
