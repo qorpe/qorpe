@@ -4,6 +4,7 @@ using Qorpe.Application.Common.DTOs;
 using Qorpe.Application.Features.Routes.Commands.CreateRoute;
 using Qorpe.Application.Features.Routes.Commands.DeleteRoute;
 using Qorpe.Application.Features.Routes.Commands.UpdateRoute;
+using Qorpe.Application.Features.Routes.Queries.GetRoute;
 using Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
 namespace Qorpe.Api.Controllers.V1.ReverseProxy;
@@ -14,9 +15,14 @@ public class RoutesController : BaseController
 {
     #region Route(s)
     [HttpGet("{id}")]
-    public IActionResult GetRoute(string id)
+    public async Task<IActionResult> GetRoute(string id)
     {
-        return Ok(id);
+        GetRouteQuery query = new()
+        {
+            Id = id,
+        };
+        var response = await Mediator.Send(query);
+        return Ok(response);
     }
 
     [HttpGet]

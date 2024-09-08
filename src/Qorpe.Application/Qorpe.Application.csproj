@@ -25,7 +25,6 @@
     <Folder Include="Common\Extensions\" />
     <Folder Include="Common\Models\" />
     <Folder Include="Features\Clusters\" />
-    <Folder Include="Features\Routes\Queries\GetRoute\" />
   </ItemGroup>
 
 </Project>
