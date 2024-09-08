@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Qorpe.Application.Common.DTOs;
 using Qorpe.Application.Features.Routes.Commands.CreateRoute;
+using Qorpe.Application.Features.Routes.Commands.DeleteRoute;
 using Qorpe.Application.Features.Routes.Commands.UpdateRoute;
 using Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
@@ -52,9 +53,14 @@ public class RoutesController : BaseController
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteRoute(string id)
+    public async Task<IActionResult> DeleteRoute(string id)
     {
-        return Ok(id);
+        DeleteRouteCommand command = new()
+        {
+            Id = id,
+        };
+        await Mediator.Send(command);
+        return Ok();
     }
     #endregion
 }
