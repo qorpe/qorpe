@@ -23,7 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Extensions\" />
-    <Folder Include="Common\Models\" />
     <Folder Include="Features\Clusters\" />
   </ItemGroup>
 

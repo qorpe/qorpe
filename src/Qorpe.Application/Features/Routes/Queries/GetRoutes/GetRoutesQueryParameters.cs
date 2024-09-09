@@ -2,7 +2,7 @@
 
 namespace Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
-public class GetRoutesQueryParameters : PaginationParameters
+public class GetRoutesQueryParameters : PaginationOptions
 {
     public long? Id { get; set; }
 
