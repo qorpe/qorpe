@@ -130,9 +130,9 @@ public class Repository<TDocument> : IRepository<TDocument>
     /// </summary>
     /// <param name="filterExpression">The filter expression to match.</param>
     /// <returns>A task representing the asynchronous operation, with a result of the matching document.</returns>
-    public virtual Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression)
+    public virtual async Task<TDocument> FindOneAsync(Expression<Func<TDocument, bool>> filterExpression)
     {
-        return Task.FromResult(FindOne(filterExpression));
+        return await Task.FromResult(FindOne(filterExpression));
     }
 
     /// <summary>
@@ -150,9 +150,43 @@ public class Repository<TDocument> : IRepository<TDocument>
     /// </summary>
     /// <param name="id">The ID of the document to find.</param>
     /// <returns>A task representing the asynchronous operation, with a result of the document with the specified ID.</returns>
-    public virtual Task<TDocument> FindByIdAsync(string id)
+    public virtual async Task<TDocument> FindByIdAsync(string id)
     {
-        return Task.FromResult(FindById(id));
+        return await Task.FromResult(FindById(id));
+    }
+
+    /// <summary>
+    /// Synchronously counts the number of documents in the collection that match the specified filter expression.
+    /// </summary>
+    /// <param name="filterExpression">
+    /// A lambda expression of type <see cref="Expression{Func{TDocument, bool}}"/> used to filter the documents 
+    /// in the collection. The expression defines the criteria for which documents to count.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> that represents the asynchronous operation. 
+    /// The task result contains the count of documents in the collection that satisfy the filter criteria.
+    /// </returns>
+    public virtual long Count(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        var filterWithTenant = CombineFilterWithTenant(filterExpression);
+        // Count the documents in the collection that match the filter
+        return _collection.Count(ConvertExpression(filterWithTenant));
+    }
+
+    /// <summary>
+    /// Asynchronously counts the number of documents in the collection that match the specified filter expression.
+    /// </summary>
+    /// <param name="filterExpression">
+    /// A lambda expression of type <see cref="Expression{Func{TDocument, bool}}"/> used to filter the documents 
+    /// in the collection. The expression defines the criteria for which documents to count.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> that represents the asynchronous operation. 
+    /// The task result contains the count of documents in the collection that satisfy the filter criteria.
+    /// </returns>
+    public virtual async Task<long> CountAsync(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        return await Task.FromResult(Count(filterExpression));
     }
 
     /// <summary>
@@ -176,14 +210,14 @@ public class Repository<TDocument> : IRepository<TDocument>
     /// </summary>
     /// <param name="document">The document to insert.</param>
     /// <returns>A task representing the asynchronous operation, with a result of the inserted document with its ID assigned.</returns>
-    public virtual Task<TDocument> InsertOneAsync(TDocument document)
+    public virtual async Task<TDocument> InsertOneAsync(TDocument document)
     {
         if (string.IsNullOrEmpty(document.Id))
         {
             document.Id = Guid.NewGuid().ToString();
         }
         document.TenantId = _tenantId;
-        return Task.Run(() => InsertOne(document));
+        return await Task.FromResult(InsertOne(document));
     }
 
     /// <summary>
@@ -210,7 +244,7 @@ public class Repository<TDocument> : IRepository<TDocument>
     /// </summary>
     /// <param name="documents">The documents to insert.</param>
     /// <returns>A task representing the asynchronous operation, with a result of the collection of inserted documents with their IDs assigned.</returns>
-    public virtual Task<ICollection<TDocument>> InsertManyAsync(ICollection<TDocument> documents)
+    public virtual async Task<ICollection<TDocument>> InsertManyAsync(ICollection<TDocument> documents)
     {
         foreach (var document in documents)
         {
@@ -220,7 +254,7 @@ public class Repository<TDocument> : IRepository<TDocument>
             }
             document.TenantId = _tenantId;
         }
-        return Task.Run(() => InsertMany(documents));
+        return await Task.FromResult(InsertMany(documents));
     }
 
     /// <summary>

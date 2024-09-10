@@ -22,6 +22,8 @@ public interface IRepository<TDocument> where TDocument : class
 
     Task<TDocument> FindByIdAsync(string id);
 
+    long Count(Expression<Func<TDocument, bool>> filterExpression);
+
     Task<long> CountAsync(Expression<Func<TDocument, bool>> filterExpression);
 
     TDocument InsertOne(TDocument document);
