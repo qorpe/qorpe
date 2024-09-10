@@ -1,76 +1,35 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Qorpe.Application.Common.DTOs;
+using Qorpe.Application.Common.Helpers;
 using Qorpe.Application.Common.Interfaces.Repositories;
 using Qorpe.Application.Common.Models;
 using Qorpe.Domain.Entities;
-using System.Linq.Expressions;
 
 namespace Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
-public class GetRoutesQueryHandler(IRouteRepository<RouteConfig> routeRepository) : IRequestHandler<GetRoutesQuery, PaginatedResponse<RouteConfigDto>>
+public class GetRoutesQueryHandler(IMapper mapper, IRouteRepository<RouteConfig> routeRepository) 
+    : IRequestHandler<GetRoutesQuery, PaginatedResponse<RouteConfigDto>>
 {
     public async Task<PaginatedResponse<RouteConfigDto>> Handle(GetRoutesQuery request, CancellationToken cancellationToken)
     {
-        if (request.QueryParameters.Page < 1 || request.QueryParameters.PageSize <= 0)
-        {
-            throw new Exception("Invalid pagination parameters.");
-        }
+        ArgumentNullException.ThrowIfNull(request);
 
-        var filterExpression = BuildFilterExpression(id, tenantId, createdAt, updatedAt, routeId);
-        var sortExpression = BuildSortExpression(sort);
+        var filterExpression = ExpressionHelper.BuildFilterExpression<GetRoutesQueryParameters, RouteConfig>(request.QueryParameters);
 
-        var routes = routeRepository.FilterBy(filterExpression)
-                                          .OrderBy(sortExpression)
-                                          .Skip((5 - 1) * 5)
-                                          .Take(5)
-                                          .ToList();
+        var routes = await routeRepository.FilterByAsync(filterExpression,
+                                                             request.PaginationOptions.Page,
+                                                             request.PaginationOptions.PageSize,
+                                                             request.PaginationOptions.SortBy,
+                                                             request.PaginationOptions.IsAscending);
 
-        throw new NotImplementedException();
-    }
+        var totalCount = await routeRepository.CountAsync(filterExpression);
 
-    private Expression<Func<RouteConfig, bool>> BuildFilterExpression(
-        string? id,
-        string? tenantId,
-        DateTime? createdAt,
-        DateTime? updatedAt,
-        string? routeId)
-    {
-        var parameter = Expression.Parameter(typeof(RouteConfig), "x");
-        Expression combinedExpression = null;
+        var response = new PaginatedResponse<RouteConfigDto>(mapper.Map<List<RouteConfigDto>>(routes),
+                                                             totalCount,
+                                                             request.PaginationOptions.Page,
+                                                             request.PaginationOptions.PageSize);
 
-        if (!string.IsNullOrEmpty(id))
-        {
-            var property = Expression.Property(parameter, nameof(RouteConfig.Id));
-            var constant = Expression.Constant(id);
-            var comparison = Expression.Equal(property, constant);
-            combinedExpression = combinedExpression == null
-                ? comparison
-                : Expression.AndAlso(combinedExpression, comparison);
-        }
-
-        if (!string.IsNullOrEmpty(tenantId))
-        {
-            var property = Expression.Property(parameter, nameof(RouteConfig.TenantId));
-            var constant = Expression.Constant(tenantId);
-            var comparison = Expression.Equal(property, constant);
-            combinedExpression = combinedExpression == null
-                ? comparison
-                : Expression.AndAlso(combinedExpression, comparison);
-        }
-
-        // Additional filters can be added similarly
-
-        return combinedExpression != null ? Expression.Lambda<Func<RouteConfig, bool>>(combinedExpression, parameter) : x => true;
-    }
-
-    private Func<RouteConfig, object> BuildSortExpression(string? sort)
-    {
-        if (string.IsNullOrEmpty(sort))
-        {
-            return x => x.Id; // Default sorting
-        }
-
-        var property = typeof(RouteConfig).GetProperty(sort);
-        return property == null ? throw new ArgumentException("Invalid sort property.") : (x => property.GetValue(x));
+        return response;
     }
 }

@@ -6,5 +6,6 @@ namespace Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
 public class GetRoutesQuery : IRequest<PaginatedResponse<RouteConfigDto>>
 {
-    public required GetRoutesQueryParameters QueryParameters { get; set; }
+    public GetRoutesQueryParameters QueryParameters { get; set; } = default!;
+    public PaginationOptions PaginationOptions { get; set; } = default!;
 }

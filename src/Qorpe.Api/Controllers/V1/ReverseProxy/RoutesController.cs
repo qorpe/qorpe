@@ -1,6 +1,7 @@
 ﻿using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using Qorpe.Application.Common.DTOs;
+using Qorpe.Application.Common.Models;
 using Qorpe.Application.Features.Routes.Commands.CreateRoute;
 using Qorpe.Application.Features.Routes.Commands.DeleteRoute;
 using Qorpe.Application.Features.Routes.Commands.UpdateRoute;
@@ -26,11 +27,13 @@ public class RoutesController : BaseController
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetRoutes([FromQuery] GetRoutesQueryParameters queryParameters)
+    public async Task<IActionResult> GetRoutes(
+        [FromQuery] GetRoutesQueryParameters queryParameters, [FromQuery] PaginationOptions paginationOptions)
     {
         GetRoutesQuery query = new()
         {
             QueryParameters = queryParameters,
+            PaginationOptions = paginationOptions
         };
         var response = await Mediator.Send(query);
         return Ok(response);

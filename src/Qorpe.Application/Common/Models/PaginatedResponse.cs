@@ -19,7 +19,7 @@ public class PaginatedResponse<T>
     /// <summary>
     /// Gets or sets the current page number.
     /// </summary>
-    public int PageNumber { get; set; }
+    public int Page { get; set; }
 
     /// <summary>
     /// Gets or sets the number of items per page.
@@ -34,12 +34,12 @@ public class PaginatedResponse<T>
     /// <summary>
     /// Gets a value indicating whether there is a previous page.
     /// </summary>
-    public bool HasPrevious => PageNumber > 1;
+    public bool HasPrevious => Page > 1;
 
     /// <summary>
     /// Gets a value indicating whether there is a next page.
     /// </summary>
-    public bool HasNext => PageNumber < TotalPages;
+    public bool HasNext => Page < TotalPages;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PaginatedResponse{T}"/> class.
@@ -48,11 +48,11 @@ public class PaginatedResponse<T>
     /// <param name="totalCount">The total number of items available across all pages.</param>
     /// <param name="pageNumber">The current page number.</param>
     /// <param name="pageSize">The number of items per page.</param>
-    public PaginatedResponse(List<T> data, long totalCount, int pageNumber, int pageSize)
+    public PaginatedResponse(List<T> data, long totalCount, int page, int pageSize)
     {
         Data = data;
         TotalCount = totalCount;
-        PageNumber = pageNumber;
+        Page = page;
         PageSize = pageSize;
     }
 }

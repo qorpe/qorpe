@@ -445,7 +445,7 @@ public class Repository<TDocument> : IRepository<TDocument>
     {
         if (expression.Body is BinaryExpression binaryExpression)
         {
-            if (binaryExpression.NodeType == ExpressionType.Equal)
+            if (binaryExpression.NodeType == ExpressionType.AndAlso)
             {
                 var left = (MemberExpression)binaryExpression.Left;
                 var right = (ConstantExpression)binaryExpression.Right;
