@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Routing;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Qorpe.Application.Common.Interfaces.Repositories;
 
@@ -7,8 +6,15 @@ public interface IRepository<TDocument> where TDocument : class
 {
     IQueryable<TDocument> AsQueryable();
 
+    IEnumerable<TDocument> FilterBy(Expression<Func<TDocument, bool>> filterExpression);
+
+    Task<IEnumerable<TDocument>> FilterByAsync(Expression<Func<TDocument, bool>> filterExpression);
+
     IEnumerable<TDocument> FilterBy(
-        Expression<Func<TDocument, bool>> filterExpression);
+        Expression<Func<TDocument, bool>> filterExpression, int page, int pageSize, string sortBy, bool isAscending);
+
+    Task<IEnumerable<TDocument>> FilterByAsync(
+        Expression<Func<TDocument, bool>> filterExpression, int page, int pageSize, string sortBy, bool isAscending);
 
     IEnumerable<TProjected> FilterBy<TProjected>(
         Expression<Func<TDocument, bool>> filterExpression,

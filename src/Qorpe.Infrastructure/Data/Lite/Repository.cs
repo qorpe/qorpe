@@ -94,8 +94,75 @@ public class Repository<TDocument> : IRepository<TDocument>
     public virtual IEnumerable<TDocument> FilterBy(
         Expression<Func<TDocument, bool>> filterExpression)
     {
+        // Apply tenant filtering along with the provided filter expression
         var filterWithTenant = CombineFilterWithTenant(filterExpression);
-        return _collection.Find(ConvertExpression(filterWithTenant)).AsEnumerable();
+
+        // Perform the query asynchronously: filter the documents and retrieve them as an enumerable collection
+        // Convert the filter expression to a format compatible with LiteDB
+        var result = _collection.Find(ConvertExpression(filterWithTenant)).AsEnumerable();
+
+        // Return the filtered documents
+        return result;
+    }
+
+    /// <summary>
+    /// Asynchronously filters the collection based on a given expression, applying tenant filtering before performing the query.
+    /// This method retrieves all documents that match the filter criteria without pagination or sorting.
+    /// </summary>
+    /// <typeparam name="TDocument">The type of the document in the collection.</typeparam>
+    /// <param name="filterExpression">An expression used to filter the documents in the collection.</param>
+    /// <returns>A task representing an asynchronous operation that returns an enumerable collection of filtered documents.</returns>
+    public virtual async Task<IEnumerable<TDocument>> FilterByAsync(
+        Expression<Func<TDocument, bool>> filterExpression)
+    {
+        return await Task.FromResult(FilterBy(filterExpression));
+    }
+
+    /// <summary>
+    /// Filters the collection based on a given expression, paginates the results, and sorts them by the specified field.
+    /// Adds tenant filtering automatically before performing the query.
+    /// </summary>
+    /// <typeparam name="TDocument">The type of the document in the collection.</typeparam>
+    /// <param name="filterExpression">An expression used to filter the documents in the collection.</param>
+    /// <param name="page">The page number for pagination (starting from 1).</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="sortBy">The field by which the documents will be sorted.</param>
+    /// <param name="isAscending">Determines the sort order: true for ascending, false for descending.</param>
+    /// <returns>A list of filtered, sorted, and paginated documents.</returns>
+    public virtual IEnumerable<TDocument> FilterBy(
+        Expression<Func<TDocument, bool>> filterExpression, int page, int pageSize, string sortBy, bool isAscending)
+    {
+        // Apply tenant filtering along with the provided filter expression
+        var filterWithTenant = CombineFilterWithTenant(filterExpression);
+
+        // Use a custom comparer to sort documents
+        var comparer = new PropertyComparer<TDocument>(sortBy, isAscending);
+
+        // Perform pagination: skip the records from previous pages and limit the number of results to pageSize
+        var result = _collection.Find(ConvertExpression(filterWithTenant))
+                                .OrderBy(doc => doc, comparer)
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize)
+                                .AsEnumerable();
+
+        return result;
+    }
+
+    /// <summary>
+    /// Asynchronously filters the collection based on a given expression, paginates the results, and sorts them by the specified field.
+    /// Adds tenant filtering automatically before performing the query.
+    /// </summary>
+    /// <typeparam name="TDocument">The type of the document in the collection.</typeparam>
+    /// <param name="filterExpression">An expression used to filter the documents in the collection.</param>
+    /// <param name="page">The page number for pagination (starting from 1).</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="sortBy">The field by which the documents will be sorted.</param>
+    /// <param name="isAscending">Determines the sort order: true for ascending, false for descending.</param>
+    /// <returns>A task representing an asynchronous operation that returns a list of filtered, sorted, and paginated documents.</returns>
+    public virtual async Task<IEnumerable<TDocument>> FilterByAsync(
+        Expression<Func<TDocument, bool>> filterExpression, int page, int pageSize, string sortBy, bool isAscending)
+    {
+        return await Task.FromResult(FilterBy(filterExpression, page, pageSize, sortBy, isAscending));
     }
 
     /// <summary>

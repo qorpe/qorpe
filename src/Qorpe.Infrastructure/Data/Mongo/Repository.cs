@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Routing;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Qorpe.Application.Common.Interfaces.Repositories;
@@ -110,7 +109,83 @@ public class Repository<TDocument> : IRepository<TDocument>
     public virtual IEnumerable<TDocument> FilterBy(Expression<Func<TDocument, bool>> filterExpression)
     {
         var filterWithTenant = AddTenantFilter(Builders<TDocument>.Filter.Where(filterExpression));
-        return _collection.Find(filterWithTenant).ToEnumerable();
+        return _collection.Find(filterWithTenant).ToList();
+    }
+
+    /// <summary>
+    /// Asynchronously filters the collection based on a given expression and includes tenant filtering automatically.
+    /// </summary>
+    /// <typeparam name="TDocument">The type of the document in the collection.</typeparam>
+    /// <param name="filterExpression">An expression used to filter the documents in the collection.</param>
+    /// <returns>A task representing an asynchronous operation that returns a list of filtered documents.</returns>
+    public virtual async Task<IEnumerable<TDocument>> FilterByAsync(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        // Apply tenant filtering along with the provided filter expression
+        var filterWithTenant = AddTenantFilter(Builders<TDocument>.Filter.Where(filterExpression));
+
+        // Perform the query asynchronously: filter the documents and return the result as a list
+        return await _collection.Find(filterWithTenant).ToListAsync();
+    }
+
+
+    /// <summary>
+    /// Filters the collection based on a given expression, paginates the results, and sorts them by the specified field.
+    /// Adds tenant filtering automatically before performing the query.
+    /// </summary>
+    /// <typeparam name="TDocument">The type of the document in the collection.</typeparam>
+    /// <param name="filterExpression">An expression used to filter the documents in the collection.</param>
+    /// <param name="page">The page number for pagination (starting from 1).</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="sortBy">The field by which the documents will be sorted.</param>
+    /// <param name="isAscending">Determines the sort order: true for ascending, false for descending.</param>
+    /// <returns>A list of filtered, sorted, and paginated documents.</returns>
+    public virtual IEnumerable<TDocument> FilterBy(
+        Expression<Func<TDocument, bool>> filterExpression, int page, int pageSize, string sortBy, bool isAscending)
+    {
+        // Determine the sort order based on the isAscending flag
+        var sortDefinition = isAscending
+            ? Builders<TDocument>.Sort.Ascending(sortBy)  // Ascending sort
+            : Builders<TDocument>.Sort.Descending(sortBy); // Descending sort
+
+        // Apply tenant filtering along with the provided filter expression
+        var filterWithTenant = AddTenantFilter(Builders<TDocument>.Filter.Where(filterExpression));
+
+        // Perform the query: filter, sort, paginate (skip and limit results), and return the result as a list
+        return _collection.Find(filterWithTenant)
+                          .Sort(sortDefinition)
+                          .Skip((page - 1) * pageSize)  // Skip the records from previous pages
+                          .Limit(pageSize)              // Limit the number of results to pageSize
+                          .ToList();                    // Convert the result to a list
+    }
+
+    /// <summary>
+    /// Asynchronously filters the collection based on a given expression, paginates the results, and sorts them by the specified field.
+    /// Adds tenant filtering automatically before performing the query.
+    /// </summary>
+    /// <typeparam name="TDocument">The type of the document in the collection.</typeparam>
+    /// <param name="filterExpression">An expression used to filter the documents in the collection.</param>
+    /// <param name="page">The page number for pagination (starting from 1).</param>
+    /// <param name="pageSize">The number of items per page.</param>
+    /// <param name="sortBy">The field by which the documents will be sorted.</param>
+    /// <param name="isAscending">Determines the sort order: true for ascending, false for descending.</param>
+    /// <returns>A task representing an asynchronous operation that returns a list of filtered, sorted, and paginated documents.</returns>
+    public virtual async Task<IEnumerable<TDocument>> FilterByAsync(
+        Expression<Func<TDocument, bool>> filterExpression, int page, int pageSize, string sortBy, bool isAscending)
+    {
+        // Determine the sort order based on the isAscending flag
+        var sortDefinition = isAscending
+            ? Builders<TDocument>.Sort.Ascending(sortBy)  // Ascending sort
+            : Builders<TDocument>.Sort.Descending(sortBy); // Descending sort
+
+        // Apply tenant filtering along with the provided filter expression
+        var filterWithTenant = AddTenantFilter(Builders<TDocument>.Filter.Where(filterExpression));
+
+        // Perform the query asynchronously: filter, sort, paginate, and return the result as a list
+        return await _collection.Find(filterWithTenant)
+                                .Sort(sortDefinition)
+                                .Skip((page - 1) * pageSize)  // Skip the records from previous pages
+                                .Limit(pageSize)              // Limit the number of results to pageSize
+                                .ToListAsync();               // Convert the result to a list asynchronously
     }
 
     /// <summary>
@@ -125,7 +200,7 @@ public class Repository<TDocument> : IRepository<TDocument>
         Expression<Func<TDocument, TProjected>> projectionExpression)
     {
         var filterWithTenant = AddTenantFilter(Builders<TDocument>.Filter.Where(filterExpression));
-        return _collection.Find(filterWithTenant).Project(projectionExpression).ToEnumerable();
+        return _collection.Find(filterWithTenant).Project(projectionExpression).ToList();
     }
 
     /// <summary>

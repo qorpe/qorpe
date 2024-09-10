@@ -19,11 +19,11 @@ public class GetRoutesQueryHandler(IRouteRepository<RouteConfig> routeRepository
         var filterExpression = BuildFilterExpression(id, tenantId, createdAt, updatedAt, routeId);
         var sortExpression = BuildSortExpression(sort);
 
-        var routes = await routeRepository.FilterBy(filterExpression)
+        var routes = routeRepository.FilterBy(filterExpression)
                                           .OrderBy(sortExpression)
-                                          .Skip((page - 1) * pageSize)
-                                          .Take(pageSize)
-                                          .ToListAsync();
+                                          .Skip((5 - 1) * 5)
+                                          .Take(5)
+                                          .ToList();
 
         throw new NotImplementedException();
     }
