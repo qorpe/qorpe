@@ -7,9 +7,9 @@ using System.Linq.Expressions;
 
 namespace Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
-public class GetRoutesQueryHandler(IRouteRepository<RouteConfig> routeRepository) : IRequestHandler<GetRoutesQuery, PaginationList<RouteConfigDto>>
+public class GetRoutesQueryHandler(IRouteRepository<RouteConfig> routeRepository) : IRequestHandler<GetRoutesQuery, PaginatedResponse<RouteConfigDto>>
 {
-    public async Task<PaginationList<RouteConfigDto>> Handle(GetRoutesQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResponse<RouteConfigDto>> Handle(GetRoutesQuery request, CancellationToken cancellationToken)
     {
         if (request.QueryParameters.Page < 1 || request.QueryParameters.PageSize <= 0)
         {

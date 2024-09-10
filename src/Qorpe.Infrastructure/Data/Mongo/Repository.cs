@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Routing;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Qorpe.Application.Common.Interfaces.Repositories;
@@ -169,6 +170,28 @@ public class Repository<TDocument> : IRepository<TDocument>
     {
         var filter = AddTenantFilter(Builders<TDocument>.Filter.Eq(doc => doc.Id, id));
         return await _collection.Find(filter).SingleOrDefaultAsync();
+    }
+
+    /// <summary>
+    /// Asynchronously counts the number of documents in the collection that match the specified filter expression.
+    /// </summary>
+    /// <param name="filterExpression">
+    /// A lambda expression of type <see cref="Expression{Func{TDocument, bool}}"/> used to filter the documents 
+    /// in the collection. The expression defines the criteria for which documents to count.
+    /// </param>
+    /// <returns>
+    /// A <see cref="Task{TResult}"/> that represents the asynchronous operation. 
+    /// The task result contains the count of documents in the collection that satisfy the filter criteria.
+    /// </returns>
+    /// <remarks>
+    /// This method allows for filtering the documents in the collection based on a C# expression. 
+    /// It is designed to work with any document type <typeparamref name="TDocument"/> in the MongoDB collection. 
+    /// The filter expression is expected to define a logical condition for which documents to include in the count operation.
+    /// </remarks>
+    public async Task<long> CountAsync(Expression<Func<TDocument, bool>> filterExpression)
+    {
+        // Count the documents in the collection that match the filter
+        return await _collection.CountDocumentsAsync(filterExpression);
     }
 
     /// <summary>

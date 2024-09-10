@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.AspNetCore.Routing;
+using System.Linq.Expressions;
 
 namespace Qorpe.Application.Common.Interfaces.Repositories;
 
@@ -20,6 +21,8 @@ public interface IRepository<TDocument> where TDocument : class
     TDocument FindById(string id);
 
     Task<TDocument> FindByIdAsync(string id);
+
+    Task<long> CountAsync(Expression<Func<TDocument, bool>> filterExpression);
 
     TDocument InsertOne(TDocument document);
 
