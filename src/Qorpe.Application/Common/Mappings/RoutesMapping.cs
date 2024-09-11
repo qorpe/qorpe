@@ -4,9 +4,9 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Common.Mappings;
 
-public class RoutesMappingProfile : Profile
+public class RoutesMapping : Profile
 {
-    public RoutesMappingProfile()
+    public RoutesMapping()
     {
         CreateMap<RouteConfig, RouteConfigDto>();
         CreateMap<RouteHeader, RouteHeaderDto>();

@@ -23,8 +23,6 @@
 
   <ItemGroup>
     <Folder Include="Common\Extensions\" />
-    <Folder Include="Features\Clusters\Queries\GetClusters\" />
-    <Folder Include="Features\Clusters\Queries\GetCluster\" />
   </ItemGroup>
 
 </Project>

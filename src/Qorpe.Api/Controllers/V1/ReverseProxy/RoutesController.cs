@@ -15,6 +15,28 @@ namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 public class RoutesController : BaseController
 {
     #region Route(s)
+    [HttpPost]
+    public async Task<IActionResult> CreateRoute([FromBody] RouteConfigDto body)
+    {
+        CreateRouteCommand command = new()
+        {
+            Route = body,
+        };
+        var response = await Mediator.Send(command);
+        return Ok(response);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteRoute(string id)
+    {
+        DeleteRouteCommand command = new()
+        {
+            Id = id,
+        };
+        await Mediator.Send(command);
+        return Ok();
+    }
+
     [HttpGet("{id}")]
     public async Task<IActionResult> GetRoute(string id)
     {
@@ -37,28 +59,6 @@ public class RoutesController : BaseController
         };
         var response = await Mediator.Send(query);
         return Ok(response);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CreateRoute([FromBody] RouteConfigDto body)
-    {
-        CreateRouteCommand command = new()
-        {
-            Route = body,
-        };
-        var response = await Mediator.Send(command);
-        return Ok(response);
-    }
-
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRoute(string id)
-    {
-        DeleteRouteCommand command = new()
-        {
-            Id = id,
-        };
-        await Mediator.Send(command);
-        return Ok();
     }
 
     [HttpPut]
