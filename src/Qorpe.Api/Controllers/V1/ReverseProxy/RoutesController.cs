@@ -50,23 +50,23 @@ public class RoutesController : BaseController
         return Ok(response);
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateRoute([FromBody] RouteConfigDto body)
-    {
-        UpdateRouteCommand command = new()
-        {
-            Route = body,
-        };
-        await Mediator.Send(command);
-        return Ok();
-    }
-
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteRoute(string id)
     {
         DeleteRouteCommand command = new()
         {
             Id = id,
+        };
+        await Mediator.Send(command);
+        return Ok();
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateRoute([FromBody] RouteConfigDto body)
+    {
+        UpdateRouteCommand command = new()
+        {
+            Route = body,
         };
         await Mediator.Send(command);
         return Ok();
