@@ -99,7 +99,7 @@ public class Repository<TDocument> : IRepository<TDocument>
 
         // Perform the query asynchronously: filter the documents and retrieve them as an enumerable collection
         // Convert the filter expression to a format compatible with LiteDB
-        var result = _collection.Find(ConvertExpression(filterWithTenant)).AsEnumerable();
+        var result = _collection.Find(filterWithTenant).AsEnumerable();
 
         // Return the filtered documents
         return result;
@@ -139,7 +139,7 @@ public class Repository<TDocument> : IRepository<TDocument>
         var comparer = new PropertyComparer<TDocument>(sortBy, isAscending);
 
         // Perform pagination: skip the records from previous pages and limit the number of results to pageSize
-        var result = _collection.Find(ConvertExpression(filterWithTenant))
+        var result = _collection.Find(filterWithTenant)
                                 .OrderBy(doc => doc, comparer)
                                 .Skip((page - 1) * pageSize)
                                 .Take(pageSize)
@@ -177,7 +177,7 @@ public class Repository<TDocument> : IRepository<TDocument>
         Expression<Func<TDocument, TProjected>> projectionExpression)
     {
         var filterWithTenant = CombineFilterWithTenant(filterExpression);
-        var result = _collection.Find(ConvertExpression(filterWithTenant)).AsEnumerable();
+        var result = _collection.Find(filterWithTenant).AsEnumerable();
         return result.Select(projectionExpression.Compile()).AsEnumerable();
     }
 
@@ -189,7 +189,7 @@ public class Repository<TDocument> : IRepository<TDocument>
     public virtual TDocument FindOne(Expression<Func<TDocument, bool>> filterExpression)
     {
         var filterWithTenant = CombineFilterWithTenant(filterExpression);
-        return _collection.FindOne(ConvertExpression(filterWithTenant));
+        return _collection.FindOne(filterWithTenant);
     }
 
     /// <summary>
@@ -237,7 +237,7 @@ public class Repository<TDocument> : IRepository<TDocument>
     {
         var filterWithTenant = CombineFilterWithTenant(filterExpression);
         // Count the documents in the collection that match the filter
-        return _collection.Count(ConvertExpression(filterWithTenant));
+        return _collection.Count(filterWithTenant);
     }
 
     /// <summary>
@@ -354,7 +354,7 @@ public class Repository<TDocument> : IRepository<TDocument>
     public void DeleteOne(Expression<Func<TDocument, bool>> filterExpression)
     {
         var filterWithTenant = CombineFilterWithTenant(filterExpression);
-        var document = _collection.FindOne(ConvertExpression(filterWithTenant));
+        var document = _collection.FindOne(filterWithTenant);
         if (document != null)
         {
             _collection.Delete(document.Id);
@@ -397,7 +397,7 @@ public class Repository<TDocument> : IRepository<TDocument>
     public void DeleteMany(Expression<Func<TDocument, bool>> filterExpression)
     {
         var filterWithTenant = CombineFilterWithTenant(filterExpression);
-        _collection.DeleteMany(ConvertExpression(filterWithTenant));
+        _collection.DeleteMany(filterWithTenant);
     }
 
     /// <summary>
@@ -431,28 +431,5 @@ public class Repository<TDocument> : IRepository<TDocument>
 
         // Return the new expression
         return Expression.Lambda<Func<TDocument, bool>>(combinedExpression, parameter);
-    }
-
-    /// <summary>
-    /// Converts an expression tree representing a filter condition into a LiteDB BSON query.
-    /// Currently supports only equality comparisons (==) on properties.
-    /// </summary>
-    /// <typeparam name="T">The type of the object being queried.</typeparam>
-    /// <param name="expression">The filter expression to convert.</param>
-    /// <returns>A <see cref="BsonExpression"/> representing the converted query for use with LiteDB.</returns>
-    /// <exception cref="NotSupportedException">Thrown when the expression type is not supported.</exception>
-    private static BsonExpression ConvertExpression<T>(Expression<Func<T, bool>> expression)
-    {
-        if (expression.Body is BinaryExpression binaryExpression)
-        {
-            if (binaryExpression.NodeType == ExpressionType.AndAlso)
-            {
-                var left = (MemberExpression)binaryExpression.Left;
-                var right = (ConstantExpression)binaryExpression.Right;
-                return Query.EQ(left.Member.Name, right?.Value?.ToString());
-            }
-        }
-
-        throw new NotSupportedException("This type of expression is not supported.");
     }
 }
