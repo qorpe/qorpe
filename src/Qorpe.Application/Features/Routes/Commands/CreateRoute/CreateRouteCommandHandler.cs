@@ -12,7 +12,7 @@ public class CreateRouteCommandHandler(IMapper mapper, IRouteRepository<RouteCon
     {
         var entity = mapper.Map<RouteConfig>(request.Route);
         await routeRepository.InsertOneAsync(entity);
-        request.Route.Id = entity?.Id?.ToString();
+        request.Route.Id = entity?.Id;
         return request.Route;
     }
 }

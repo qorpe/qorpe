@@ -23,7 +23,10 @@
 
   <ItemGroup>
     <Folder Include="Common\Extensions\" />
-    <Folder Include="Features\Clusters\" />
+    <Folder Include="Features\Clusters\Commands\DeleteCluster\" />
+    <Folder Include="Features\Clusters\Commands\UpdateCluster\" />
+    <Folder Include="Features\Clusters\Queries\GetClusters\" />
+    <Folder Include="Features\Clusters\Queries\GetCluster\" />
   </ItemGroup>
 
 </Project>
