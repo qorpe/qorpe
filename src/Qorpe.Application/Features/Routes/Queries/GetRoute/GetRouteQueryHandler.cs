@@ -6,7 +6,7 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Routes.Queries.GetRoute;
 
-public class GetRouteQueryHandler(IMapper mapper, IRouteRepository<RouteConfig> routeRepository) 
+public class GetRouteQueryHandler(IMapper mapper, IRouteRepository routeRepository) 
     : IRequestHandler<GetRouteQuery, RouteConfigDto>
 {
     public async Task<RouteConfigDto> Handle(GetRouteQuery request, CancellationToken cancellationToken)

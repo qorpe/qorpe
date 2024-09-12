@@ -11,5 +11,5 @@ public sealed class ClusterConfigDto : Document
     public HttpClientConfigDto? HttpClient { get; set; }
     public ForwarderRequestConfigDto? HttpRequest { get; set; }
     public Dictionary<string, DestinationConfigDto>? Destinations { get; set; }
-    public IReadOnlyDictionary<string, string>? Metadata { get; set; }
+    public Dictionary<string, string>? Metadata { get; set; }
 }

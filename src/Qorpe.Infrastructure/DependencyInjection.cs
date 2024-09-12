@@ -6,7 +6,6 @@ using Qorpe.Domain.Constants;
 using Mongo = Qorpe.Infrastructure.Data.Mongo;
 using Lite = Qorpe.Infrastructure.Data.Lite;
 using LiteDB;
-using Qorpe.Domain.Entities;
 
 namespace Qorpe.Infrastructure;
 
@@ -26,14 +25,14 @@ public static class DependencyInjection
                 return client;
             });
 
-            services.AddScoped<IClusterRepository<ClusterConfig>, Mongo.ClusterRepository>();
-            services.AddScoped<IRouteRepository<RouteConfig>, Mongo.RouteRepository>();
+            services.AddScoped<IClusterRepository, Mongo.ClusterRepository>();
+            services.AddScoped<IRouteRepository, Mongo.RouteRepository>();
         }
         else if (databaseProvider == DatabaseProviders.LiteDB)
         {
             services.AddSingleton<ILiteDatabase>(provider => new LiteDatabase("shared.db"));
-            services.AddScoped<IClusterRepository<ClusterConfig>, Lite.ClusterRepository>();
-            services.AddScoped<IRouteRepository<RouteConfig>, Lite.RouteRepository>();
+            services.AddScoped<IClusterRepository, Lite.ClusterRepository>();
+            services.AddScoped<IRouteRepository, Lite.RouteRepository>();
         }
         #endregion
 

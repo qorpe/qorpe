@@ -6,7 +6,7 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Clusters.Commands.CreateCluster;
 
-public class CreateClusterCommandHandler(IMapper mapper, IClusterRepository<ClusterConfig> clusterRepository) : IRequestHandler<CreateClusterCommand, ClusterConfigDto>
+public class CreateClusterCommandHandler(IMapper mapper, IClusterRepository clusterRepository) : IRequestHandler<CreateClusterCommand, ClusterConfigDto>
 {
     public async Task<ClusterConfigDto> Handle(CreateClusterCommand request, CancellationToken cancellationToken)
     {

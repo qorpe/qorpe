@@ -8,7 +8,7 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Clusters.Queries.GetClusters;
 
-public class GetClustersQueryHandler(IMapper mapper, IClusterRepository<ClusterConfig> clusterRepository)
+public class GetClustersQueryHandler(IMapper mapper, IClusterRepository clusterRepository)
     : IRequestHandler<GetClustersQuery, PaginatedResponse<ClusterConfigDto>>
 {
     public async Task<PaginatedResponse<ClusterConfigDto>> Handle(GetClustersQuery request, CancellationToken cancellationToken)
@@ -20,15 +20,15 @@ public class GetClustersQueryHandler(IMapper mapper, IClusterRepository<ClusterC
         var clusters = await clusterRepository.FilterByAsync(filterExpression,
                                                              request.PaginationOptions.Page,
                                                              request.PaginationOptions.PageSize,
-        request.PaginationOptions.SortBy,
-        request.PaginationOptions.IsAscending);
+                                                             request.PaginationOptions.SortBy,
+                                                             request.PaginationOptions.IsAscending);
 
         var totalCount = await clusterRepository.CountAsync(filterExpression);
 
         var response = new PaginatedResponse<ClusterConfigDto>(mapper.Map<List<ClusterConfigDto>>(clusters),
-                                                             totalCount,
-                                                             request.PaginationOptions.Page,
-                                                             request.PaginationOptions.PageSize);
+                                                               totalCount,
+                                                               request.PaginationOptions.Page,
+                                                               request.PaginationOptions.PageSize);
 
         return response;
     }

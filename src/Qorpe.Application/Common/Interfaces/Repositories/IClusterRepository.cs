@@ -1,6 +1,7 @@
-﻿namespace Qorpe.Application.Common.Interfaces.Repositories;
+﻿using Qorpe.Domain.Entities;
 
-public interface IClusterRepository<TDocument> : IRepository<TDocument>
-    where TDocument : class
+namespace Qorpe.Application.Common.Interfaces.Repositories;
+
+public interface IClusterRepository : IRepository<ClusterConfig>
 {
 }

@@ -6,7 +6,8 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Routes.Commands.CreateRoute;
 
-public class CreateRouteCommandHandler(IMapper mapper, IRouteRepository<RouteConfig> routeRepository) : IRequestHandler<CreateRouteCommand, RouteConfigDto>
+
+public class CreateRouteCommandHandler(IMapper mapper, IRouteRepository routeRepository) : IRequestHandler<CreateRouteCommand, RouteConfigDto>
 {
     public async Task<RouteConfigDto> Handle(CreateRouteCommand request, CancellationToken cancellationToken)
     {

@@ -5,7 +5,7 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Routes.Commands.UpdateRoute;
 
-public class UpdateRouteCommandHandler(IMapper mapper, IRouteRepository<RouteConfig> routeRepository) : IRequestHandler<UpdateRouteCommand>
+public class UpdateRouteCommandHandler(IMapper mapper, IRouteRepository routeRepository) : IRequestHandler<UpdateRouteCommand>
 {
     public async Task Handle(UpdateRouteCommand request, CancellationToken cancellationToken)
     {

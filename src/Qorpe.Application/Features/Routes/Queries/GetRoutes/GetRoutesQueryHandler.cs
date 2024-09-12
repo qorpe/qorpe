@@ -8,7 +8,7 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Routes.Queries.GetRoutes;
 
-public class GetRoutesQueryHandler(IMapper mapper, IRouteRepository<RouteConfig> routeRepository) 
+public class GetRoutesQueryHandler(IMapper mapper, IRouteRepository routeRepository) 
     : IRequestHandler<GetRoutesQuery, PaginatedResponse<RouteConfigDto>>
 {
     public async Task<PaginatedResponse<RouteConfigDto>> Handle(GetRoutesQuery request, CancellationToken cancellationToken)
@@ -18,10 +18,10 @@ public class GetRoutesQueryHandler(IMapper mapper, IRouteRepository<RouteConfig>
         var filterExpression = ExpressionHelper.BuildFilterExpression<GetRoutesQueryParameters, RouteConfig>(request.QueryParameters);
 
         var routes = await routeRepository.FilterByAsync(filterExpression,
-                                                             request.PaginationOptions.Page,
-                                                             request.PaginationOptions.PageSize,
-                                                             request.PaginationOptions.SortBy,
-                                                             request.PaginationOptions.IsAscending);
+                                                         request.PaginationOptions.Page,
+                                                         request.PaginationOptions.PageSize,
+                                                         request.PaginationOptions.SortBy,
+                                                         request.PaginationOptions.IsAscending);
 
         var totalCount = await routeRepository.CountAsync(filterExpression);
 

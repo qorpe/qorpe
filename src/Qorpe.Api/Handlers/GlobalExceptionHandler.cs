@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security.Authentication;
@@ -37,7 +36,7 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
         Dictionary<string, object?> extensions = new()
         {
-            { "traceId", traceId }
+            { "traceId", traceId },
         };
 
         // Return a problem response with the mapped details
@@ -64,7 +63,7 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
         {
             // 400 Bad Request
             ArgumentNullException or ArgumentException or ApplicationException or
-            InvalidOperationException or FormatException or DivideByZeroException =>
+            InvalidOperationException or FormatException or DivideByZeroException or FluentValidation.ValidationException =>
                 (StatusCodes.Status400BadRequest, "Bad Request", exception.Message),
 
             // 401 Unauthorized
@@ -85,10 +84,10 @@ public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logge
 
             // 409 Conflict
             // DbUpdateConcurrencyException =>
-                // (StatusCodes.Status409Conflict, "Conflict", "A concurrency error occurred during database update."),
+            // (StatusCodes.Status409Conflict, "Conflict", "A concurrency error occurred during database update."),
 
             // 422 Unprocessable Entity
-            ValidationException =>
+            System.ComponentModel.DataAnnotations.ValidationException =>
                 (StatusCodes.Status422UnprocessableEntity, "Unprocessable Entity", exception.Message),
 
             // 501 Not Implemented

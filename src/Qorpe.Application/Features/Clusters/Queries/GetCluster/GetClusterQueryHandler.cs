@@ -2,11 +2,10 @@
 using MediatR;
 using Qorpe.Application.Common.DTOs;
 using Qorpe.Application.Common.Interfaces.Repositories;
-using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Clusters.Queries.GetCluster;
 
-public class GetClusterQueryHandler(IMapper mapper, IClusterRepository<ClusterConfig> clusterRepository)
+public class GetClusterQueryHandler(IMapper mapper, IClusterRepository clusterRepository)
     : IRequestHandler<GetClusterQuery, ClusterConfigDto>
 {
     public async Task<ClusterConfigDto> Handle(GetClusterQuery request, CancellationToken cancellationToken)

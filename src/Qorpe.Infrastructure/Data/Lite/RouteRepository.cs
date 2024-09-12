@@ -6,6 +6,6 @@ using Qorpe.Domain.Entities;
 namespace Qorpe.Infrastructure.Data.Lite;
 
 public class RouteRepository(ILiteDatabase database, IHttpContextAccessor httpContextAccessor) 
-    : Repository<RouteConfig>(database, httpContextAccessor), IRouteRepository<RouteConfig>
+    : Repository<RouteConfig>(database, httpContextAccessor), IRouteRepository
 {
 }

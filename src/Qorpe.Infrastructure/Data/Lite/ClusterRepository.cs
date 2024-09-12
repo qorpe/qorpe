@@ -6,6 +6,6 @@ using Qorpe.Domain.Entities;
 namespace Qorpe.Infrastructure.Data.Lite;
 
 public class ClusterRepository(ILiteDatabase database, IHttpContextAccessor httpContextAccessor) 
-    : Repository<ClusterConfig>(database, httpContextAccessor), IClusterRepository<ClusterConfig>
+    : Repository<ClusterConfig>(database, httpContextAccessor), IClusterRepository
 {
 }

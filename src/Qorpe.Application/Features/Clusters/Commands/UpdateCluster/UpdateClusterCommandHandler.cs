@@ -5,7 +5,7 @@ using Qorpe.Domain.Entities;
 
 namespace Qorpe.Application.Features.Clusters.Commands.UpdateCluster;
 
-public class UpdateClusterCommandHandler(IMapper mapper, IClusterRepository<ClusterConfig> clusterRepository) : IRequestHandler<UpdateClusterCommand>
+public class UpdateClusterCommandHandler(IMapper mapper, IClusterRepository clusterRepository) : IRequestHandler<UpdateClusterCommand>
 {
     public async Task Handle(UpdateClusterCommand request, CancellationToken cancellationToken)
     {

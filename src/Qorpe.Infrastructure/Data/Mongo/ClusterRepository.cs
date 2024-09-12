@@ -6,6 +6,6 @@ using Qorpe.Domain.Entities;
 namespace Qorpe.Infrastructure.Data.Mongo;
 
 public class ClusterRepository(IMongoClient mongoClient, IHttpContextAccessor httpContextAccessor) 
-    : Repository<ClusterConfig>(mongoClient, httpContextAccessor), IClusterRepository<ClusterConfig>
+    : Repository<ClusterConfig>(mongoClient, httpContextAccessor), IClusterRepository
 {
 }

@@ -6,6 +6,6 @@ using Qorpe.Domain.Entities;
 namespace Qorpe.Infrastructure.Data.Mongo;
 
 public class RouteRepository(IMongoClient mongoClient, IHttpContextAccessor httpContextAccessor) 
-    : Repository<RouteConfig>(mongoClient, httpContextAccessor), IRouteRepository<RouteConfig>
+    : Repository<RouteConfig>(mongoClient, httpContextAccessor), IRouteRepository
 {
 }
