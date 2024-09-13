@@ -16,11 +16,11 @@ public static class DependencyInjection
         ArgumentNullException.ThrowIfNull(configuration);
 
         services.AddReverseProxy()
-                // .LoadFromConfig(configuration.GetSection("ReverseProxy"))
-                .LoadFromMemory(GetRoutes(), GetClusters());
+            .LoadFromConfig(configuration.GetSection("ReverseProxy"));
+                // .LoadFromMemory(GetRoutes(), GetClusters());
 
-        // services.AddSingleton(new InMemoryConfigProvider(routes, clusters));
-        // services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<InMemoryConfigProvider>());
+        services.AddSingleton(new InMemoryConfigProvider(GetRoutes(), GetClusters()));
+        services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<InMemoryConfigProvider>());
 
         services.AddHttpContextAccessor();
         services.AddExceptionHandler<GlobalExceptionHandler>();

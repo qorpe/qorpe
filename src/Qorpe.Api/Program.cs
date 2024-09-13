@@ -1,5 +1,9 @@
+using AutoMapper;
 using Qorpe.Api;
 using Qorpe.Application;
+using Qorpe.Application.Common.Configurations;
+using Qorpe.Application.Common.Interfaces.Repositories;
+using Qorpe.Domain.Entities;
 using Qorpe.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +13,21 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices();
 
 var app = builder.Build();
+
+var clusterRepository = app.Services.GetRequiredService<IClusterRepository>();
+var routeRepository = app.Services.GetRequiredService<IRouteRepository>();
+var mapper = app.Services.GetRequiredService<IMapper>();
+    
+ClusterConfig[] clusterConfigs = [.. clusterRepository.AsQueryable()];
+RouteConfig[] routeConfigs = [.. routeRepository.AsQueryable()];
+    
+Yarp.ReverseProxy.Configuration.ClusterConfig[] mappedClusterConfigs 
+    = mapper.Map<Yarp.ReverseProxy.Configuration.ClusterConfig[]>(clusterConfigs);
+    
+Yarp.ReverseProxy.Configuration.RouteConfig[] mappedRouteConfigs 
+    = mapper.Map<Yarp.ReverseProxy.Configuration.RouteConfig[]>(routeConfigs);
+    
+app.Services.GetRequiredService<InMemoryConfigProvider>().Update(mappedRouteConfigs, mappedClusterConfigs);
 
 app.MapReverseProxy();
 
