@@ -1,6 +1,8 @@
 ﻿using Asp.Versioning;
 using Qorpe.Api.Handlers;
+using Proxy = Qorpe.Infrastructure.Proxy;
 using Yarp.ReverseProxy.Configuration;
+using AutoMapper;
 
 namespace Qorpe.Api;
 
@@ -16,11 +18,18 @@ public static class DependencyInjection
         ArgumentNullException.ThrowIfNull(configuration);
 
         services.AddReverseProxy()
-            .LoadFromConfig(configuration.GetSection("ReverseProxy"));
+                .LoadFromConfig(configuration.GetSection("ReverseProxy"));
                 // .LoadFromMemory(GetRoutes(), GetClusters());
 
-        services.AddSingleton(new InMemoryConfigProvider(GetRoutes(), GetClusters()));
-        services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<InMemoryConfigProvider>());
+        // Register InMemoryConfigProvider with IMapper dependency
+        services.AddSingleton(serviceProvider =>
+        {
+            var mapper = serviceProvider.GetRequiredService<IMapper>();
+            var routes = GetRoutes();
+            var clusters = GetClusters();
+            return new Proxy.InMemoryConfigProvider(mapper, routes, clusters);
+        });
+        services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<Proxy.InMemoryConfigProvider>());
 
         services.AddHttpContextAccessor();
         services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -66,7 +75,7 @@ public static class DependencyInjection
             new RouteConfig()
             {
                 RouteId = "route" + Random.Shared.Next(), // Forces a new route id each time GetRoutes is called.
-                ClusterId = "cluster1",
+                ClusterId = "cluster101",
                 Match = new RouteMatch
                 {
                     // Path or Hosts are required for each route. This catch-all pattern matches all request paths.
@@ -87,7 +96,7 @@ public static class DependencyInjection
         [
             new ClusterConfig()
             {
-                ClusterId = "cluster1",
+                ClusterId = "cluster101",
                 SessionAffinity = new SessionAffinityConfig { Enabled = true, Policy = "Cookie", AffinityKeyName = ".Yarp.ReverseProxy.Affinity" },
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {

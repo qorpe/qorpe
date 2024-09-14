@@ -11,7 +11,8 @@ namespace Qorpe.Infrastructure;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection AddInfrastructureServices(
+        this IServiceCollection services, ConfigurationManager configuration)
     {
         #region Database Configuration(s)
         var databaseProvider = configuration["DatabaseProvider"] ?? DatabaseProviders.LiteDB;
