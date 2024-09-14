@@ -1,10 +1,10 @@
 using AutoMapper;
 using Qorpe.Api;
 using Qorpe.Application;
+using Qorpe.Application.Common.Interfaces;
 using Qorpe.Application.Common.Interfaces.Repositories;
 using Qorpe.Domain.Entities;
 using Qorpe.Infrastructure;
-using Qorpe.Infrastructure.Proxy;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +71,6 @@ async Task LoadInitialConfig(IServiceProvider services)
         = mapper.Map<Yarp.ReverseProxy.Configuration.RouteConfig[]>(routeConfigs);
 
     // Update in-memory configuration
-    var inMemoryConfigProvider = services.GetRequiredService<InMemoryConfigProvider>();
+    var inMemoryConfigProvider = services.GetRequiredService<IInMemoryConfigProvider>();
     inMemoryConfigProvider.Update(mappedRouteConfigs, mappedClusterConfigs);
 }

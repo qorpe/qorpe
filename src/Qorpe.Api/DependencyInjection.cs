@@ -3,6 +3,7 @@ using Qorpe.Api.Handlers;
 using Proxy = Qorpe.Infrastructure.Proxy;
 using Yarp.ReverseProxy.Configuration;
 using AutoMapper;
+using Qorpe.Application.Common.Interfaces;
 
 namespace Qorpe.Api;
 
@@ -29,7 +30,7 @@ public static class DependencyInjection
             var clusters = GetClusters();
             return new Proxy.InMemoryConfigProvider(mapper, routes, clusters);
         });
-        services.AddSingleton<IProxyConfigProvider>(s => s.GetRequiredService<Proxy.InMemoryConfigProvider>());
+        services.AddSingleton<IInMemoryConfigProvider>(s => s.GetRequiredService<Proxy.InMemoryConfigProvider>());
 
         services.AddHttpContextAccessor();
         services.AddExceptionHandler<GlobalExceptionHandler>();

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.Extensions.Primitives;
+using Qorpe.Application.Common.Interfaces;
 using Yarp.ReverseProxy.Configuration;
 using Qorpe_Entities = Qorpe.Domain.Entities;
 
@@ -7,7 +8,7 @@ namespace Qorpe.Infrastructure.Proxy;
 
 public class InMemoryConfigProvider(
     IMapper mapper, IReadOnlyList<RouteConfig> routes, IReadOnlyList<ClusterConfig> clusters, string revisionId) 
-    : IProxyConfigProvider
+    : IInMemoryConfigProvider
 {
     private volatile InMemoryConfig _config = new(routes, clusters, revisionId);
 
@@ -17,6 +18,24 @@ public class InMemoryConfigProvider(
     { }
 
     public IProxyConfig GetConfig() => _config;
+
+    public void AddCluster(ClusterConfig newClusterConfig)
+    {
+        var currentClusters = _config.Clusters.ToList();
+        currentClusters.Add(newClusterConfig);
+
+        // Update the configuration with the new settings
+        Update(_config.Routes, currentClusters);
+    }
+
+    public void AddRoute(RouteConfig newRouteConfig)
+    {
+        var currentRoutes = _config.Routes.ToList();
+        currentRoutes.Add(newRouteConfig);
+
+        // Update the configuration with the new settings
+        Update(currentRoutes, _config.Clusters);
+    }
 
     public void Update(IReadOnlyList<RouteConfig> routes, IReadOnlyList<ClusterConfig> clusters)
     {
