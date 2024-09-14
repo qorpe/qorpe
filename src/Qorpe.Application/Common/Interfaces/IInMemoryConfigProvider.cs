@@ -13,4 +13,6 @@ public interface IInMemoryConfigProvider : IProxyConfigProvider
     void UpdateRoute(string routeId, Action<Qorpe_Entities.RouteConfig> updateAction);
     void UpdateCluster(string clusterId, ClusterConfig newClusterConfig);
     void UpdateCluster(string clusterId, Action<Qorpe_Entities.ClusterConfig> updateAction);
+    void RemoveCluster(string clusterId);
+    void RemoveRoute(string routeId);
 }

@@ -145,6 +145,34 @@ public class InMemoryConfigProvider(
         }
     }
 
+    public void RemoveCluster(string clusterId)
+    {
+        var currentClusters = _config.Clusters.ToList();
+        var clusterIndex = currentClusters.FindIndex(c => c.ClusterId == clusterId);
+
+        if (clusterIndex >= 0)
+        {
+            currentClusters.RemoveAt(clusterIndex);
+
+            // Update the configuration with the new settings
+            Update(_config.Routes, currentClusters);
+        }
+    }
+
+    public void RemoveRoute(string routeId)
+    {
+        var currentRoutes = _config.Routes.ToList();
+        var routeIndex = currentRoutes.FindIndex(c => c.RouteId == routeId);
+
+        if (routeIndex >= 0)
+        {
+            currentRoutes.RemoveAt(routeIndex);
+
+            // Update the configuration with the new settings
+            Update(currentRoutes, _config.Clusters);
+        }
+    }
+
     private class InMemoryConfig : IProxyConfig
     {
         // Used to implement the change token for the state
