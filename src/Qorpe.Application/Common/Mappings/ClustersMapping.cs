@@ -64,5 +64,15 @@ public class ClustersMapping : Profile
         CreateMap<Yarp_Configuration.ActiveHealthCheckConfig, Yarp_Configuration.ActiveHealthCheckConfig>();
         CreateMap<Yarp_Configuration.PassiveHealthCheckConfig, Yarp_Configuration.PassiveHealthCheckConfig>();
         CreateMap<Yarp_Configuration.WebProxyConfig, Yarp_Configuration.WebProxyConfig>();
+
+        CreateMap<Yarp_Configuration.ClusterConfig, ClusterConfigDto>();
+        CreateMap<Yarp_Configuration.SessionAffinityConfig, SessionAffinityConfigDto>();
+        CreateMap<Yarp_Configuration.HealthCheckConfig, HealthCheckConfigDto>();
+        CreateMap<Yarp_Configuration.HttpClientConfig, HttpClientConfigDto>();
+        CreateMap<Yarp_Forwarder.ForwarderRequestConfig, ForwarderRequestConfigDto>();
+        CreateMap<Yarp_Configuration.DestinationConfig, DestinationConfigDto>();
+        CreateMap<Yarp_Configuration.SessionAffinityCookieConfig, SessionAffinityCookieConfigDto>();
+        CreateMap<Yarp_Configuration.ActiveHealthCheckConfig, ActiveHealthCheckConfigDto>();
+        CreateMap<Yarp_Configuration.PassiveHealthCheckConfig, PassiveHealthCheckConfigDto>();
     }
 }

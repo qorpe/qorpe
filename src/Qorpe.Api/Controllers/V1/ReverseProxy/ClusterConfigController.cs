@@ -51,12 +51,15 @@ public class ClusterConfigController : BaseController
 
     [HttpGet]
     public async Task<IActionResult> GetClusters(
-        [FromQuery] GetClustersQueryParameters queryParameters, [FromQuery] PaginationOptions paginationOptions)
+        [FromQuery] GetClustersQueryParameters queryParameters, 
+        [FromQuery] PaginationOptions paginationOptions,
+        [FromQuery] bool fromMemory)
     {
         GetClustersQuery query = new()
         {
             QueryParameters = queryParameters,
-            PaginationOptions = paginationOptions
+            PaginationOptions = paginationOptions,
+            FromMemory = fromMemory
         };
         var response = await Mediator.Send(query);
         return Ok(response);

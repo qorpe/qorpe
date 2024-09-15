@@ -6,6 +6,7 @@ using Qorpe.Application.Common.Interfaces;
 using Qorpe.Application.Common.Interfaces.Repositories;
 using Qorpe.Application.Common.Models;
 using Qorpe.Domain.Entities;
+using System.Globalization;
 using Yarp_Configuration = Yarp.ReverseProxy.Configuration;
 
 namespace Qorpe.Application.Features.Clusters.Queries.GetClusters;
@@ -30,6 +31,12 @@ public class GetClustersQueryHandler(
 
     private async Task<PaginatedResponse<ClusterConfigDto>> GetFromMemory(GetClustersQuery request)
     {
+        if (string.IsNullOrEmpty(request.PaginationOptions.SortBy) || 
+            request.PaginationOptions.SortBy == "CreatedAt") 
+        {
+            request.PaginationOptions.SortBy = "ClusterId";
+        }
+
         var filterExpression = ExpressionHelper.BuildFilterExpression<GetClustersQueryParameters, Yarp_Configuration.ClusterConfig>(request.QueryParameters);
         var compiledFilter = filterExpression.Compile();
         var clusterConfigs = inMemoryConfigProvider.GetConfig().Clusters.ToList();

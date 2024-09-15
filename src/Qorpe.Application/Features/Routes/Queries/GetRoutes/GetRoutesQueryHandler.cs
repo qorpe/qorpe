@@ -5,7 +5,6 @@ using Qorpe.Application.Common.Helpers;
 using Qorpe.Application.Common.Interfaces;
 using Qorpe.Application.Common.Interfaces.Repositories;
 using Qorpe.Application.Common.Models;
-using Qorpe.Application.Features.Clusters.Queries.GetClusters;
 using Qorpe.Domain.Entities;
 using Yarp_Configuration = Yarp.ReverseProxy.Configuration;
 
@@ -31,6 +30,12 @@ public class GetRoutesQueryHandler(
 
     private async Task<PaginatedResponse<RouteConfigDto>> GetFromMemory(GetRoutesQuery request)
     {
+        if (string.IsNullOrEmpty(request.PaginationOptions.SortBy) ||
+            request.PaginationOptions.SortBy == "CreatedAt")
+        {
+            request.PaginationOptions.SortBy = "RouteId";
+        }
+
         var filterExpression = ExpressionHelper.BuildFilterExpression<GetRoutesQueryParameters, Yarp_Configuration.RouteConfig>(request.QueryParameters);
         var compiledFilter = filterExpression.Compile();
         var routeConfigs = inMemoryConfigProvider.GetConfig().Routes.ToList();

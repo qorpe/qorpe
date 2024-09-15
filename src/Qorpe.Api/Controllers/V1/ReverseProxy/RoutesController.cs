@@ -51,12 +51,15 @@ public class RoutesController : BaseController
 
     [HttpGet]
     public async Task<IActionResult> GetRoutes(
-        [FromQuery] GetRoutesQueryParameters queryParameters, [FromQuery] PaginationOptions paginationOptions)
+        [FromQuery] GetRoutesQueryParameters queryParameters, 
+        [FromQuery] PaginationOptions paginationOptions,
+        [FromQuery] bool fromMemory)
     {
         GetRoutesQuery query = new()
         {
             QueryParameters = queryParameters,
-            PaginationOptions = paginationOptions
+            PaginationOptions = paginationOptions,
+            FromMemory = fromMemory
         };
         var response = await Mediator.Send(query);
         return Ok(response);

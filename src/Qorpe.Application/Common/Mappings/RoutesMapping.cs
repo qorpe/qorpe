@@ -33,5 +33,10 @@ public class RoutesMapping : Profile
         CreateMap<Yarp_Configuration.RouteHeader, Yarp_Configuration.RouteHeader>();
         CreateMap<Yarp_Configuration.RouteMatch, Yarp_Configuration.RouteMatch>();
         CreateMap<Yarp_Configuration.RouteQueryParameter, Yarp_Configuration.RouteQueryParameter>();
+
+        CreateMap<Yarp_Configuration.RouteConfig, RouteConfigDto>();
+        CreateMap<Yarp_Configuration.RouteHeader, RouteHeaderDto>();
+        CreateMap<Yarp_Configuration.RouteMatch, RouteMatchDto>();
+        CreateMap<Yarp_Configuration.RouteQueryParameter, RouteQueryParameterDto>();
     }
 }
