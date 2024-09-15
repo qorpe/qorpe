@@ -26,12 +26,13 @@ public class RoutesController : BaseController
         return Ok(response);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteRoute(string id)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteRoute([FromQuery] string id, [FromQuery] string routeId)
     {
         DeleteRouteCommand command = new()
         {
             Id = id,
+            RouteId = routeId
         };
         await Mediator.Send(command);
         return Ok();

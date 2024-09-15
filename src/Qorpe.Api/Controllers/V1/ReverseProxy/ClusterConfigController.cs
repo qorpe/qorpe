@@ -26,12 +26,13 @@ public class ClusterConfigController : BaseController
         return Ok(response);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCluster(string id)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteCluster([FromQuery] string id, [FromQuery] string clusterId)
     {
         DeleteClusterCommand command = new()
         {
             Id = id,
+            ClusterId = clusterId
         };
         await Mediator.Send(command);
         return Ok();

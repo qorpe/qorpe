@@ -8,4 +8,5 @@ public class GetRoutesQuery : IRequest<PaginatedResponse<RouteConfigDto>>
 {
     public GetRoutesQueryParameters QueryParameters { get; set; } = default!;
     public PaginationOptions PaginationOptions { get; set; } = default!;
+    public bool FromMemory { get; set; } = false;
 }
