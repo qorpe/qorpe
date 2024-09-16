@@ -4,6 +4,10 @@ namespace Qorpe.Application.Common.Interfaces.Repositories;
 
 public interface IRepository<TDocument> where TDocument : class
 {
+    IEnumerable<TDocument> Load();
+
+    Task<IEnumerable<TDocument>> LoadAsync();
+
     IQueryable<TDocument> AsQueryable();
 
     IEnumerable<TDocument> FilterBy(Expression<Func<TDocument, bool>> filterExpression);

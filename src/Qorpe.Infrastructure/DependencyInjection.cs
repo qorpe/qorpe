@@ -20,10 +20,11 @@ public static class DependencyInjection
 
         if (databaseProvider == DatabaseProviders.MongoDB)
         {
-            services.AddSingleton<IMongoClient>(provider =>
+            services.AddSingleton(provider =>
             {
                 var client = new MongoClient("mongodb+srv://celikomr:TajULARyFqvRmNDT@cluster.0xru5.mongodb.net/?retryWrites=true&w=majority&appName=Cluster");
-                return client;
+                var database = client.GetDatabase("shared");
+                return database;
             });
 
             services.AddScoped<IClusterRepository, Mongo.ClusterRepository>();

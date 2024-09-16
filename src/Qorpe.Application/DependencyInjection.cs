@@ -20,6 +20,13 @@ public static class DependencyInjection
             //cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(PerformanceBehaviour<,>));
         });
 
+        //services.AddSingleton(sp =>
+        //{
+        //    var env = sp.GetRequiredService<IWebHostEnvironment>();
+        //    var path = Path.Combine(env.ContentRootPath, "");
+        //    return new FileService(path);
+        //});
+
         return services;
     }
 }

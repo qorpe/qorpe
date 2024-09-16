@@ -1,6 +1,8 @@
-﻿namespace Qorpe.Application.Features.Clusters.Queries.GetClusters;
+﻿using Qorpe.Domain.Common;
 
-public class GetClustersQueryParameters
+namespace Qorpe.Application.Features.Clusters.Queries.GetClusters;
+
+public class GetClustersQueryParameters : Document
 {
     public string? ClusterId { get; set; }
     public string? LoadBalancingPolicy { get; set; }

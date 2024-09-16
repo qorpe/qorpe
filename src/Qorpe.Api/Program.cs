@@ -14,10 +14,9 @@ builder.Services.AddApplicationServices();
 
 var app = builder.Build();
 
-// Run initial load in a background task to avoid blocking startup
-_ = Task.Run(() => LoadInitialConfig(app.Services));
-
 app.MapReverseProxy();
+
+// await LoadConfigs(app.Services);
 
 //app.Map("/update", context =>
 //{
@@ -54,15 +53,15 @@ app.MapControllers();
 app.Run();
 
 // Load initial configuration from the database on startup
-async Task LoadInitialConfig(IServiceProvider services)
+static async Task LoadConfigs(IServiceProvider services)
 {
     using var scope = services.CreateScope();
     var routeRepository = scope.ServiceProvider.GetRequiredService<IRouteRepository>();
     var clusterRepository = scope.ServiceProvider.GetRequiredService<IClusterRepository>();
     var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
 
-    ClusterConfig[] clusterConfigs = [.. clusterRepository.AsQueryable()];
-    RouteConfig[] routeConfigs = [.. routeRepository.AsQueryable()];
+    ClusterConfig[] clusterConfigs = [.. await clusterRepository.LoadAsync()];
+    RouteConfig[] routeConfigs = [.. await routeRepository.LoadAsync()];
 
     Yarp.ReverseProxy.Configuration.ClusterConfig[] mappedClusterConfigs
         = mapper.Map<Yarp.ReverseProxy.Configuration.ClusterConfig[]>(clusterConfigs);

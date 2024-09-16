@@ -6,13 +6,13 @@ public class CreateClusterCommandValidator : AbstractValidator<CreateClusterComm
 {
     public CreateClusterCommandValidator()
     {
-        RuleFor(v => v.Cluster.Id)
-            .MaximumLength(3)
-            .NotEmpty();
+        //RuleFor(v => v.Cluster.Id)
+        //    .MaximumLength(3)
+        //    .NotEmpty();
 
-        RuleFor(v => v.Cluster.ClusterId)
-            .MaximumLength(3)
-            .NotEmpty();
+        //RuleFor(v => v.Cluster.ClusterId)
+        //    .MaximumLength(3)
+        //    .NotEmpty();
     }
 
     private bool BeAValidUri(Uri uri)

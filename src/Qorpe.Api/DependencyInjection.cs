@@ -19,17 +19,16 @@ public static class DependencyInjection
         ArgumentNullException.ThrowIfNull(configuration);
 
         services.AddReverseProxy()
-                .LoadFromConfig(configuration.GetSection("ReverseProxy"));
-                // .LoadFromMemory(GetRoutes(), GetClusters());
+                .LoadFromConfig(configuration.GetSection("ReverseProxy"))
+                .Services.AddSingleton(serviceProvider =>
+                {
+                    var mapper = serviceProvider.GetRequiredService<IMapper>();
+                    var routes = GetRoutes();
+                    var clusters = GetClusters();
+                    return new Proxy.InMemoryConfigProvider(mapper, routes, clusters);
+                });
 
         // Register InMemoryConfigProvider with IMapper dependency
-        services.AddSingleton(serviceProvider =>
-        {
-            var mapper = serviceProvider.GetRequiredService<IMapper>();
-            var routes = GetRoutes();
-            var clusters = GetClusters();
-            return new Proxy.InMemoryConfigProvider(mapper, routes, clusters);
-        });
         services.AddSingleton<IInMemoryConfigProvider>(s => s.GetRequiredService<Proxy.InMemoryConfigProvider>());
 
         services.AddHttpContextAccessor();
@@ -76,7 +75,7 @@ public static class DependencyInjection
             new RouteConfig()
             {
                 RouteId = "route" + Random.Shared.Next(), // Forces a new route id each time GetRoutes is called.
-                ClusterId = "cluster101",
+                ClusterId = "cluster2",
                 Match = new RouteMatch
                 {
                     // Path or Hosts are required for each route. This catch-all pattern matches all request paths.
@@ -97,11 +96,11 @@ public static class DependencyInjection
         [
             new ClusterConfig()
             {
-                ClusterId = "cluster101",
+                ClusterId = "cluster2",
                 SessionAffinity = new SessionAffinityConfig { Enabled = true, Policy = "Cookie", AffinityKeyName = ".Yarp.ReverseProxy.Affinity" },
                 Destinations = new Dictionary<string, DestinationConfig>(StringComparer.OrdinalIgnoreCase)
                 {
-                    { "destination1", new DestinationConfig() { Address = "https://example.com" } },
+                    // { "destination1", new DestinationConfig() { Address = "https://example.com" } },
                     { "debugdestination1", new DestinationConfig() {
                         Address = "https://jsonplaceholder.typicode.com/",
                         Metadata = debugMetadata  }
