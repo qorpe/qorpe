@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Qorpe.Application.Common.DTOs;
 using Qorpe.Application.Common.Models;
 using Qorpe.Application.Features.Routes.Commands.CreateRoute;
@@ -11,8 +10,7 @@ using System.Diagnostics;
 
 namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 
-[Route("api/v{version:apiVersion}/routes")]
-[ApiVersion("1.0")]
+[Route("api/routes")]
 public class RoutesController : BaseController
 {
     #region Route(s)

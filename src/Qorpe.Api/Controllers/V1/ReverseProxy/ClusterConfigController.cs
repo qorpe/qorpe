@@ -1,5 +1,4 @@
-﻿using Asp.Versioning;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Qorpe.Application.Common.DTOs;
 using Qorpe.Application.Common.Models;
 using Qorpe.Application.Features.Clusters.Commands.CreateCluster;
@@ -10,8 +9,7 @@ using Qorpe.Application.Features.Clusters.Queries.GetClusters;
 
 namespace Qorpe.Api.Controllers.V1.ReverseProxy;
 
-[Route("api/v{version:apiVersion}/clusters")]
-[ApiVersion("1.0")]
+[Route("api/clusters")]
 public class ClusterConfigController : BaseController
 {
     #region Cluster(s)

@@ -1,10 +1,10 @@
 using AutoMapper;
 using Qorpe.Api;
 using Qorpe.Application;
-using Qorpe.Application.Common.Interfaces;
 using Qorpe.Application.Common.Interfaces.Repositories;
-using Qorpe.Domain.Entities;
+using Qorpe_Entities = Qorpe.Domain.Entities;
 using Qorpe.Infrastructure;
+using Yarp.ReverseProxy.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,7 +16,7 @@ var app = builder.Build();
 
 app.MapReverseProxy();
 
-// await LoadConfigs(app.Services);
+await LoadConfigs(app.Services);
 
 //app.Map("/update", context =>
 //{
@@ -28,18 +28,7 @@ app.MapReverseProxy();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        var descriptions = app.DescribeApiVersions();
-
-        // Build a swagger endpoint for each discovered API version
-        foreach (var description in descriptions)
-        {
-            var url = $"/swagger/{description.GroupName}/swagger.json";
-            var name = description.GroupName.ToUpperInvariant();
-            options.SwaggerEndpoint(url, name);
-        }
-    });
+    app.UseSwaggerUI();
 }
 
 app.UseExceptionHandler();
@@ -60,16 +49,14 @@ static async Task LoadConfigs(IServiceProvider services)
     var clusterRepository = scope.ServiceProvider.GetRequiredService<IClusterRepository>();
     var mapper = scope.ServiceProvider.GetRequiredService<IMapper>();
 
-    ClusterConfig[] clusterConfigs = [.. await clusterRepository.LoadAsync()];
-    RouteConfig[] routeConfigs = [.. await routeRepository.LoadAsync()];
+    Qorpe_Entities.ClusterConfig[] clusterConfigs = [.. await clusterRepository.LoadAsync()];
+    Qorpe_Entities.RouteConfig[] routeConfigs = [.. await routeRepository.LoadAsync()];
 
-    Yarp.ReverseProxy.Configuration.ClusterConfig[] mappedClusterConfigs
-        = mapper.Map<Yarp.ReverseProxy.Configuration.ClusterConfig[]>(clusterConfigs);
+    ClusterConfig[] mappedClusterConfigs = mapper.Map<ClusterConfig[]>(clusterConfigs);
 
-    Yarp.ReverseProxy.Configuration.RouteConfig[] mappedRouteConfigs
-        = mapper.Map<Yarp.ReverseProxy.Configuration.RouteConfig[]>(routeConfigs);
+    RouteConfig[] mappedRouteConfigs = mapper.Map<RouteConfig[]>(routeConfigs);
 
     // Update in-memory configuration
-    var inMemoryConfigProvider = services.GetRequiredService<IInMemoryConfigProvider>();
+    var inMemoryConfigProvider = services.GetRequiredService<InMemoryConfigProvider>();
     inMemoryConfigProvider.Update(mappedRouteConfigs, mappedClusterConfigs);
 }
