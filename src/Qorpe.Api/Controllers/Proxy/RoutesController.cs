@@ -8,9 +8,9 @@ using Qorpe.Application.Features.Routes.Queries.GetRoute;
 using Qorpe.Application.Features.Routes.Queries.GetRoutes;
 using System.Diagnostics;
 
-namespace Qorpe.Api.Controllers.V1.ReverseProxy;
+namespace Qorpe.Api.Controllers.Proxy;
 
-[Route("api/routes")]
+[Route("api/proxy/routes")]
 public class RoutesController : BaseController
 {
     #region Route(s)
@@ -90,7 +90,7 @@ public class RoutesController : BaseController
 
     [HttpGet]
     public async Task<IActionResult> GetRoutes(
-        [FromQuery] GetRoutesQueryParameters queryParameters, 
+        [FromQuery] GetRoutesQueryParameters queryParameters,
         [FromQuery] PaginationOptions paginationOptions,
         [FromQuery] bool fromMemory)
     {

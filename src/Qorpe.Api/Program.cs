@@ -18,12 +18,6 @@ app.MapReverseProxy();
 
 await LoadConfigs(app.Services);
 
-//app.Map("/update", context =>
-//{
-//    context.RequestServices.GetRequiredService<ProxyConfigProvider>().Update(GetRoutes(), GetClusters());
-//    return Task.CompletedTask;
-//});
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

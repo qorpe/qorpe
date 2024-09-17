@@ -7,9 +7,9 @@ using Qorpe.Application.Features.Clusters.Commands.UpdateCluster;
 using Qorpe.Application.Features.Clusters.Queries.GetCluster;
 using Qorpe.Application.Features.Clusters.Queries.GetClusters;
 
-namespace Qorpe.Api.Controllers.V1.ReverseProxy;
+namespace Qorpe.Api.Controllers.Proxy;
 
-[Route("api/clusters")]
+[Route("api/proxy/clusters")]
 public class ClusterConfigController : BaseController
 {
     #region Cluster(s)
@@ -49,7 +49,7 @@ public class ClusterConfigController : BaseController
 
     [HttpGet]
     public async Task<IActionResult> GetClusters(
-        [FromQuery] GetClustersQueryParameters queryParameters, 
+        [FromQuery] GetClustersQueryParameters queryParameters,
         [FromQuery] PaginationOptions paginationOptions,
         [FromQuery] bool fromMemory)
     {
