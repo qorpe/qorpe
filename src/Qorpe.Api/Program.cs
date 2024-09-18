@@ -47,7 +47,6 @@ static async Task LoadConfigs(IServiceProvider services)
     Qorpe_Entities.RouteConfig[] routeConfigs = [.. await routeRepository.LoadAsync()];
 
     ClusterConfig[] mappedClusterConfigs = mapper.Map<ClusterConfig[]>(clusterConfigs);
-
     RouteConfig[] mappedRouteConfigs = mapper.Map<RouteConfig[]>(routeConfigs);
 
     // Update in-memory configuration

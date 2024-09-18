@@ -10,7 +10,7 @@ using Qorpe.Application.Features.Clusters.Queries.GetClusters;
 namespace Qorpe.Api.Controllers.Proxy;
 
 [Route("api/proxy/clusters")]
-public class ClusterConfigController : BaseController
+public class ClustersController : BaseController
 {
     #region Cluster(s)
     [HttpPost]

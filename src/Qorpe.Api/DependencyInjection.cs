@@ -8,7 +8,8 @@ public static class DependencyInjection
     const string DEBUG_METADATA_KEY = "debug";
     const string DEBUG_VALUE = "true";
 
-    public static IServiceCollection AddApiServices(this IServiceCollection services, ConfigurationManager configuration)
+    public static IServiceCollection AddApiServices(
+        this IServiceCollection services, ConfigurationManager configuration)
     {
         ArgumentNullException.ThrowIfNull(services);
 
@@ -17,7 +18,6 @@ public static class DependencyInjection
         services.AddReverseProxy()
                 .LoadFromMemory(GetRoutes(), GetClusters());
 
-        // services.AddHttpContextAccessor();
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddControllers();
