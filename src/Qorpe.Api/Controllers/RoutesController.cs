@@ -8,9 +8,9 @@ using Qorpe.Application.Features.Routes.Queries.GetRoute;
 using Qorpe.Application.Features.Routes.Queries.GetRoutes;
 using System.Diagnostics;
 
-namespace Qorpe.Api.Controllers.Proxy;
+namespace Qorpe.Api.Controllers;
 
-[Route("api/proxy/routes")]
+[Route("api/routes")]
 public class RoutesController : BaseController
 {
     #region Route(s)

@@ -7,9 +7,9 @@ using Qorpe.Application.Features.Clusters.Commands.UpdateCluster;
 using Qorpe.Application.Features.Clusters.Queries.GetCluster;
 using Qorpe.Application.Features.Clusters.Queries.GetClusters;
 
-namespace Qorpe.Api.Controllers.Proxy;
+namespace Qorpe.Api.Controllers;
 
-[Route("api/proxy/clusters")]
+[Route("api/clusters")]
 public class ClustersController : BaseController
 {
     #region Cluster(s)

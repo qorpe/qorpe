@@ -9,54 +9,55 @@ using Yarp_Configuration = Yarp.ReverseProxy.Configuration;
 
 namespace Qorpe.Application.Features.Clusters.Queries.GetClusters;
 
-public class GetClustersQueryHandler(IMapper mapper, IClusterRepository clusterRepository)
+public class GetClustersQueryHandler(IMapper mapper, 
+    IClusterRepository clusterRepository, 
+    Yarp_Configuration.InMemoryConfigProvider inMemoryConfigProvider)
     : IRequestHandler<GetClustersQuery, PaginatedResponse<ClusterConfigDto>>
 {
     public async Task<PaginatedResponse<ClusterConfigDto>> Handle(GetClustersQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
-        return await GetFromDatabase(request);
-        //if (request.FromMemory)
-        //{
-        //    return await GetFromMemory(request);
-        //}
-        //else
-        //{
-        //    return await GetFromDatabase(request);
-        //}
+        if (request.FromMemory)
+        {
+            return await GetFromMemory(request);
+        }
+        else
+        {
+            return await GetFromDatabase(request);
+        }
     }
 
-    //private async Task<PaginatedResponse<ClusterConfigDto>> GetFromMemory(GetClustersQuery request)
-    //{
-    //    if (string.IsNullOrEmpty(request.PaginationOptions.SortBy) || 
-    //        request.PaginationOptions.SortBy == "CreatedAt") 
-    //    {
-    //        request.PaginationOptions.SortBy = "ClusterId";
-    //    }
+    private async Task<PaginatedResponse<ClusterConfigDto>> GetFromMemory(GetClustersQuery request)
+    {
+        if (string.IsNullOrEmpty(request.PaginationOptions.SortBy) ||
+            request.PaginationOptions.SortBy == "CreatedAt")
+        {
+            request.PaginationOptions.SortBy = "ClusterId";
+        }
 
-    //    var filterExpression = ExpressionHelper.BuildFilterExpression<GetClustersQueryParameters, Yarp_Configuration.ClusterConfig>(request.QueryParameters);
-    //    var compiledFilter = filterExpression.Compile();
-    //    var clusterConfigs = inMemoryConfigProvider.GetConfig().Clusters.ToList();
+        var filterExpression = ExpressionHelper.BuildFilterExpression<GetClustersQueryParameters, Yarp_Configuration.ClusterConfig>(request.QueryParameters);
+        var compiledFilter = filterExpression.Compile();
+        var clusterConfigs = inMemoryConfigProvider.GetConfig().Clusters.ToList();
 
-    //    var clusters = ListHelper.ApplyFilteringSortingAndPagination(
-    //        clusterConfigs,
-    //        compiledFilter,
-    //        sortBy: request.PaginationOptions.SortBy,
-    //        IsAscending: request.PaginationOptions.IsAscending,
-    //        pageNumber: request.PaginationOptions.Page,
-    //        pageSize: request.PaginationOptions.PageSize
-    //    );
+        var clusters = ListHelper.ApplyFilteringSortingAndPagination(
+            clusterConfigs,
+            compiledFilter,
+            sortBy: request.PaginationOptions.SortBy,
+            IsAscending: request.PaginationOptions.IsAscending,
+            pageNumber: request.PaginationOptions.Page,
+            pageSize: request.PaginationOptions.PageSize
+        );
 
-    //    var totalCount = clusterConfigs.Where(compiledFilter).Count();
+        var totalCount = clusterConfigs.Where(compiledFilter).Count();
 
-    //    var response = new PaginatedResponse<ClusterConfigDto>(mapper.Map<List<ClusterConfigDto>>(clusters),
-    //                                                           totalCount,
-    //                                                           request.PaginationOptions.Page,
-    //                                                           request.PaginationOptions.PageSize);
+        var response = new PaginatedResponse<ClusterConfigDto>(mapper.Map<List<ClusterConfigDto>>(clusters),
+                                                               totalCount,
+                                                               request.PaginationOptions.Page,
+                                                               request.PaginationOptions.PageSize);
 
-    //    return await Task.FromResult(response);
-    //}
+        return await Task.FromResult(response);
+    }
 
     private async Task<PaginatedResponse<ClusterConfigDto>> GetFromDatabase(GetClustersQuery request)
     {
