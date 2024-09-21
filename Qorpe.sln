@@ -21,8 +21,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Qorpe.Application", "src\Qo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Qorpe.Infrastructure", "src\Qorpe.Infrastructure\Qorpe.Infrastructure.csproj", "{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "Qorpe.Web", "src\Qorpe.Web\Qorpe.Web.esproj", "{D000AF3D-4A7E-413B-8732-BF0238D3C79C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,12 +43,6 @@ Global
 		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D000AF3D-4A7E-413B-8732-BF0238D3C79C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D000AF3D-4A7E-413B-8732-BF0238D3C79C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D000AF3D-4A7E-413B-8732-BF0238D3C79C}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{D000AF3D-4A7E-413B-8732-BF0238D3C79C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D000AF3D-4A7E-413B-8732-BF0238D3C79C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D000AF3D-4A7E-413B-8732-BF0238D3C79C}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,7 +52,6 @@ Global
 		{2269A7DF-DBF5-4CDC-A444-37EDD41D8C85} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
 		{0CA44029-3887-4066-84DD-D8AA580CF4D6} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
 		{BA662C8C-6F62-4FB6-B0AE-1C4ADEDDF61C} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
-		{D000AF3D-4A7E-413B-8732-BF0238D3C79C} = {E1721069-DAE9-49DC-B0A2-0726DD0B2D1B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {732AC63C-87B2-4542-A9BE-982FF44D5D35}
