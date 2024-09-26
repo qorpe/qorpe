@@ -2,7 +2,7 @@
     <v-data-table-server v-model="selected" v-model:items-per-page="itemsPerPage" :headers="headers"
         :items="serverItems" :items-length="totalItems" :loading="loading" :search="search" item-value="Order"
         @update:options="loadItems" show-select return-object style="background-color: transparent;">
-        <template v-slot:[`item.Match.Path`]="{ value }">
+        <template v-slot:[`item.match.path`]="{ value }">
             <RouterLink :to="`/routes/${value}`" class="link">
                 <v-chip color="primary">
                     {{ value }}
@@ -10,25 +10,49 @@
             </RouterLink>
         </template>
 
-        <template v-slot:[`item.RouteId`]="{ value }">
+        <template v-slot:[`item.routeId`]="{ value }">
             <RouterLink :to="`/routes/${value}`" class="link">
                 {{ value }}
             </RouterLink>
         </template>
 
-        <template v-slot:[`item.Actions`]>
-            <v-icon class="me-2" size="small" @click="editItem(item)">
+        <template v-slot:[`item.details`]>
+            <v-tooltip text="Match" location="left">
+                <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" variant="tonal" size="small" class="mr-1">
+                        <v-icon size="large">mdi-checkbox-marked-outline</v-icon>
+                    </v-btn>
+                </template>
+            </v-tooltip>
+            <v-tooltip text="Metadata" location="bottom">
+                <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" variant="tonal" size="small" class="mr-1">
+                        <v-icon size="large">mdi-alpha-m-box-outline</v-icon>
+                    </v-btn>
+                </template>
+            </v-tooltip>
+            <v-tooltip text="Transforms" location="right">
+                <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" variant="tonal" size="small" class="mr-1">
+                        <v-icon size="large">mdi-transfer</v-icon>
+                    </v-btn>
+                </template>
+            </v-tooltip>
+            <!-- <v-icon class="me-2" size="small" @click="editItem(item)">
                 mdi-pencil
             </v-icon>
             <v-icon size="small" @click="deleteItem(item)">
                 mdi-trash-can-outline
-            </v-icon>
+            </v-icon> -->
         </template>
     </v-data-table-server>
 </template>
 
-<script>
-const desserts = [
+<script setup lang="ts">
+import { ref } from 'vue'
+import axios from 'axios'
+
+const desserts = ref([
     {
         RouteId: 'Route Id - xxxxxxx - xxxxxxx',
         Order: 1,
@@ -84,65 +108,67 @@ const desserts = [
         CorsPolicy: 'Policy - xxxxxxx',
         Match: { Path: '/clusters/{**catch-all}' }
     },
-]
+])
 
-const FakeAPI = {
-    async fetch({ page, itemsPerPage, sortBy }) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                const start = (page - 1) * itemsPerPage
-                const end = start + itemsPerPage
-                const items = desserts.slice()
+const selected = ref([])
+const showCopy = ref<boolean>(false)
+const itemsPerPage = ref(5)
+const headers = ref([
+    { title: 'Route Id', key: 'routeId' },
+    { title: 'Order', key: 'order' },
+    { title: 'Path', key: 'match.path' },
+    { title: 'Cluster Id', key: 'clusterId' },
+    { title: 'Details', key: 'details' },
+    // { title: 'Output-Cache Policy', key: 'OutputCachePolicy' },
+    // { title: 'Cors Policy', key: 'CorsPolicy' },
+    // { title: 'Timeout', key: 'Timeout' },
+    // { title: 'Max-Request Body Size', key: 'MaxRequestBodySize' },
+])
+const search = ref('')
+const serverItems = ref([])
+const loading = ref<boolean>(true)
+const totalItems = ref<number>(0)
 
-                if (sortBy.length) {
-                    const sortKey = sortBy[0].key
-                    const sortOrder = sortBy[0].order
-                    items.sort((a, b) => {
-                        const aValue = a[sortKey]
-                        const bValue = b[sortKey]
-                        return sortOrder === 'desc' ? bValue - aValue : aValue - bValue
-                    })
-                }
+axios.get('https://localhost:44303/api/routes')
+    .then(response => {
+        console.log(response.data);
+        desserts.value = response.data.data
+    })
+    .catch(error => {
+        console.error('Error making the request:', error);
+    });
 
-                const paginated = items.slice(start, end)
+async function fetch({ page, itemsPerPage, sortBy }: any) {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            const start = (page - 1) * itemsPerPage
+            const end = start + itemsPerPage
+            const items = desserts.value.slice()
 
-                resolve({ items: paginated, total: items.length })
-            }, 500)
-        })
-    },
+            if (sortBy.length) {
+                const sortKey = sortBy[0].key
+                const sortOrder = sortBy[0].order
+                items.sort((a, b) => {
+                    const aValue = a[sortKey]
+                    const bValue = b[sortKey]
+                    return sortOrder === 'desc' ? bValue - aValue : aValue - bValue
+                })
+            }
+
+            const paginated = items.slice(start, end)
+
+            resolve({ items: paginated, total: items.length })
+        }, 500)
+    })
 }
 
-export default {
-    data: () => ({
-        selected: [],
-        showCopy: false,
-        itemsPerPage: 5,
-        headers: [
-            { title: 'Route Id', key: 'RouteId' },
-            { title: 'Order', key: 'Order' },
-            { title: 'Path', key: 'Match.Path' },
-            { title: 'Cluster Id', key: 'ClusterId' },
-            { title: 'Actions', key: 'Actions' },
-            // { title: 'Output-Cache Policy', key: 'OutputCachePolicy' },
-            // { title: 'Cors Policy', key: 'CorsPolicy' },
-            // { title: 'Timeout', key: 'Timeout' },
-            // { title: 'Max-Request Body Size', key: 'MaxRequestBodySize' },
-        ],
-        search: '',
-        serverItems: [],
-        loading: true,
-        totalItems: 0,
-    }),
-    methods: {
-        loadItems({ page, itemsPerPage, sortBy }) {
-            this.loading = true
-            FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
-                this.serverItems = items
-                this.totalItems = total
-                this.loading = false
-            })
-        },
-    },
+function loadItems({ page, itemsPerPage, sortBy }: any) {
+    loading.value = true
+    fetch({ page, itemsPerPage, sortBy }).then(({ items, total }: any) => {
+        serverItems.value = items
+        totalItems.value = total
+        loading.value = false
+    })
 }
 </script>
 

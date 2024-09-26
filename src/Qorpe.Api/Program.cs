@@ -16,6 +16,8 @@ var app = builder.Build();
 
 app.MapReverseProxy();
 
+app.UseCors("AllowSpecificOrigins");
+
 await LoadConfigs(app.Services);
 
 // Configure the HTTP request pipeline.

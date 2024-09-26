@@ -18,6 +18,19 @@ public static class DependencyInjection
         services.AddReverseProxy()
                 .LoadFromMemory(GetRoutes(), GetClusters());
 
+        var allowedHosts = configuration["AllowedHosts"];
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("AllowSpecificOrigins",
+                policy =>
+                {
+                    policy.WithOrigins(allowedHosts)
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+                });
+        });
+
         services.AddExceptionHandler<GlobalExceptionHandler>();
         services.AddProblemDetails();
         services.AddControllers();
