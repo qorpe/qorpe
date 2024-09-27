@@ -45,7 +45,7 @@ const items = ref([
         </v-navigation-drawer>
 
         <v-main>
-            <v-container height="100hv">
+            <v-container>
                 <RouterView />
             </v-container>
         </v-main>
