@@ -14,9 +14,9 @@ export default createVuetify({
     components,
     directives,
     defaults: {
-        VTextField: {
-            variant: 'underlined'
-        },
+        // VTextField: {
+        //     variant: 'underlined'
+        // },
         VBtn: {
             variant: 'text'
         },
