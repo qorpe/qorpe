@@ -6,12 +6,17 @@ const router = createRouter({
         {
             path: '/routes',
             name: 'routes',
-            component: () => import('@/views/RoutesView.vue')
+            component: () => import('@/views/routes/Routes_.vue')
         },
         {
             path: '/routes/:id',
             name: 'route',
-            component: () => import('@/views/RouteView.vue')
+            component: () => import('@/views/routes/Route.vue')
+        },
+        {
+            path: '/routes/new',
+            name: 'routesNew',
+            component: () => import('@/views/routes/RoutesNew.vue')
         },
         {
             path: '/clusters',
