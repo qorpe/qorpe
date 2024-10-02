@@ -6,7 +6,17 @@ const router = createRouter({
         {
             path: '/routes',
             name: 'routes',
-            component: () => import('@/views/RoutesView.vue')
+            component: () => import('@/views/routes/RouteList.vue')
+        },
+        {
+            path: '/routes/new',
+            name: 'routeNew',
+            component: () => import('@/views/routes/RouteNew.vue')
+        },
+        {
+            path: '/routes/:id',
+            name: 'route',
+            component: () => import('@/views/routes/RouteEdit.vue')
         },
         {
             path: '/clusters',
