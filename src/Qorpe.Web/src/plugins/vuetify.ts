@@ -14,11 +14,20 @@ export default createVuetify({
     components,
     directives,
     defaults: {
-        // VTextField: {
-        //     variant: 'underlined'
-        // },
-        VBtn: {
-            variant: 'text'
+        VTextField: {
+            density: "comfortable"
         },
+        VBtn: {
+            // density: "comfortable"
+        },
+        VList: {
+            density: "comfortable"
+        },
+        VAppBar: {
+            density: "comfortable"
+        },
+        VAutocomplete: {
+            density: "comfortable"
+        }
     }
 })

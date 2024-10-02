@@ -1,9 +1,9 @@
 <template>
     <v-data-table-server v-model="selected" v-model:items-per-page="itemsPerPage" :headers="headers"
         :items="serverItems" :items-length="totalItems" :loading="loading" :search="search" item-value="Order"
-        @update:options="loadItems" show-select return-object style="background-color: transparent;">
+        @update:options="loadItems" show-select return-object style="background-color: transparent;" class="mt-5">
         <template v-slot:top>
-            <v-toolbar flat color="white" class="mt-5 mb-3 pa-0">
+            <v-toolbar flat color="white" class="mb-3 pa-0">
                 <v-toolbar-title></v-toolbar-title>
                 <v-spacer></v-spacer>
                 <v-btn to="/routes/new" variant="tonal" class="ma-0 text-capitalize" dark append-icon="mdi-plus">
@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, watch, nextTick } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 
 const desserts = ref([

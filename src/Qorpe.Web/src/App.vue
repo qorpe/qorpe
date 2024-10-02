@@ -27,7 +27,7 @@ const items = ref([
 
 <template>
     <v-app>
-        <v-app-bar color="primary" flat density="compact" class="py-1">
+        <v-app-bar color="primary" flat>
             <template v-slot:prepend>
                 <v-app-bar-nav-icon @click="rail = !rail"
                     :icon="rail ? 'mdi-menu-close' : 'mdi-menu-open'"></v-app-bar-nav-icon>
