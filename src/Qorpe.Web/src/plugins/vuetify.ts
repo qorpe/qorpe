@@ -28,6 +28,12 @@ export default createVuetify({
         },
         VAutocomplete: {
             density: "comfortable"
+        },
+        VSelect: {
+            density: "comfortable"
+        },
+        VCombobox: {
+            density: "comfortable"
         }
     }
 })

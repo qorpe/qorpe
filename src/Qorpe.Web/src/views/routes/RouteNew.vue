@@ -24,6 +24,32 @@
                     </v-row>
                 </v-expansion-panel-text>
             </v-expansion-panel>
+            <v-expansion-panel class="mb-1">
+                <v-expansion-panel-title color="grey-lighten-4">Matches</v-expansion-panel-title>
+                <v-expansion-panel-text>
+                    <v-row class="mt-3">
+                        <v-col cols="12" md="6">
+                            <v-select v-model="selectedMethods" :items="['GET', 'POST', 'PUT', 'DELETE']"
+                                label="Methods" multiple chips clearable />
+                        </v-col>
+                        <v-col cols="12" md="6">
+                            <v-combobox v-model="selectedHosts" :items="hosts" label="Hosts" hide-selected multiple
+                                chips clearable />
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="4">
+                            <v-text-field label="Path"></v-text-field>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col cols="12" md="6">
+                        </v-col>
+                        <v-col cols="12" md="6">
+                        </v-col>
+                    </v-row>
+                </v-expansion-panel-text>
+            </v-expansion-panel>
             <v-expansion-panel>
                 <v-expansion-panel-title color="grey-lighten-4">Policies</v-expansion-panel-title>
                 <v-expansion-panel-text>
@@ -73,6 +99,9 @@ export default {
         email: '',
         password: '',
         timeoutValue: '',
+        selectedMethods: [],
+        selectedHosts: [],
+        hosts: ['example.com', 'api.example.com'],
         timeoutRule: v => {
             const regex = /^\d{2}:\d{2}:\d{2}$/; // HH:MM:SS format
             return regex.test(v) || 'Invalid timeout format (HH:MM:SS)';
