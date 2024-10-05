@@ -3,7 +3,7 @@
         <v-toolbar flat density="compact" color="white" class="border-b">
             <v-tabs v-model="currentItem" fixed-tabs density="compact" flat>
                 <template v-for="item in items" :key="item">
-                    <v-tab :text="item" :value="'tab-' + item" class="text-capitalize"></v-tab>
+                    <v-tab :text="item" :value="'tab-' + item" class="text-capitalize" tile to="/apis"></v-tab>
                     <v-divider class="my-4" vertical></v-divider>
                 </template>
 

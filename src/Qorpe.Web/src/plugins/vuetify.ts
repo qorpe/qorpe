@@ -23,6 +23,9 @@ export default createVuetify({
         VList: {
             density: "compact"
         },
+        VListItem: {
+            density: "compact"
+        },
         VAppBar: {
             density: "compact"
         },

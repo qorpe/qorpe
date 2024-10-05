@@ -16,7 +16,7 @@ const list = ref([
 </script>
 
 <template>
-    <v-list color="primary" nav class="mt-4">
+    <v-list nav class="mt-4">
         <template v-for="(item, i) in list" :key="i">
             <v-list-item :title="item.name" :to="item.to" link>
                 <template v-slot:prepend>
