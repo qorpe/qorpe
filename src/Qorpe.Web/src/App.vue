@@ -26,28 +26,29 @@ const items = ref([
 </script>
 
 <template>
-    <v-app>
+    <!-- <v-app>
         <v-app-bar color="primary" flat>
             <template v-slot:prepend>
                 <v-app-bar-nav-icon @click="rail = !rail"
                     :icon="rail ? 'mdi-menu-close' : 'mdi-menu-open'"></v-app-bar-nav-icon>
             </template>
-            <v-app-bar-title>
-                Qorpe
-                <v-chip variant="outlined" class="ml-1">
-                    Personel
-                </v-chip>
-            </v-app-bar-title>
-        </v-app-bar>
+<v-app-bar-title>
+    Qorpe
+    <v-chip variant="outlined" class="ml-1">
+        Personel
+    </v-chip>
+</v-app-bar-title>
+</v-app-bar>
 
-        <v-navigation-drawer color="grey-lighten-4" style="border: none;" v-model="drawer" :rail="rail" permanent>
-            <TheSidebar :key="route.fullPath" :rail="rail" />
-        </v-navigation-drawer>
+<v-navigation-drawer color="grey-lighten-4" style="border: none;" v-model="drawer" :rail="rail" permanent>
+    <TheSidebar :key="route.fullPath" :rail="rail" />
+</v-navigation-drawer>
 
-        <v-main>
-            <v-container>
-                <RouterView />
-            </v-container>
-        </v-main>
-    </v-app>
+<v-main>
+    <v-container>
+        <RouterView />
+    </v-container>
+</v-main>
+</v-app> -->
+    <RouterView />
 </template>

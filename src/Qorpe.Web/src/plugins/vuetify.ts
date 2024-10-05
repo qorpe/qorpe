@@ -15,25 +15,25 @@ export default createVuetify({
     directives,
     defaults: {
         VTextField: {
-            density: "comfortable"
+            density: "compact"
         },
         VBtn: {
             // density: "comfortable"
         },
         VList: {
-            density: "comfortable"
+            density: "compact"
         },
         VAppBar: {
-            density: "comfortable"
+            density: "compact"
         },
         VAutocomplete: {
-            density: "comfortable"
+            density: "compact"
         },
         VSelect: {
-            density: "comfortable"
+            density: "compact"
         },
         VCombobox: {
-            density: "comfortable"
+            density: "compact"
         }
     }
 })
