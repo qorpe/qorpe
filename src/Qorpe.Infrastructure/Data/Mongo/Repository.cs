@@ -119,6 +119,8 @@ public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocum
         {
             document.Id = ObjectId.GenerateNewId().ToString();
         }
+        document.CreatedAt = DateTime.Now;
+        document.UpdatedAt = DateTime.Now;
         _collection.InsertOne(document);
         return document;
     }
@@ -129,7 +131,8 @@ public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocum
         {
             document.Id = ObjectId.GenerateNewId().ToString();
         }
-
+        document.CreatedAt = DateTime.Now;
+        document.UpdatedAt = DateTime.Now;
         await _collection.InsertOneAsync(document);
         return document;
     }
@@ -142,6 +145,8 @@ public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocum
             {
                 document.Id = ObjectId.GenerateNewId().ToString();
             }
+            document.CreatedAt = DateTime.Now;
+            document.UpdatedAt = DateTime.Now;
         }
         _collection.InsertMany(documents);
         return documents;
@@ -155,6 +160,8 @@ public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocum
             {
                 document.Id = ObjectId.GenerateNewId().ToString();
             }
+            document.CreatedAt = DateTime.Now;
+            document.UpdatedAt = DateTime.Now;
         }
         await _collection.InsertManyAsync(documents);
         return documents;
@@ -163,12 +170,14 @@ public class Repository<TDocument>(IMongoDatabase database) : IRepository<TDocum
     public void ReplaceOne(TDocument document)
     {
         var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+        document.UpdatedAt = DateTime.Now;
         _collection.FindOneAndReplace(filter, document);
     }
 
     public async Task ReplaceOneAsync(TDocument document)
     {
         var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+        document.UpdatedAt = DateTime.Now;
         await _collection.FindOneAndReplaceAsync(filter, document);
     }
 

@@ -110,6 +110,8 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
         {
             document.Id = Guid.NewGuid().ToString();
         }
+        document.CreatedAt = DateTime.Now;
+        document.UpdatedAt = DateTime.Now;
         _collection.Insert(document);
         return document;
     }
@@ -120,6 +122,8 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
         {
             document.Id = Guid.NewGuid().ToString();
         }
+        document.CreatedAt = DateTime.Now;
+        document.UpdatedAt = DateTime.Now;
         return await Task.FromResult(InsertOne(document));
     }
 
@@ -131,6 +135,8 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
             {
                 document.Id = Guid.NewGuid().ToString();
             }
+            document.CreatedAt = DateTime.Now;
+            document.UpdatedAt = DateTime.Now;
         }
         _collection.Insert(documents);
         return documents;
@@ -144,6 +150,8 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
             {
                 document.Id = Guid.NewGuid().ToString();
             }
+            document.CreatedAt = DateTime.Now;
+            document.UpdatedAt = DateTime.Now;
         }
         return await Task.FromResult(InsertMany(documents));
     }
@@ -154,6 +162,7 @@ public class Repository<TDocument>(ILiteDatabase database) : IRepository<TDocume
         {
             throw new ArgumentException("Document ID cannot be null or empty.");
         }
+        document.UpdatedAt = DateTime.Now;
         _collection.Update(document);
     }
 

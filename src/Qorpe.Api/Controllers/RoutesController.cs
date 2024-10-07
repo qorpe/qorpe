@@ -39,6 +39,8 @@ public class RoutesController : BaseController
             body.Id = null;
             body.RouteId = body.RouteId + i;
             body.ClusterId = body.ClusterId + i;
+            body.Name = body.Name + i;
+            body.Description = body.Description + i;
             CreateRouteCommand command = new()
             {
                 Route = body,

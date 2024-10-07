@@ -4,17 +4,34 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
-            path: '/workspace',
-            name: 'workspace',
-            component: () => import('@/layouts/WorkspaceLayout.vue'),
+            path: '/',
+            name: '',
+            component: () => import('@/layouts/DefaultLayout.vue'),
             children: [
+                {
+                    path: 'realms',
+                    name: 'realms',
+                    component: () => import('@/views/RealmList.vue'),
+                },
+            ]
+        },
+        {
+            path: '/realms/:realmId',
+            name: 'realm',
+            component: () => import('@/layouts/RealmLayout.vue'),
+            children: [
+                {
+                    path: 'overview',
+                    name: 'overview',
+                    component: () => import('@/views/RealmEdit.vue')
+                },
                 {
                     path: 'routes/new',
                     name: 'routeNew',
                     component: () => import('@/views/routes/RouteNew.vue')
                 },
                 {
-                    path: '/routes/:id',
+                    path: 'routes/:routeId',
                     name: 'route',
                     component: () => import('@/views/routes/RouteEdit.vue')
                 },
