@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useTabsStore } from '@/stores/tabs'
-import { useRoute, useRouter } from "vue-router";
+import { useRoute } from "vue-router";
 import type { ITab, IRoute } from '@/interfaces'
 import axios from 'axios'
 
 const route = useRoute();
-const router = useRouter();
 const tabsStore = useTabsStore()
 const routes = ref<IRoute[]>([]);
 const page = ref(1);
