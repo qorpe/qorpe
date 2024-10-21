@@ -84,7 +84,7 @@
                 </v-expansion-panel-text>
             </v-expansion-panel>
         </v-expansion-panels>
-        <v-btn :loading="loading" class="mt-2 text-capitalize" type="submit" block>Create</v-btn>
+        <v-btn :loading="loading" class="mt-2 " type="submit" block>Create</v-btn>
     </v-form>
 </template>
 

@@ -26,9 +26,13 @@ export interface IMetadata {
     [key: string]: string
 }
 
-
 export interface ITransform {
     [key: string]: string
+}
+
+export interface ITransformGroup {
+    index: number
+    description: string
 }
 
 export interface IQueryParameter {

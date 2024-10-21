@@ -6,7 +6,7 @@
             <v-toolbar flat color="white" class="mb-3 pa-0">
                 <v-toolbar-title></v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn to="/routes/new" variant="tonal" class="ma-0 text-capitalize" dark append-icon="mdi-plus">
+                <v-btn to="/routes/new" variant="tonal" class="ma-0 " dark append-icon="mdi-plus">
                     New Route
                 </v-btn>
             </v-toolbar>
@@ -124,7 +124,7 @@ const serverItems = ref([])
 const loading = ref<boolean>(true)
 const totalItems = ref<number>(0)
 
-axios.get('https://localhost:44303/api/routes')
+axios.get('https://localhost:7222/api/routes')
     .then(response => {
         console.log(response.data);
         desserts.value = response.data.data

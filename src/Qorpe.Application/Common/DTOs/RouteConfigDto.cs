@@ -15,6 +15,6 @@ public sealed class RouteConfigDto : Document
     public TimeSpan? Timeout { get; set; }
     public string? CorsPolicy { get; set; }
     public long? MaxRequestBodySize { get; set; }
-    public IReadOnlyDictionary<string, string>? Metadata { get; set; }
+    public Dictionary<string, string>? Metadata { get; set; }
     public ICollection<Dictionary<string, string>>? Transforms { get; set; }
 }

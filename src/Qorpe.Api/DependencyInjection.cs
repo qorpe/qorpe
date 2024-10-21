@@ -1,5 +1,7 @@
-﻿using Qorpe.Api.Handlers;
+﻿using Microsoft.Extensions.Configuration;
+using Qorpe.Api.Handlers;
 using Yarp.ReverseProxy.Configuration;
+using Yarp.ReverseProxy.Transforms;
 
 namespace Qorpe.Api;
 

@@ -15,10 +15,11 @@ export default createVuetify({
     directives,
     defaults: {
         VTextField: {
-            density: "compact"
+            density: "compact",
+            hideDetails: 'auto'
         },
         VBtn: {
-            // density: "comfortable"
+            class: 'text-capitalize'
         },
         VList: {
             density: "compact"
@@ -30,13 +31,16 @@ export default createVuetify({
             density: "compact"
         },
         VAutocomplete: {
-            density: "compact"
+            density: "compact",
+            hideDetails: 'auto'
         },
         VSelect: {
-            density: "compact"
+            density: "compact",
+            hideDetails: 'auto'
         },
         VCombobox: {
-            density: "compact"
+            density: "compact",
+            hideDetails: 'auto'
         }
     }
 })

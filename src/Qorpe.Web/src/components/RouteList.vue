@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useTabsStore } from '@/stores/tabs'
+import { useRoutesStore } from '@/stores/routes'
 import { useRoute } from "vue-router";
 import type { ITab, IRoute } from '@/interfaces'
 import axios from 'axios'
 
 const route = useRoute();
 const tabsStore = useTabsStore()
+const routesStore = useRoutesStore()
+
 const routes = ref<IRoute[]>([]);
 const page = ref(1);
 const pageSize = ref(10);
@@ -18,7 +21,7 @@ function to(_route: IRoute): string {
 
 const loadRoutes = async () => {
     try {
-        const response = await axios.get('https://localhost:44303/api/routes', {
+        const response = await axios.get('https://localhost:7222/api/routes', {
             params: {
                 page: page.value,
                 pageSize: pageSize.value,
@@ -38,11 +41,13 @@ const loadRoutes = async () => {
 
 const loadMore = () => {
     if (!allLoaded.value) {
-        loadRoutes();
+        routesStore.loadRoutes();
     }
 };
 
-loadRoutes();
+if (routesStore.page === 1) {
+    routesStore.loadRoutes();
+}
 
 function addTab(_route: IRoute) {
     const tab = {
@@ -52,13 +57,12 @@ function addTab(_route: IRoute) {
     } as ITab
     tabsStore.addTab(tab)
 }
-
 </script>
 
 <template>
     <v-list lines="one" class="mt-4">
-        <v-list-item v-for="(route, i) in routes" :key="i" :title="route.name" :to="to(route)" link
+        <v-list-item v-for="(route, i) in routesStore.routes" :key="i" :title="route.name" :to="to(route)" link
             @click="addTab(route)"></v-list-item>
     </v-list>
-    <v-btn @click="loadMore" block variant="text" class="text-capitalize">Load More</v-btn>
+    <v-btn @click="loadMore" block variant="text" class="">Load More</v-btn>
 </template>

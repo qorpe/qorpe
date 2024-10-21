@@ -20,9 +20,9 @@ const drawer = ref(true)
 
     <v-main>
         <v-app-bar flat class="border-b">
-            <v-tabs height="50">
+            <v-tabs height="50" center-active>
                 <template v-for="tab in tabsStore.tabs" :key="tab.label">
-                    <v-tab :text="tab.label" class="text-capitalize" :to="tab.to"></v-tab>
+                    <v-tab :text="tab.label" class="" :to="tab.to" :value="tab"></v-tab>
                     <v-divider vertical class="my-4 mx-1"></v-divider>
                 </template>
             </v-tabs>

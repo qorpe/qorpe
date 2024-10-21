@@ -3,13 +3,13 @@
         <v-toolbar flat density="compact" color="white" class="border-b">
             <v-tabs v-model="currentItem" fixed-tabs density="compact" flat>
                 <template v-for="item in items" :key="item">
-                    <v-tab :text="item" :value="'tab-' + item" class="text-capitalize" tile to="/apis"></v-tab>
+                    <v-tab :text="item" :value="'tab-' + item" class="" tile to="/apis"></v-tab>
                     <v-divider class="my-4" vertical></v-divider>
                 </template>
 
                 <v-menu v-if="more.length">
                     <template v-slot:activator="{ props }">
-                        <v-btn class="align-self-center text-capitalize" height="100%" rounded="0" variant="plain"
+                        <v-btn class="align-self-center " height="100%" rounded="0" variant="plain"
                             v-bind="props">
                             More
                             <v-icon icon="mdi-menu-down" end></v-icon>
@@ -23,7 +23,7 @@
                 </v-menu>
                 <v-menu v-if="more.length">
                     <template v-slot:activator="{ props }">
-                        <v-btn class="align-self-center text-capitalize" height="100%" rounded="0" variant="tonal"
+                        <v-btn class="align-self-center " height="100%" rounded="0" variant="tonal"
                             v-bind="props">
                             <v-icon icon="mdi-plus"></v-icon>
                         </v-btn>
