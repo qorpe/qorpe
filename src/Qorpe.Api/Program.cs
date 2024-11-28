@@ -5,6 +5,7 @@ using Qorpe.Application.Common.Interfaces.Repositories;
 using Qorpe_Entities = Qorpe.Domain.Entities;
 using Qorpe.Infrastructure;
 using Yarp.ReverseProxy.Configuration;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,8 +24,8 @@ await LoadConfigs(app.Services);
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.UseExceptionHandler();

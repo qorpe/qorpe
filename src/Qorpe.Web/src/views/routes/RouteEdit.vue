@@ -29,6 +29,17 @@ const httpMethods: string[] = [
 const yesNoList: boolean[] = [true, false]
 
 const queryParameter = ref<IQueryParameter>({} as IQueryParameter)
+
+const headerQueryParameter = ref([
+    { title: 'Name', key: 'name' },
+    { title: 'Values', key: 'values' },
+    { title: 'Mode', key: 'mode' },
+    { title: 'IsCaseSensitive', key: 'isCaseSensitive' },
+    { title: 'Actions', key: 'actions' }
+])
+
+const drawer = ref(true)
+const rail = ref(true)
 //#endregion
 
 //#region Metadata(s)
@@ -248,7 +259,7 @@ const setTransform = (key: string, value: string, index: number) => {
                         <v-combobox v-model="_route.match.queryParameters" return-object readonly item-title="name"
                             label="Query Parameters" multiple>
                             <template v-slot:append-inner>
-                                <v-dialog max-width="80%">
+                                <v-dialog max-width="90%">
                                     <template v-slot:activator="{ props: activatorProps }">
                                         <v-btn v-bind="activatorProps" size="small" variant="text">
                                             <v-icon>mdi-pencil-outline</v-icon>
@@ -259,17 +270,24 @@ const setTransform = (key: string, value: string, index: number) => {
                                             <v-card-text>
                                                 <v-row dense>
                                                     <v-col cols="12" md="7">
+                                                        <v-data-table :headers="headerQueryParameter"
+                                                            hide-default-footer item-value="name">
+                                                            <template v-slot:top>
+                                                                <!-- <v-btn variant="tonal">Add</v-btn> -->
+                                                            </template>
+                                                        </v-data-table>
                                                         <v-list lines="one">
                                                             <v-list-item variant="plain" color="surface-variant"
                                                                 v-for="(queryParameter, i) in _route.match.queryParameters"
                                                                 :key="i">
                                                                 <template v-slot:title>
                                                                     {{ queryParameter.name }}
-                                                                    <span class="ms-4">Mode: {{ queryParameter.mode
-                                                                        }}</span>
-                                                                    -
-                                                                    <span>IsCase-Sensitive: {{ queryParameter.mode
-                                                                        }}</span>
+                                                                    <v-chip>
+                                                                        Mode: {{ queryParameter.mode }}
+                                                                    </v-chip>
+                                                                    <v-chip>
+                                                                        IsCase-Sensitive: {{ queryParameter.mode }}
+                                                                    </v-chip>
                                                                 </template>
                                                                 <template v-slot:subtitle>
                                                                     {{ queryParameter.values.join(', ') }}
@@ -298,7 +316,7 @@ const setTransform = (key: string, value: string, index: number) => {
                                                                 <v-select v-model:bool="queryParameter.isCaseSensitive"
                                                                     :items="yesNoList" label="Is Case-Sensitive"
                                                                     clearable tile class="mb-3"></v-select>
-                                                                <v-btn @click="addOrUpdateMetada" block variant="tonal"
+                                                                <v-btn @click="rail = true" block variant="tonal"
                                                                     class="">
                                                                     Add or Update Query Parameter
                                                                 </v-btn>

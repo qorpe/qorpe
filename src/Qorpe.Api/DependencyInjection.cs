@@ -17,6 +17,8 @@ public static class DependencyInjection
 
         ArgumentNullException.ThrowIfNull(configuration);
 
+        services.AddOpenApi();
+
         services.AddReverseProxy()
                 .LoadFromMemory(GetRoutes(), GetClusters());
 
@@ -37,11 +39,6 @@ public static class DependencyInjection
         services.AddProblemDetails();
         services.AddControllers();
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(options =>
-        {
-            options.CustomSchemaIds(type => type.ToString());
-            options.CustomSchemaIds(type => type.FullName);
-        });
 
         return services;
     }
