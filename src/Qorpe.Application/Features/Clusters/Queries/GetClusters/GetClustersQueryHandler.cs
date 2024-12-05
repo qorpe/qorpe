@@ -14,7 +14,8 @@ public class GetClustersQueryHandler(IMapper mapper,
     Yarp_Configuration.InMemoryConfigProvider inMemoryConfigProvider)
     : IRequestHandler<GetClustersQuery, PaginatedResponse<ClusterConfigDto>>
 {
-    public async Task<PaginatedResponse<ClusterConfigDto>> Handle(GetClustersQuery request, CancellationToken cancellationToken)
+    public async Task<PaginatedResponse<ClusterConfigDto>> Handle(
+        GetClustersQuery request, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(request);
 
