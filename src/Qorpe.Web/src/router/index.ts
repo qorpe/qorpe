@@ -35,6 +35,16 @@ const router = createRouter({
                     name: 'route',
                     component: () => import('@/views/routes/RouteEdit.vue')
                 },
+                {
+                    path: '/clusters/new',
+                    name: 'clusterNew',
+                    component: () => import('@/views/clusters/ClusterNew.vue')
+                },
+                {
+                    path: '/clusters/:clusterId',
+                    name: 'cluster',
+                    component: () => import('@/views/clusters/ClusterEdit.vue')
+                },
             ]
         },
         // {
