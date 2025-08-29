@@ -1,0 +1,6 @@
+@Qorpe.Hub.Host_HostAddress = http://localhost:5172
+
+GET {{Qorpe.Hub.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

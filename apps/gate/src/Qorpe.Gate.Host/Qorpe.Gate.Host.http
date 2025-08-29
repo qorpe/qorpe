@@ -1,0 +1,6 @@
+@Qorpe.Gate.Host_HostAddress = http://localhost:5223
+
+GET {{Qorpe.Gate.Host_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
