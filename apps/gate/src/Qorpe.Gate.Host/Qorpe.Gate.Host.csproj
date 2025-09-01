@@ -7,14 +7,30 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
+        <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.1" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
+        <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="9.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Extensions.ServiceDiscovery" Version="9.4.1" />
+        <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Dns" Version="9.4.1" />
+        <PackageReference Include="Microsoft.Extensions.ServiceDiscovery.Yarp" Version="9.4.1" />
+        <PackageReference Include="Scalar.AspNetCore" Version="2.7.2" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
+        <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\ Qorpe.Gate.Infrastructure\Qorpe.Gate.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\..\..\packages\sdk\Qorpe.Hub.SDK\Qorpe.Hub.SDK.csproj" />
       <ProjectReference Include="..\..\..\aspire\src\Qorpe.Aspire.ServiceDefaults\Qorpe.Aspire.ServiceDefaults.csproj" />
       <ProjectReference Include="..\Qorpe.Gate.Contracts\Qorpe.Gate.Contracts.csproj" />
-      <ProjectReference Include="..\Qorpe.Gate.Core\Qorpe.Gate.Core.csproj" />
+      <ProjectReference Include="..\Qorpe.Gate.Application\Qorpe.Gate.Application.csproj" />
     </ItemGroup>
 
 </Project>
