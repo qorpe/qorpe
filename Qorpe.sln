@@ -35,7 +35,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Gate.Contracts", "app
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Gate.Infrastructure", "apps\gate\src\ Qorpe.Gate.Infrastructure\Qorpe.Gate.Infrastructure.csproj", "{4AEEEE2A-20EB-4A38-9D14-0220A34CB3A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Gate.Core", "apps\gate\src\Qorpe.Gate.Core\Qorpe.Gate.Core.csproj", "{506FD5D5-54AE-4E37-A8F1-0E533A51FA70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Gate.Application", "apps\gate\src\Qorpe.Gate.Application\Qorpe.Gate.Application.csproj", "{506FD5D5-54AE-4E37-A8F1-0E533A51FA70}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Gate.Host", "apps\gate\src\Qorpe.Gate.Host\Qorpe.Gate.Host.csproj", "{AE8BDF2F-53B1-4C5D-BE81-0EE34F287A7D}"
 EndProject
@@ -49,12 +49,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Aspire.Host", "apps\a
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Aspire.ServiceDefaults", "apps\aspire\src\Qorpe.Aspire.ServiceDefaults\Qorpe.Aspire.ServiceDefaults.csproj", "{E9397821-36E3-46FE-A634-9D070818B2D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.BuildingBlocks.Domain", "packages\building-blocks\Qorpe.BuildingBlocks.Domain\Qorpe.BuildingBlocks.Domain.csproj", "{F2E61AE3-19A4-4B00-A374-371EA53F9409}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.BuildingBlocks.Application", "packages\building-blocks\Qorpe.BuildingBlocks.Application\Qorpe.BuildingBlocks.Application.csproj", "{63B93399-0C61-48B9-A710-237572E4F312}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.BuildingBlocks.Infrastructure", "packages\building-blocks\Qorpe.BuildingBlocks.Infrastructure\Qorpe.BuildingBlocks.Infrastructure.csproj", "{790BB151-3890-4964-80DC-D58B4472571B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sdk", "sdk", "{B5E0AFFB-1813-4A79-BBD4-CA0A16FFEB0C}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "console", "apps\console\console.esproj", "{F96F0C78-BD2C-10D7-60B6-7A1D3CC05733}"
@@ -65,7 +59,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A865B545-DA1
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Scheduler.Infrastructure", "apps\scheduler\src\Qorpe.Scheduler.Infrastructure\Qorpe.Scheduler.Infrastructure.csproj", "{06C410DE-988A-4EFB-B3A6-243E4964BDB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Scheduler.Core", "apps\scheduler\src\Qorpe.Scheduler.Core\Qorpe.Scheduler.Core.csproj", "{B52CD17A-3B5E-4E5C-9599-F9E3D711473A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Scheduler.Application", "apps\scheduler\src\Qorpe.Scheduler.Application\Qorpe.Scheduler.Application.csproj", "{B52CD17A-3B5E-4E5C-9599-F9E3D711473A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Scheduler.Contracts", "apps\scheduler\src\Qorpe.Scheduler.Contracts\Qorpe.Scheduler.Contracts.csproj", "{AA4FA5F7-2340-48CE-A5EE-0454460B4BD8}"
 EndProject
@@ -75,11 +69,29 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Hub.Host", "apps\hub\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Hub.Contracts", "apps\hub\src\Qorpe.Hub.Contracts\Qorpe.Hub.Contracts.csproj", "{42157735-431B-4F99-8286-99CE4EC727ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Hub.Core", "apps\hub\src\Qorpe.Hub.Core\Qorpe.Hub.Core.csproj", "{A763F817-FC82-4CFC-A2A0-A8F9ADC19B5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Hub.Application", "apps\hub\src\Qorpe.Hub.Application\Qorpe.Hub.Application.csproj", "{A763F817-FC82-4CFC-A2A0-A8F9ADC19B5B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Hub.Infrastructure", "apps\hub\src\Qorpe.Hub.Infrastructure\Qorpe.Hub.Infrastructure.csproj", "{4FE71B07-4951-40D6-9FD2-161993DC6D8B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Hub.SDK", "packages\sdk\Qorpe.Hub.SDK\Qorpe.Hub.SDK.csproj", "{D0D1D40C-449A-47D0-879B-F33CD8DB0B44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Hub.Domain", "apps\hub\src\Qorpe.Hub.Domain\Qorpe.Hub.Domain.csproj", "{4DE537FA-9F91-418A-B7D3-C12C8CC73D7F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D2667D59-252B-44B5-A280-BABBF6C8E342}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Gate.Domain", "apps\gate\src\Qorpe.Gate.Domain\Qorpe.Gate.Domain.csproj", "{807B53D3-B676-4A02-B911-0D19944A236F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.Scheduler.Domain", "apps\scheduler\src\Qorpe.Scheduler.Domain\Qorpe.Scheduler.Domain.csproj", "{73A1D7D3-7515-44A7-AEBE-0FE63759FFD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{515940DD-C9A9-4B2C-BA84-CFC7BA0DD306}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{1BBF6AD0-2B52-47BF-843B-E2EF9EE73FE5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{BA6939A3-8BB2-407A-82F2-6C20477C7D8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{70F39940-0E0F-46F6-A046-46DAE0914B53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Qorpe.BuildingBlocks", "packages\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj", "{B54EF83C-8D91-47FE-A048-2CC44F4EEE50}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,18 +123,6 @@ Global
 		{E9397821-36E3-46FE-A634-9D070818B2D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9397821-36E3-46FE-A634-9D070818B2D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9397821-36E3-46FE-A634-9D070818B2D8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F2E61AE3-19A4-4B00-A374-371EA53F9409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F2E61AE3-19A4-4B00-A374-371EA53F9409}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F2E61AE3-19A4-4B00-A374-371EA53F9409}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F2E61AE3-19A4-4B00-A374-371EA53F9409}.Release|Any CPU.Build.0 = Release|Any CPU
-		{63B93399-0C61-48B9-A710-237572E4F312}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{63B93399-0C61-48B9-A710-237572E4F312}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{63B93399-0C61-48B9-A710-237572E4F312}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{63B93399-0C61-48B9-A710-237572E4F312}.Release|Any CPU.Build.0 = Release|Any CPU
-		{790BB151-3890-4964-80DC-D58B4472571B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{790BB151-3890-4964-80DC-D58B4472571B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{790BB151-3890-4964-80DC-D58B4472571B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{790BB151-3890-4964-80DC-D58B4472571B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F96F0C78-BD2C-10D7-60B6-7A1D3CC05733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F96F0C78-BD2C-10D7-60B6-7A1D3CC05733}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F96F0C78-BD2C-10D7-60B6-7A1D3CC05733}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
@@ -165,6 +165,22 @@ Global
 		{D0D1D40C-449A-47D0-879B-F33CD8DB0B44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0D1D40C-449A-47D0-879B-F33CD8DB0B44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0D1D40C-449A-47D0-879B-F33CD8DB0B44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DE537FA-9F91-418A-B7D3-C12C8CC73D7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DE537FA-9F91-418A-B7D3-C12C8CC73D7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DE537FA-9F91-418A-B7D3-C12C8CC73D7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DE537FA-9F91-418A-B7D3-C12C8CC73D7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{807B53D3-B676-4A02-B911-0D19944A236F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{807B53D3-B676-4A02-B911-0D19944A236F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{807B53D3-B676-4A02-B911-0D19944A236F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{807B53D3-B676-4A02-B911-0D19944A236F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73A1D7D3-7515-44A7-AEBE-0FE63759FFD1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73A1D7D3-7515-44A7-AEBE-0FE63759FFD1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73A1D7D3-7515-44A7-AEBE-0FE63759FFD1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73A1D7D3-7515-44A7-AEBE-0FE63759FFD1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54EF83C-8D91-47FE-A048-2CC44F4EEE50}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54EF83C-8D91-47FE-A048-2CC44F4EEE50}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54EF83C-8D91-47FE-A048-2CC44F4EEE50}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54EF83C-8D91-47FE-A048-2CC44F4EEE50}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -187,9 +203,6 @@ Global
 		{1C62AE23-A901-4EF6-A821-21AA4D9EB60D} = {6053F9F3-3F7C-42B2-B223-EFD768864CE0}
 		{87ECC97D-1E1F-49E5-AC49-F05224394C08} = {1C62AE23-A901-4EF6-A821-21AA4D9EB60D}
 		{E9397821-36E3-46FE-A634-9D070818B2D8} = {1C62AE23-A901-4EF6-A821-21AA4D9EB60D}
-		{F2E61AE3-19A4-4B00-A374-371EA53F9409} = {DC646658-854B-4A1F-99F3-AA7B750939FB}
-		{63B93399-0C61-48B9-A710-237572E4F312} = {DC646658-854B-4A1F-99F3-AA7B750939FB}
-		{790BB151-3890-4964-80DC-D58B4472571B} = {DC646658-854B-4A1F-99F3-AA7B750939FB}
 		{B5E0AFFB-1813-4A79-BBD4-CA0A16FFEB0C} = {030E4608-D11E-4E8E-A0FA-9401FE2C5A8D}
 		{F96F0C78-BD2C-10D7-60B6-7A1D3CC05733} = {4E0FA779-3657-45C9-8930-E3303C985ED0}
 		{5AC2B1C2-2AB6-425A-81DB-8E1D65BFEBF7} = {4E0FA779-3657-45C9-8930-E3303C985ED0}
@@ -203,6 +216,15 @@ Global
 		{A763F817-FC82-4CFC-A2A0-A8F9ADC19B5B} = {D72E518E-C722-4C80-A127-31994BAE79B0}
 		{4FE71B07-4951-40D6-9FD2-161993DC6D8B} = {D72E518E-C722-4C80-A127-31994BAE79B0}
 		{D0D1D40C-449A-47D0-879B-F33CD8DB0B44} = {B5E0AFFB-1813-4A79-BBD4-CA0A16FFEB0C}
+		{4DE537FA-9F91-418A-B7D3-C12C8CC73D7F} = {D72E518E-C722-4C80-A127-31994BAE79B0}
+		{D2667D59-252B-44B5-A280-BABBF6C8E342} = {6C74BC71-BE15-40D8-9F4A-5344CEC99045}
+		{807B53D3-B676-4A02-B911-0D19944A236F} = {E94B0D5E-1B12-4A21-9781-6FCB000E6F62}
+		{73A1D7D3-7515-44A7-AEBE-0FE63759FFD1} = {A865B545-DA10-42DC-A86D-792DAA3663D6}
+		{515940DD-C9A9-4B2C-BA84-CFC7BA0DD306} = {E635B320-C124-452E-9647-92BCDBC8B0B6}
+		{1BBF6AD0-2B52-47BF-843B-E2EF9EE73FE5} = {EC70C9E4-D96F-4E98-82EF-AA523ED982B7}
+		{BA6939A3-8BB2-407A-82F2-6C20477C7D8B} = {5AC2B1C2-2AB6-425A-81DB-8E1D65BFEBF7}
+		{70F39940-0E0F-46F6-A046-46DAE0914B53} = {BC449791-41E8-438C-A3A0-CB4ED3626DEB}
+		{B54EF83C-8D91-47FE-A048-2CC44F4EEE50} = {DC646658-854B-4A1F-99F3-AA7B750939FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADE7E577-BD25-4A52-AF8A-D1C5A1085145}
