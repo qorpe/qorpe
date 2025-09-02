@@ -13,7 +13,7 @@ using Qorpe.Hub.Infrastructure.Persistence;
 namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250830232936_Initial")]
+    [Migration("20250902210225_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -260,10 +260,6 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("security_stamp");
 
-                    b.Property<long>("TenantId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("tenant_id");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean")
                         .HasColumnName("two_factor_enabled");
@@ -282,11 +278,6 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("user_name_index");
-
-                    b.HasIndex("TenantId", "NormalizedEmail");
-
-                    b.HasIndex("TenantId", "NormalizedUserName")
-                        .IsUnique();
 
                     b.ToTable("user", "hub");
                 });
@@ -336,8 +327,7 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasMaxLength(36)
-                        .HasColumnType("character varying(36)")
+                        .HasColumnType("text")
                         .HasColumnName("user_id");
 
                     b.HasKey("Id")
@@ -345,7 +335,8 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("ExpiresAtUtc");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_refresh_token_user_id");
 
                     b.HasIndex("TenantId", "UserId", "TokenHash")
                         .IsUnique();
@@ -414,6 +405,46 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                     b.ToTable("tenant", "hub");
                 });
 
+            modelBuilder.Entity("Qorpe.Hub.Domain.Entities.UserTenant", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text")
+                        .HasColumnName("user_id");
+
+                    b.Property<long>("TenantId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("tenant_id");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at_utc")
+                        .HasDefaultValueSql("now() at time zone 'utc'");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("role");
+
+                    b.HasKey("UserId", "TenantId");
+
+                    b.HasIndex("TenantId")
+                        .HasDatabaseName("ix_user_tenant_tenant_id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("TenantId", "Role");
+
+                    b.ToTable("user_tenant", "hub");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -471,43 +502,60 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                         .HasConstraintName("fk_user_token_asp_net_users_user_id");
                 });
 
-            modelBuilder.Entity("Qorpe.Hub.Domain.Entities.ApplicationUser", b =>
-                {
-                    b.HasOne("Qorpe.Hub.Domain.Entities.Tenant", null)
-                        .WithMany("Users")
-                        .HasForeignKey("TenantId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired()
-                        .HasConstraintName("fk_user_tenants_tenant_id");
-                });
-
             modelBuilder.Entity("Qorpe.Hub.Domain.Entities.RefreshToken", b =>
                 {
-                    b.HasOne("Qorpe.Hub.Domain.Entities.Tenant", null)
+                    b.HasOne("Qorpe.Hub.Domain.Entities.Tenant", "Tenant")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("TenantId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_refresh_token_tenants_tenant_id");
 
-                    b.HasOne("Qorpe.Hub.Domain.Entities.ApplicationUser", null)
+                    b.HasOne("Qorpe.Hub.Domain.Entities.ApplicationUser", "User")
                         .WithMany("RefreshTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
-                        .HasConstraintName("fk_refresh_token_user_application_user_id");
+                        .HasConstraintName("fk_refresh_token_user_user_id");
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Qorpe.Hub.Domain.Entities.UserTenant", b =>
+                {
+                    b.HasOne("Qorpe.Hub.Domain.Entities.Tenant", "Tenant")
+                        .WithMany("Memberships")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_tenant_tenant_tenant_id");
+
+                    b.HasOne("Qorpe.Hub.Domain.Entities.ApplicationUser", "User")
+                        .WithMany("Memberships")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_user_tenant_user_user_id");
+
+                    b.Navigation("Tenant");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Qorpe.Hub.Domain.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Memberships");
+
                     b.Navigation("RefreshTokens");
                 });
 
             modelBuilder.Entity("Qorpe.Hub.Domain.Entities.Tenant", b =>
                 {
-                    b.Navigation("RefreshTokens");
+                    b.Navigation("Memberships");
 
-                    b.Navigation("Users");
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

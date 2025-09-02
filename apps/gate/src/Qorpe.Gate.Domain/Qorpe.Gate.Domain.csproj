@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\libs\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -7,8 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\packages\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
-      <ProjectReference Include="..\Qorpe.Scheduler.Contracts\Qorpe.Scheduler.Contracts.csproj" />
+      <ProjectReference Include="..\..\..\..\libs\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
       <ProjectReference Include="..\Qorpe.Scheduler.Domain\Qorpe.Scheduler.Domain.csproj" />
     </ItemGroup>
 

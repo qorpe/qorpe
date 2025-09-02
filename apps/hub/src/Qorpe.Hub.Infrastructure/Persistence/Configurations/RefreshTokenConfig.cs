@@ -16,8 +16,7 @@ public class RefreshTokenConfig : IEntityTypeConfiguration<RefreshToken>
         
         // Configure properties with column mappings and constraints
         b.Property(e => e.TenantId).IsRequired();
-        b.Property(e => e.UserId).HasMaxLength(36).IsRequired();
-        b.Property(e => e.TokenHash).HasMaxLength(128).IsRequired();
+        b.Property(e => e.UserId).IsRequired();
         b.Property(e => e.TokenHash).HasMaxLength(128).IsRequired();
         b.Property(e => e.ExpiresAtUtc);
         b.Property(e => e.CreatedAtUtc).HasDefaultValueSql("now() at time zone 'utc'");
@@ -25,16 +24,16 @@ public class RefreshTokenConfig : IEntityTypeConfiguration<RefreshToken>
         b.Property(e => e.DeviceInfo).HasMaxLength(256);
         b.Property(e => e.CreatedByIp).HasMaxLength(45);
         
-        // Relation: RefreshToken.TenantId -> Tenants.Id
-        b.HasOne<Tenant>()
+        // (RefreshToken -> Tenant)
+        b.HasOne(rt => rt.Tenant)
             .WithMany(t => t.RefreshTokens)
-            .HasForeignKey(u => u.TenantId)
+            .HasForeignKey(rt => rt.TenantId)
             .OnDelete(DeleteBehavior.Restrict);
-        
-        // Relation: RefreshToken.UserId -> ApplicationUser.Id
-        b.HasOne<ApplicationUser>()
-            .WithMany(t => t.RefreshTokens)
-            .HasForeignKey(u => u.UserId)
+
+        // (RefreshToken -> ApplicationUser)
+        b.HasOne(rt => rt.User)
+            .WithMany(u => u.RefreshTokens)
+            .HasForeignKey(rt => rt.UserId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

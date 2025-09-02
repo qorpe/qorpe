@@ -53,6 +53,34 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "user",
+                schema: "hub",
+                columns: table => new
+                {
+                    id = table.Column<string>(type: "text", nullable: false),
+                    display_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    normalized_email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    email_confirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    password_hash = table.Column<string>(type: "text", nullable: true),
+                    security_stamp = table.Column<string>(type: "text", nullable: true),
+                    concurrency_stamp = table.Column<string>(type: "text", nullable: true),
+                    phone_number = table.Column<string>(type: "text", nullable: true),
+                    phone_number_confirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    two_factor_enabled = table.Column<bool>(type: "boolean", nullable: false),
+                    lockout_end = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    lockout_enabled = table.Column<bool>(type: "boolean", nullable: false),
+                    access_failed_count = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "role_claim",
                 schema: "hub",
                 columns: table => new
@@ -76,42 +104,6 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "user",
-                schema: "hub",
-                columns: table => new
-                {
-                    id = table.Column<string>(type: "text", nullable: false),
-                    tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    display_name = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: true),
-                    is_active = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    normalized_user_name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    normalized_email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
-                    email_confirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    password_hash = table.Column<string>(type: "text", nullable: true),
-                    security_stamp = table.Column<string>(type: "text", nullable: true),
-                    concurrency_stamp = table.Column<string>(type: "text", nullable: true),
-                    phone_number = table.Column<string>(type: "text", nullable: true),
-                    phone_number_confirmed = table.Column<bool>(type: "boolean", nullable: false),
-                    two_factor_enabled = table.Column<bool>(type: "boolean", nullable: false),
-                    lockout_end = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
-                    lockout_enabled = table.Column<bool>(type: "boolean", nullable: false),
-                    access_failed_count = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_user", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_user_tenants_tenant_id",
-                        column: x => x.tenant_id,
-                        principalSchema: "hub",
-                        principalTable: "tenant",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "refresh_token",
                 schema: "hub",
                 columns: table => new
@@ -119,7 +111,7 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     tenant_id = table.Column<long>(type: "bigint", nullable: false),
-                    user_id = table.Column<string>(type: "character varying(36)", maxLength: 36, nullable: false),
+                    user_id = table.Column<string>(type: "text", nullable: false),
                     token_hash = table.Column<string>(type: "character varying(128)", maxLength: 128, nullable: false),
                     expires_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     created_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now() at time zone 'utc'"),
@@ -138,7 +130,7 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "fk_refresh_token_user_application_user_id",
+                        name: "fk_refresh_token_user_user_id",
                         column: x => x.user_id,
                         principalSchema: "hub",
                         principalTable: "user",
@@ -219,6 +211,36 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "user_tenant",
+                schema: "hub",
+                columns: table => new
+                {
+                    user_id = table.Column<string>(type: "text", nullable: false),
+                    tenant_id = table.Column<long>(type: "bigint", nullable: false),
+                    role = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: false),
+                    is_active = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    created_at_utc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false, defaultValueSql: "now() at time zone 'utc'")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_user_tenant", x => new { x.user_id, x.tenant_id });
+                    table.ForeignKey(
+                        name: "fk_user_tenant_tenant_tenant_id",
+                        column: x => x.tenant_id,
+                        principalSchema: "hub",
+                        principalTable: "tenant",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "fk_user_tenant_user_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "hub",
+                        principalTable: "user",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "user_token",
                 schema: "hub",
                 columns: table => new
@@ -254,7 +276,7 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_refresh_token_user_id",
+                name: "ix_refresh_token_user_id",
                 schema: "hub",
                 table: "refresh_token",
                 column: "user_id");
@@ -294,19 +316,6 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 column: "normalized_email");
 
             migrationBuilder.CreateIndex(
-                name: "IX_user_tenant_id_normalized_email",
-                schema: "hub",
-                table: "user",
-                columns: new[] { "tenant_id", "normalized_email" });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_user_tenant_id_normalized_user_name",
-                schema: "hub",
-                table: "user",
-                columns: new[] { "tenant_id", "normalized_user_name" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "user_name_index",
                 schema: "hub",
                 table: "user",
@@ -330,6 +339,24 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 schema: "hub",
                 table: "user_role",
                 column: "role_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_user_tenant_tenant_id",
+                schema: "hub",
+                table: "user_tenant",
+                column: "tenant_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tenant_tenant_id_role",
+                schema: "hub",
+                table: "user_tenant",
+                columns: new[] { "tenant_id", "role" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_user_tenant_user_id",
+                schema: "hub",
+                table: "user_tenant",
+                column: "user_id");
         }
 
         /// <inheritdoc />
@@ -356,6 +383,10 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 schema: "hub");
 
             migrationBuilder.DropTable(
+                name: "user_tenant",
+                schema: "hub");
+
+            migrationBuilder.DropTable(
                 name: "user_token",
                 schema: "hub");
 
@@ -364,11 +395,11 @@ namespace Qorpe.Hub.Infrastructure.Persistence.Migrations
                 schema: "hub");
 
             migrationBuilder.DropTable(
-                name: "user",
+                name: "tenant",
                 schema: "hub");
 
             migrationBuilder.DropTable(
-                name: "tenant",
+                name: "user",
                 schema: "hub");
         }
     }

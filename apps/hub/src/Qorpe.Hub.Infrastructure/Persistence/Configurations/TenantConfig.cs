@@ -24,8 +24,5 @@ public class TenantConfig : IEntityTypeConfiguration<Tenant>
         b.Property(x => x.Domain).HasMaxLength(255);
         b.Property(x => x.Metadata).HasColumnType("jsonb");
         b.Property(x => x.CreatedAtUtc).HasDefaultValueSql("now() at time zone 'utc'");
-
-        // Concurrency token via xmin (no extra column)
-        // b.UseXminAsConcurrencyToken();
     }
 }

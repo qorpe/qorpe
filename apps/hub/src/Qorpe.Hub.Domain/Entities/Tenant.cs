@@ -3,25 +3,25 @@
 /** Tenant aggregate persisted in a Hub authority database. */
 public class Tenant
 {
-    public long Id { get; set; }
-    public string Key { get; set; } = null!;  // URL-safe slug (e.g., "acme")
-    public string Name { get; set; } = null!; // Display name
-    public string? Domain { get; set; }          // Optional custom domain (e.g., acme.com)
-    public bool IsActive { get; set; } = true;
+    public long Id { get; init; }
+    public string Key { get; init; } = null!;  // URL-safe slug (e.g., "acme")
+    public string Name { get; init; } = null!; // Display name
+    public string? Domain { get; init; }          // Optional custom domain (e.g., acme.com)
+    public bool IsActive { get; init; } = true;
 
     // Optional details
-    public string? Timezone { get; set; }        // e.g., "Europe/Istanbul"
-    public Dictionary<string, string>? Metadata { get; set; } // Stored as jsonb
+    public string? Timezone { get; init; }        // e.g., "Europe/Istanbul"
+    public Dictionary<string, string>? Metadata { get; init; } // Stored as jsonb
 
     // Audit
-    public DateTime CreatedAtUtc { get; set; }   // default now() at time zone 'utc'
-    public DateTime? UpdatedAtUtc { get; set; }  // updated by app logic
+    public DateTime CreatedAtUtc { get; init; }   // default now() at time zone 'utc'
+    public DateTime? UpdatedAtUtc { get; init; }  // updated by app logic
 
     // Concurrency (PostgreSQL min is recommended; see config)
     // Navigation
-    public ICollection<ApplicationUser>? Users { get; set; }
-        = new List<ApplicationUser>();
+    public ICollection<UserTenant> Memberships { get; init; } 
+        = new List<UserTenant>();
     
-    public ICollection<RefreshToken>? RefreshTokens { get; set; }
+    public ICollection<RefreshToken>? RefreshTokens { get; init; }
         = new List<RefreshToken>();
 }

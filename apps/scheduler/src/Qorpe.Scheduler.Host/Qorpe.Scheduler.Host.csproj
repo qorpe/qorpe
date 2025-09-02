@@ -11,7 +11,8 @@
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.1" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8"/>
+        <PackageReference Include="Mapster" Version="7.4.0" />
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -28,8 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\..\packages\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
-      <ProjectReference Include="..\..\..\..\packages\sdk\Qorpe.Hub.SDK\Qorpe.Hub.SDK.csproj" />
+      <ProjectReference Include="..\..\..\..\libs\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
       <ProjectReference Include="..\..\..\aspire\src\Qorpe.Aspire.ServiceDefaults\Qorpe.Aspire.ServiceDefaults.csproj" />
       <ProjectReference Include="..\Qorpe.Scheduler.Contracts\Qorpe.Scheduler.Contracts.csproj" />
       <ProjectReference Include="..\Qorpe.Scheduler.Application\Qorpe.Scheduler.Application.csproj" />

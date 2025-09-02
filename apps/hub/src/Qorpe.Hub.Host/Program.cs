@@ -31,8 +31,8 @@ builder.AddNpgsqlDbContext<AppDbContext>(
     settings => {},
     options =>
     {
-        options.UseNpgsql(o =>
-            o.MigrationsHistoryTable("__ef_migrations_history", "hub")); // 👈 name + schema
+        // options.UseNpgsql(o =>
+        //     o.MigrationsHistoryTable("__ef_migrations_history", "hub")); // 👈 name + schema
     }
 );
 
@@ -78,6 +78,9 @@ builder.Services.AddAuthorization(options =>
 });
 
 builder.Services.AddSingleton<IAuthorizationHandler, TenantMatchHandler>();
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
 #region Api Versioning
 

@@ -16,4 +16,8 @@
       <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.8" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\..\libs\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
+    </ItemGroup>
+
 </Project>

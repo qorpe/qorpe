@@ -8,7 +8,10 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\..\..\libs\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
+      <ProjectReference Include="..\..\..\..\libs\sdk\Qorpe.Hub.SDK\Qorpe.Hub.SDK.csproj" />
       <ProjectReference Include="..\Qorpe.Gate.Application\Qorpe.Gate.Application.csproj" />
+      <ProjectReference Include="..\Qorpe.Gate.Domain\Qorpe.Gate.Domain.csproj" />
     </ItemGroup>
 
     <ItemGroup>

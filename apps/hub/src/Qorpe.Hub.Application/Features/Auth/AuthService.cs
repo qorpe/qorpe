@@ -3,16 +3,16 @@ using Microsoft.EntityFrameworkCore;
 using Qorpe.BuildingBlocks.Auth;
 using Qorpe.BuildingBlocks.Multitenancy;
 using Qorpe.Hub.Application.Common.Interfaces;
+using Qorpe.Hub.Application.Features.Auth.Models;
 using Qorpe.Hub.Application.Features.Tenants;
-using Qorpe.Hub.Contracts.V1.Auth.Models;
-using Qorpe.Hub.Contracts.V1.Tenants.Models;
+using Qorpe.Hub.Application.Features.Tenants.Models;
 using Qorpe.Hub.Domain.Entities;
 
 namespace Qorpe.Hub.Application.Features.Auth;
 
 /** Auth service using ASP.NET Identity + refresh token rotation. */
 public class AuthService(
-    ITenantsService tenantsClient,
+    ITenantsService tenantsService,
     ITenantSetter tenantSetter,
     UserManager<ApplicationUser> users,
     IAppDbContext db,
@@ -26,13 +26,12 @@ public class AuthService(
     public async Task<TokenResponse> RegisterAsync(RegisterRequest req, CancellationToken ct)
     {
         var t = tenantAccessor.Current ?? throw new InvalidOperationException("Tenant not resolved.");
-        var tenant = await tenantsClient.GetByKeyAsync(t.Key, ct)
+        var tenant = await tenantsService.GetByKeyAsync(t.Key, ct)
                      ?? throw new InvalidOperationException("Tenant not found.");
         tenantSetter.TryEnrich(tenant.Id, tenant.Key);
         
         var user = new ApplicationUser
         {
-            TenantId = t.Id,
             UserName = req.Email,
             Email = req.Email,
             DisplayName = req.DisplayName,
@@ -49,10 +48,10 @@ public class AuthService(
     public async Task<TokenResponse> LoginAsync(LoginRequest req, CancellationToken ct)
     {
         var t = tenantAccessor.Current ?? throw new InvalidOperationException("Tenant not resolved.");
-        var tenant = await tenantsClient.GetByKeyAsync(t.Key, ct)
+        var tenant = await tenantsService.GetByKeyAsync(t.Key, ct)
                      ?? throw new InvalidOperationException("Tenant not found.");
         tenantSetter.TryEnrich(tenant.Id, tenant.Key);
-        var user = await FindUserByUsernameOrEmailAsync(tenant.Id, req.UsernameOrEmail, ct)
+        var user = await FindUserByUsernameOrEmailAsync(req.UsernameOrEmail, ct)
                    ?? throw new UnauthorizedAccessException("Invalid credentials.");
 
         if (!user.IsActive) throw new UnauthorizedAccessException("User inactive.");
@@ -65,7 +64,7 @@ public class AuthService(
     public async Task<TokenResponse> RefreshAsync(RefreshRequest req, CancellationToken ct)
     {
         var t = tenantAccessor.Current ?? throw new InvalidOperationException("Tenant not resolved.");
-        var tenant = await tenantsClient.GetByKeyAsync(t.Key, ct)
+        var tenant = await tenantsService.GetByKeyAsync(t.Key, ct)
                      ?? throw new InvalidOperationException("Tenant not found.");
         tenantSetter.TryEnrich(tenant.Id, tenant.Key);
         var hash = tokens.HashRefreshToken(req.RefreshToken);
@@ -89,6 +88,24 @@ public class AuthService(
         var t = tenantAccessor.Current ?? throw new InvalidOperationException("Tenant not resolved.");
         var hash = tokens.HashRefreshToken(refreshToken);
         await RevokeAsync(hash, ct);
+    }
+    
+    /// <summary>
+    /// Exchanges the current token into a tenant-scoped access token.
+    /// </summary>
+    public async Task<TokenResponse> ExchangeAsync(string userId, string tenantKey, CancellationToken ct)
+    {
+        var tenant = await tenantsService.GetByKeyAsync(tenantKey, ct)
+                     ?? throw new InvalidOperationException("Tenant not found.");
+
+        var isMember = await db.UserTenants.AsNoTracking()
+            .AnyAsync(ut => ut.UserId == userId && ut.TenantId == tenant.Id && ut.IsActive, ct);
+
+        if (!isMember) throw new UnauthorizedAccessException("User not a member of this tenant.");
+
+        var user = await users.FindByIdAsync(userId) ?? throw new UnauthorizedAccessException();
+
+        return await IssueTokensAsync(user, user.Email!, tenant, device: "exchange", ip: null, ct);
     }
 
     #region Helper(s)
@@ -137,14 +154,13 @@ public class AuthService(
         }
     }
 
-    private async Task<ApplicationUser?> FindUserByUsernameOrEmailAsync(long? tenantId, string input, CancellationToken ct)
+    private async Task<ApplicationUser?> FindUserByUsernameOrEmailAsync(string input, CancellationToken ct)
     {
         var norm = users.NormalizeName(input);
         var normEmail = users.NormalizeEmail(input);
 
         return await users.Users.AsNoTracking()
-            .Where(u => u.TenantId == tenantId &&
-                        (u.NormalizedUserName == norm || u.NormalizedEmail == normEmail))
+            .Where(u => u.NormalizedUserName == norm || u.NormalizedEmail == normEmail)
             .FirstOrDefaultAsync(ct);
     }
 

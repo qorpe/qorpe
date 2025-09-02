@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Qorpe.Hub.Application.Common.Interfaces;
-using Qorpe.Hub.Contracts.V1.Tenants.Models;
+using Qorpe.Hub.Application.Features.Tenants.Models;
+using Qorpe.Hub.Domain.Entities;
 
 namespace Qorpe.Hub.Application.Features.Tenants;
 
@@ -44,20 +45,14 @@ public class TenantsService(IAppDbContext db, IMemoryCache cache) : ITenantsServ
         return dto;
     }
 
-    public async Task<TenantInfo?> GetByUsernameAsync(string username, CancellationToken ct)
+    public async Task<IReadOnlyList<TenantInfo>> GetMineAsync(string userId, CancellationToken ct)
     {
-        var cacheKey = $"tenant:username:{username}".ToLowerInvariant();
-        if (cache.TryGetValue(cacheKey, out TenantInfo? dto)) return dto;
+        var q = db.UserTenants.AsNoTracking()
+            .Join(db.Tenants.AsNoTracking(), ut => ut.TenantId, t => t.Id, (ut, t) => new { ut, t })
+            .Where(t1 => t1.ut.UserId == userId && t1.ut.IsActive && t1.t.IsActive)
+            .OrderBy(t1 => t1.t.Name)
+            .Select(t1 => new TenantInfo(t1.t.Id, t1.t.Key, t1.t.Name, t1.t.Domain, t1.t.IsActive));
 
-        dto = await db.Tenants.AsNoTracking()
-            .Where(t => t.Users != null && t.Users.Select(u => u.UserName).Contains(username) && t.IsActive)
-            .Select(t => new TenantInfo(t.Id, t.Key, t.Name, t.Domain, t.IsActive))
-            .FirstOrDefaultAsync(ct);
-
-        if (dto is not null)
-            cache.Set(cacheKey, dto, new MemoryCacheEntryOptions
-                { AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5), SlidingExpiration = TimeSpan.FromMinutes(2) });
-
-        return dto;
+        return await q.ToListAsync(ct);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Humanizer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Qorpe.BuildingBlocks.Extensions;
 using Qorpe.Hub.Application.Common.Interfaces;
 using Qorpe.Hub.Domain.Entities;
@@ -12,6 +13,7 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
 {
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
     public DbSet<Tenant> Tenants => Set<Tenant>();
+    public DbSet<UserTenant> UserTenants => Set<UserTenant>();
     
     protected override void OnModelCreating(ModelBuilder b)
     {
@@ -27,7 +29,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options)
             // Columns
             foreach (var property in entity.GetProperties())
             {
-                property.SetColumnName(property.GetColumnBaseName().ToSnakeCase());
+                var storeObject = StoreObjectIdentifier.Table(entity.GetTableName()!, entity.GetSchema());
+                var columnName = property.GetColumnName(storeObject) ?? property.Name;
+                property.SetColumnName(columnName.ToSnakeCase());
             }
 
             // Primary / Alternate keys

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
@@ -10,6 +10,7 @@
         <PackageReference Include="Asp.Versioning.Mvc" Version="8.1.0" />
         <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" Version="8.1.0" />
         <PackageReference Include="Aspire.Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.4.1" />
+        <PackageReference Include="Mapster" Version="7.4.0" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.8" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="9.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.8">
@@ -26,9 +27,9 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\ Qorpe.Gate.Infrastructure\Qorpe.Gate.Infrastructure.csproj" />
-      <ProjectReference Include="..\..\..\..\packages\sdk\Qorpe.Hub.SDK\Qorpe.Hub.SDK.csproj" />
+      <ProjectReference Include="..\..\..\..\libs\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
       <ProjectReference Include="..\..\..\aspire\src\Qorpe.Aspire.ServiceDefaults\Qorpe.Aspire.ServiceDefaults.csproj" />
+	  <ProjectReference Include="..\ Qorpe.Gate.Infrastructure\Qorpe.Gate.Infrastructure.csproj" />
       <ProjectReference Include="..\Qorpe.Gate.Contracts\Qorpe.Gate.Contracts.csproj" />
       <ProjectReference Include="..\Qorpe.Gate.Application\Qorpe.Gate.Application.csproj" />
     </ItemGroup>

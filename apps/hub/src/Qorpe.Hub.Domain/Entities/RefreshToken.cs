@@ -3,13 +3,16 @@
 /** Persisted refresh token (technical/persistence concern). */
 public sealed class RefreshToken
 {
-    public long Id { get; set; }
-    public long? TenantId { get; set; }
-    public string UserId { get; set; } = null!;
-    public string TokenHash { get; set; } = null!;
-    public DateTime ExpiresAtUtc { get; set; }
-    public DateTime CreatedAtUtc { get; set; }
+    public long Id { get; init; }
+    public long TenantId { get; init; }
+    public string UserId { get; init; } = null!;
+    public string TokenHash { get; init; } = null!;
+    public DateTime ExpiresAtUtc { get; init; }
+    public DateTime CreatedAtUtc { get; init; }
     public DateTime? RevokedAtUtc { get; set; }
-    public string? DeviceInfo { get; set; }
-    public string? CreatedByIp { get; set; }
+    public string? DeviceInfo { get; init; }
+    public string? CreatedByIp { get; init; }
+    
+    public ApplicationUser? User { get; init; }
+    public Tenant? Tenant { get; init; }
 }
