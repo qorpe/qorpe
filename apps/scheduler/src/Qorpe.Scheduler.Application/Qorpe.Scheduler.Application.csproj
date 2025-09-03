@@ -13,6 +13,11 @@
 
     <ItemGroup>
       <Folder Include="Common\Exceptions\" />
+      <Folder Include="Features\Calendars\" />
+      <Folder Include="Features\History\" />
+      <Folder Include="Features\Jobs\" />
+      <Folder Include="Features\Scheduler\" />
+      <Folder Include="Features\Triggers\" />
     </ItemGroup>
 
 </Project>

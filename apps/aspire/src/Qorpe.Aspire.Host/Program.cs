@@ -24,7 +24,8 @@ var hubHost = builder.AddProject<Projects.Qorpe_Hub_Host>("qorpe-hub-host")
 
 var schedulerHost = builder.AddProject<Projects.Qorpe_Scheduler_Host>("qorpe-scheduler-host")
     .WithReference(qorpedb)
-    .WaitFor(qorpedb);
+    .WaitFor(qorpedb)
+    .WithReplicas(3);
 
 var gateHost = builder.AddProject<Projects.Qorpe_Gate_Host>("qorpe-gate-host")
     .WithReference(qorpedb)

@@ -6,6 +6,8 @@ using Qorpe.BuildingBlocks.Multitenancy;
 using Qorpe.Hub.SDK.Extensions;
 using Qorpe.Scheduler.Host.Common.Handlers;
 using Qorpe.Scheduler.Infrastructure.Auth;
+using Qorpe.Scheduler.Infrastructure.Scheduling.Jobs;
+using Quartz;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -60,6 +62,64 @@ builder.Services.AddApiVersioning(o =>
         o.GroupNameFormat = "'v'VVV";
         o.SubstituteApiVersionInUrl = true;
     });
+
+#endregion
+
+#region Quartz
+
+builder.Services.AddQuartz(q =>
+{
+    q.SchedulerName = "QuartzScheduler";
+    q.SchedulerId = "AUTO";
+
+    q.UsePersistentStore(options =>
+    {
+        options.PerformSchemaValidation = true;
+        options.UseProperties = true;
+        options.RetryInterval = TimeSpan.FromSeconds(15);
+        options.UsePostgres(ops =>
+        {
+            ops.ConnectionString = builder.Configuration.GetConnectionString("qorpe") ?? string.Empty;
+            ops.TablePrefix = "scheduler.qrtz_";
+        });
+
+        options.UseClustering(c =>
+        {
+            c.CheckinMisfireThreshold = TimeSpan.FromSeconds(20);
+            c.CheckinInterval = TimeSpan.FromSeconds(10);
+        });
+        options.UseSystemTextJsonSerializer();
+    });
+
+    q.UseDefaultThreadPool(threadPoolOptions =>
+    {
+        threadPoolOptions.MaxConcurrency = 5;
+    });
+    
+    q.UseDefaultThreadPool(tp => tp.MaxConcurrency = 5);
+
+    // // 1) Job'u kaydet (durable = triggersız da store'da tutulur)
+    // q.AddJob<HeartbeatJob>(opts => opts
+    //     .WithIdentity("heartbeat", "system")
+    //     .StoreDurably());
+    //
+    // // 2A) Basit tetikleyici: 5 sn’de bir, hemen başla
+    // q.AddTrigger(opts => opts
+    //     .ForJob("heartbeat", "system")
+    //     .WithIdentity("heartbeat-every-5s", "system")
+    //     .StartNow()
+    //     .WithSimpleSchedule(s => s
+    //         .WithInterval(TimeSpan.FromSeconds(5))
+    //         .RepeatForever()
+    //         .WithMisfireHandlingInstructionNowWithExistingCount()));
+});
+
+builder.Services.AddQuartzHostedService(options =>
+{
+    options.WaitForJobsToComplete = true;
+    options.AwaitApplicationStarted = true;
+});
+
 
 #endregion
 
