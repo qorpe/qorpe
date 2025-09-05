@@ -1,4 +1,5 @@
 ﻿using Qorpe.Scheduler.Application.Features.Scheduler.Models;
+using Quartz;
 
 namespace Qorpe.Scheduler.Application.Features.Scheduler;
 
@@ -15,14 +16,23 @@ public interface ISchedulerService
     ValueTask StandbyAsync(CancellationToken ct = default);
 
     /// <summary>Shuts scheduler down (IScheduler.Shutdown).</summary>
-    ValueTask ShutdownAsync(bool waitForJobsToComplete, CancellationToken ct = default);
+    ValueTask ShutdownAsync(bool? waitForJobsToComplete, CancellationToken ct = default);
     
     /// <summary>Returns the current meta-snapshot (IScheduler.GetMetaData).</summary>
-    ValueTask<SchedulerMeta> GetMetaDataAsync(CancellationToken ct = default);
+    ValueTask<SchedulerMetaData> GetMetaDataAsync(CancellationToken ct = default);
 
     /// <summary>Returns status flags & ids (wraps Name/InstanceId/IsStarted/InStandby/IsShutdown).</summary>
     ValueTask<SchedulerStatus> GetStatusAsync(CancellationToken ct = default);
 
     /// <summary>Returns currently executing jobs (IScheduler.GetCurrentlyExecutingJobs).</summary>
-    ValueTask<ExecutingJobs> GetCurrentlyExecutingJobsAsync(CancellationToken ct = default);
+    ValueTask<IReadOnlyCollection<IJobExecutionContext>> GetCurrentlyExecutingJobsAsync(CancellationToken ct = default);
+    
+    /// <summary>Pauses all triggers.</summary>
+    ValueTask PauseAllAsync(CancellationToken ct = default);
+
+    /// <summary>Resumes all triggers.</summary>
+    ValueTask ResumeAllAsync(CancellationToken ct = default);
+    
+    /// <summary>Clears all jobs/triggers.</summary>
+    ValueTask ClearAsync(CancellationToken ct = default);
 }

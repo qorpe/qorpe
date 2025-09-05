@@ -1,9 +1,9 @@
-﻿namespace Qorpe.Scheduler.Application.Features.Scheduler.Models;
+﻿namespace Qorpe.Scheduler.Contracts.V1.Scheduler;
 
 /// <summary>
 /// Snapshot of scheduler metadata (based on Quartz.SchedulerMetaData).
 /// </summary>
-public sealed record SchedulerMeta
+public sealed record SchedulerMetaData
 {
     public string SchedulerName { get; init; } = null!;
     public string SchedulerInstanceId { get; init; } = null!;

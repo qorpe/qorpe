@@ -1,5 +1,4 @@
-﻿using Mapster;
-using Qorpe.Scheduler.Application.Features.Scheduler.Models;
+﻿using Qorpe.Scheduler.Application.Features.Scheduler.Models;
 using Quartz;
 
 namespace Qorpe.Scheduler.Application.Features.Scheduler;
@@ -18,11 +17,17 @@ public sealed class SchedulerService(ISchedulerFactory schedulerFactory) : ISche
     public async ValueTask StandbyAsync(CancellationToken ct = default)
         => await (await GetSchedulerAsync(ct)).Standby(ct);
 
-    public async ValueTask ShutdownAsync(bool waitForJobsToComplete, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).Shutdown(waitForJobsToComplete, ct);
-
-    public async ValueTask<SchedulerMeta> GetMetaDataAsync(CancellationToken ct = default)
-        => (await (await GetSchedulerAsync(ct)).GetMetaData(ct)).Adapt<SchedulerMeta>();
+    public async ValueTask ShutdownAsync(bool? waitForJobsToComplete = null, CancellationToken ct = default)
+    {
+        var sch = await GetSchedulerAsync(ct);
+        if (waitForJobsToComplete is null)
+            await sch.Shutdown(ct);
+        else
+            await sch.Shutdown(waitForJobsToComplete.Value, ct);
+    }
+    
+    public async ValueTask<SchedulerMetaData> GetMetaDataAsync(CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).GetMetaData(ct);
 
     public async ValueTask<SchedulerStatus> GetStatusAsync(CancellationToken ct = default)
     {
@@ -30,10 +35,15 @@ public sealed class SchedulerService(ISchedulerFactory schedulerFactory) : ISche
         return new SchedulerStatus(s.SchedulerName, s.SchedulerInstanceId, s.IsStarted, s.InStandbyMode, s.IsShutdown);
     }
 
-    public async ValueTask<ExecutingJobs> GetCurrentlyExecutingJobsAsync(CancellationToken ct = default)
-    {
-        var items = await (await GetSchedulerAsync(ct)).GetCurrentlyExecutingJobs(ct);
-        var mapped = items.Adapt<IReadOnlyList<ExecutingJob>>();
-        return new ExecutingJobs(mapped);
-    }
+    public async ValueTask<IReadOnlyCollection<IJobExecutionContext>> GetCurrentlyExecutingJobsAsync(CancellationToken ct = default) 
+        => await (await GetSchedulerAsync(ct)).GetCurrentlyExecutingJobs(ct);
+    
+    public async ValueTask PauseAllAsync(CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).PauseAll(ct);
+
+    public async ValueTask ResumeAllAsync(CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).ResumeAll(ct);
+
+    public async ValueTask ClearAsync(CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).Clear(ct);
 }

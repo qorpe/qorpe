@@ -27,20 +27,20 @@ public sealed class SchedulerController(ISchedulerService svc) : ControllerBase
 
     /// <summary>Returns scheduler metadata snapshot.</summary>
     [HttpGet("meta")]
-    [ProducesResponseType(typeof(SchedulerMeta), StatusCodes.Status200OK)]
-    public async Task<ActionResult<SchedulerMeta>> GetMeta(string tenant, CancellationToken ct)
+    [ProducesResponseType(typeof(SchedulerMetaData), StatusCodes.Status200OK)]
+    public async Task<ActionResult<SchedulerMetaData>> GetMeta(string tenant, CancellationToken ct)
     {
         var meta = await svc.GetMetaDataAsync(ct);
-        return Ok(meta.Adapt<SchedulerMeta>());
+        return Ok(meta.Adapt<SchedulerMetaData>());
     }
 
     /// <summary>Lists currently executing jobs.</summary>
     [HttpGet("executing")]
-    [ProducesResponseType(typeof(ExecutingJobs), StatusCodes.Status200OK)]
-    public async Task<ActionResult<ExecutingJobs>> GetExecuting(string tenant, CancellationToken ct)
+    [ProducesResponseType(typeof(IReadOnlyList<ExecutingJob>), StatusCodes.Status200OK)]
+    public async Task<ActionResult<IReadOnlyList<ExecutingJob>>> GetExecuting(string tenant, CancellationToken ct)
     {
         var exec = await svc.GetCurrentlyExecutingJobsAsync(ct);
-        return Ok(exec.Adapt<ExecutingJobs>());
+        return Ok(exec.Adapt<IReadOnlyList<ExecutingJob>>());
     }
 
     /// <summary>Starts the scheduler threads.</summary>
@@ -73,9 +73,36 @@ public sealed class SchedulerController(ISchedulerService svc) : ControllerBase
     /// <summary>Shuts scheduler down; optionally waits for running jobs.</summary>
     [HttpPost("shutdown")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> Shutdown(string tenant, [FromQuery] bool wait, CancellationToken ct)
+    public async Task<IActionResult> Shutdown(string tenant, [FromQuery] bool? waitForJobsToComplete, CancellationToken ct)
     {
-        await svc.ShutdownAsync(wait, ct);
+        await svc.ShutdownAsync(waitForJobsToComplete, ct);
+        return NoContent();
+    }
+    
+    /// <summary>Pause all triggers.</summary>
+    [HttpPost("pause-all")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> PauseAll(string tenant, CancellationToken ct)
+    {
+        await svc.PauseAllAsync(ct);
+        return NoContent();
+    }
+
+    /// <summary>Resume all triggers.</summary>
+    [HttpPost("resume-all")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> ResumeAll(string tenant, CancellationToken ct)
+    {
+        await svc.ResumeAllAsync(ct);
+        return NoContent();
+    }
+
+    /// <summary>Clear all jobs/triggers.</summary>
+    [HttpPost("clear")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<IActionResult> Clear(string tenant, CancellationToken ct)
+    {
+        await svc.ClearAsync(ct);
         return NoContent();
     }
 }

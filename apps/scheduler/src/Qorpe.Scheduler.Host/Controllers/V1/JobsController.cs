@@ -113,11 +113,11 @@ public sealed class JobsController(IJobsService svc) : ControllerBase
     }
 
     [HttpGet("{name}")]
-    [ProducesResponseType(typeof(JobDetailResponse), StatusCodes.Status200OK)]
-    public async Task<ActionResult<JobDetailResponse>> Detail(string tenant, string name, CancellationToken ct)
+    [ProducesResponseType(typeof(JobDetail), StatusCodes.Status200OK)]
+    public async Task<ActionResult<JobDetail>> Detail(string tenant, string name, CancellationToken ct)
     {
         var jd = await svc.GetJobDetailAsync(new JobKey(name, $"tenant:{tenant}"), ct);
-        return Ok(new JobDetailResponse(jd?.Adapt<JobDetail>()));
+        return Ok(jd?.Adapt<JobDetail>());
     }
 
     [HttpGet("{name}/triggers")]
