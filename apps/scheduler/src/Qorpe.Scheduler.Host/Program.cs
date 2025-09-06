@@ -1,9 +1,11 @@
+using System.Text.Json.Serialization;
 using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Qorpe.BuildingBlocks.Auth;
 using Qorpe.BuildingBlocks.Multitenancy;
 using Qorpe.Hub.SDK.Extensions;
+using Qorpe.Scheduler.Application.Features.Calendars;
 using Qorpe.Scheduler.Application.Features.Jobs;
 using Qorpe.Scheduler.Application.Features.Scheduler;
 using Qorpe.Scheduler.Application.Features.Triggers;
@@ -16,7 +18,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -36,16 +39,15 @@ builder.Services.AddJwtAuth(builder.Configuration.GetSection("JwtOptions"), o =>
     };
 });
 
-builder.Services.AddAuthorization(options =>
-{
-    options.AddPolicy("TenantMatch", policy =>
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("TenantMatch", policy =>
         policy.Requirements.Add(new TenantMatchRequirement()));
-});
 
 builder.Services.AddSingleton<IAuthorizationHandler, TenantMatchHandler>();
 builder.Services.AddScoped<IJobsService, JobsService>();
 builder.Services.AddScoped<ISchedulerService, SchedulerService>();
 builder.Services.AddScoped<ITriggersService, TriggersService>();
+builder.Services.AddScoped<ICalendarsService, CalendarsService>();
 
 #region Api Versioning
 
