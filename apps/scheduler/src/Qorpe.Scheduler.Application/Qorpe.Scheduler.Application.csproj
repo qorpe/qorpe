@@ -16,7 +16,7 @@
       <Folder Include="Features\Calendars\Models\" />
       <Folder Include="Features\History\Models\" />
       <Folder Include="Features\Jobs\Models\" />
-      <Folder Include="Features\Triggers\" />
+      <Folder Include="Features\Triggers\Models\" />
     </ItemGroup>
 
     <ItemGroup>

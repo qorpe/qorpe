@@ -6,9 +6,9 @@ using Qorpe.BuildingBlocks.Multitenancy;
 using Qorpe.Hub.SDK.Extensions;
 using Qorpe.Scheduler.Application.Features.Jobs;
 using Qorpe.Scheduler.Application.Features.Scheduler;
+using Qorpe.Scheduler.Application.Features.Triggers;
 using Qorpe.Scheduler.Host.Common.Handlers;
 using Qorpe.Scheduler.Infrastructure.Auth;
-using Qorpe.Scheduler.Infrastructure.Scheduling.Jobs;
 using Quartz;
 using Scalar.AspNetCore;
 
@@ -45,6 +45,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.AddSingleton<IAuthorizationHandler, TenantMatchHandler>();
 builder.Services.AddScoped<IJobsService, JobsService>();
 builder.Services.AddScoped<ISchedulerService, SchedulerService>();
+builder.Services.AddScoped<ITriggersService, TriggersService>();
 
 #region Api Versioning
 

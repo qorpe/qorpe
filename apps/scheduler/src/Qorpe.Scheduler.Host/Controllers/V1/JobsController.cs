@@ -46,16 +46,16 @@ public sealed class JobsController(IJobsService svc) : ControllerBase
         => new(key.Name, ScopeGroup(tenant, key.Group));
 
     /// <summary>Builds a tenant-scoped GroupMatcher for JobKey groups.</summary>
-    private static GroupMatcher<QuartzJobKey> BuildMatcher(string tenant, string @operator, string compareTo)
+    private static GroupMatcher<QuartzJobKey> BuildMatcher(string tenant, GroupOp op, string compareTo)
     {
         var scoped = ScopeGroup(tenant, compareTo);
-        return @operator.ToUpperInvariant() switch
+        return op switch
         {
-            "EQUALS"      => GroupMatcher<QuartzJobKey>.GroupEquals(scoped),
-            "STARTS_WITH" => GroupMatcher<QuartzJobKey>.GroupStartsWith(scoped),
-            "ENDS_WITH"   => GroupMatcher<QuartzJobKey>.GroupEndsWith(scoped),
-            "CONTAINS"    => GroupMatcher<QuartzJobKey>.GroupContains(scoped),
-            _ => throw new ValidationException("operator must be one of: EQUALS, STARTS_WITH, ENDS_WITH, CONTAINS")
+            GroupOp.Equals     => GroupMatcher<QuartzJobKey>.GroupEquals(scoped),
+            GroupOp.StartsWith => GroupMatcher<QuartzJobKey>.GroupStartsWith(scoped),
+            GroupOp.EndsWith   => GroupMatcher<QuartzJobKey>.GroupEndsWith(scoped),
+            GroupOp.Contains   => GroupMatcher<QuartzJobKey>.GroupContains(scoped),
+            _ => GroupMatcher<QuartzJobKey>.GroupEquals(scoped)
         };
     }
 
@@ -238,11 +238,11 @@ public sealed class JobsController(IJobsService svc) : ControllerBase
     [ProducesResponseType(typeof(List<ContractsJobKey>), StatusCodes.Status200OK)]
     public async Task<ActionResult<List<ContractsJobKey>>> GetJobKeys(
         [FromRoute] string tenant,
-        [FromQuery] string @operator,
+        [FromQuery] GroupOp op,
         [FromQuery] string compareTo,
         CancellationToken ct)
     {
-        var keys = await svc.GetJobKeys(BuildMatcher(tenant, @operator, compareTo), ct);
+        var keys = await svc.GetJobKeys(BuildMatcher(tenant, op, compareTo), ct);
         var res = keys.Select(k => new ContractsJobKey(k.Name, UnScopeGroup(tenant, k.Group))).ToList();
         return Ok(res);
     }
