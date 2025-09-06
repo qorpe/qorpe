@@ -3,52 +3,138 @@ using Quartz.Impl.Matchers;
 
 namespace Qorpe.Scheduler.Application.Features.Jobs;
 
-/// <summary>IScheduler-based jobs service in the Application layer (uses Quartz types directly).</summary>
+/// <summary>
+/// IScheduler-based jobs service in the Application layer (uses Quartz types directly).
+/// </summary>
 public sealed class JobsService(ISchedulerFactory factory) : IJobsService
 {
-    private async Task<IScheduler> GetSchedulerAsync(CancellationToken ct) => await factory.GetScheduler(ct);
+    #region Helpers
 
-    public async ValueTask AddJobAsync(IJobDetail jobDetail, bool replace, bool storeNonDurableWhileAwaitingScheduling = false, CancellationToken ct = default)
-    {
-        var s = await GetSchedulerAsync(ct);
-        if (storeNonDurableWhileAwaitingScheduling) await s.AddJob(jobDetail, replace, true, ct);
-        else await s.AddJob(jobDetail, replace, ct);
-    }
+    /// <summary>
+    /// Resolves the current scheduler instance.
+    /// </summary>
+    private async Task<IScheduler> GetSchedulerAsync(CancellationToken ct)
+        => await factory.GetScheduler(ct);
 
-    public async ValueTask<bool> DeleteJobAsync(JobKey jobKey, CancellationToken ct = default)
+    #endregion
+
+    #region AddJob
+
+    /// <summary>Adds a job (store only) with a replacement flag.</summary>
+    public async ValueTask AddJob(IJobDetail jobDetail, bool replace, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).AddJob(jobDetail, replace, ct);
+
+    /// <summary>Adds a job (store only) with an extra non-durable flag.</summary>
+    public async ValueTask AddJob(IJobDetail jobDetail, bool replace, bool storeNonDurableWhileAwaitingScheduling, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).AddJob(jobDetail, replace, storeNonDurableWhileAwaitingScheduling, ct);
+
+    #endregion
+
+    #region CheckExists
+
+    /// <summary>Checks if a job exists by key.</summary>
+    public async ValueTask<bool> CheckExists(JobKey jobKey, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).CheckExists(jobKey, ct);
+
+    #endregion
+
+    #region DeleteJob / DeleteJobs
+
+    /// <summary>Deletes a single job by key.</summary>
+    public async ValueTask<bool> DeleteJob(JobKey jobKey, CancellationToken ct = default)
         => await (await GetSchedulerAsync(ct)).DeleteJob(jobKey, ct);
 
-    public async ValueTask<bool> DeleteJobsAsync(IReadOnlyCollection<JobKey> jobKeys, CancellationToken ct = default)
+    /// <summary>Deletes multiple jobs by keys.</summary>
+    public async ValueTask<bool> DeleteJobs(IReadOnlyCollection<JobKey> jobKeys, CancellationToken ct = default)
         => await (await GetSchedulerAsync(ct)).DeleteJobs(jobKeys, ct);
 
-    public async ValueTask TriggerJobAsync(JobKey jobKey, JobDataMap? data = null, CancellationToken ct = default)
-    {
-        var s = await GetSchedulerAsync(ct);
-        if (data is null) await s.TriggerJob(jobKey, ct);
-        else await s.TriggerJob(jobKey, data, ct);
-    }
+    #endregion
 
-    public async ValueTask PauseJobAsync(JobKey jobKey, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).PauseJob(jobKey, ct);
+    #region GetCurrentlyExecutingJobs
 
-    public async ValueTask ResumeJobAsync(JobKey jobKey, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).ResumeJob(jobKey, ct);
+    /// <summary>Returns currently executing job contexts.</summary>
+    public async ValueTask<List<IJobExecutionContext>> GetCurrentlyExecutingJobs(CancellationToken ct = default)
+        => (await (await GetSchedulerAsync(ct)).GetCurrentlyExecutingJobs(ct)).ToList();
 
-    public async ValueTask PauseJobsAsync(GroupMatcher<JobKey> matcher, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).PauseJobs(matcher, ct);
+    #endregion
 
-    public async ValueTask ResumeJobsAsync(GroupMatcher<JobKey> matcher, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).ResumeJobs(matcher, ct);
+    #region GetJobDetail
 
-    public async ValueTask<IReadOnlyCollection<JobKey>> GetJobKeysAsync(GroupMatcher<JobKey> matcher, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).GetJobKeys(matcher, ct);
-
-    public async ValueTask<IJobDetail?> GetJobDetailAsync(JobKey jobKey, CancellationToken ct = default)
+    /// <summary>Returns job detail by key.</summary>
+    public async ValueTask<IJobDetail?> GetJobDetail(JobKey jobKey, CancellationToken ct = default)
         => await (await GetSchedulerAsync(ct)).GetJobDetail(jobKey, ct);
 
-    public async ValueTask<IReadOnlyCollection<ITrigger>> GetTriggersOfJobAsync(JobKey jobKey, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).GetTriggersOfJob(jobKey, ct);
+    #endregion
 
-    public async ValueTask<bool> CheckExistsAsync(JobKey jobKey, CancellationToken ct = default)
-        => await (await GetSchedulerAsync(ct)).CheckExists(jobKey, ct);
+    #region GetJobGroupNames
+
+    /// <summary>Returns all job group names.</summary>
+    public async ValueTask<List<string>> GetJobGroupNames(CancellationToken ct = default)
+        => (await (await GetSchedulerAsync(ct)).GetJobGroupNames(ct)).ToList();
+
+    #endregion
+
+    #region GetJobKeys
+
+    /// <summary>Returns job keys by matcher.</summary>
+    public async ValueTask<List<JobKey>> GetJobKeys(GroupMatcher<JobKey> matcher, CancellationToken ct = default)
+        => (await (await GetSchedulerAsync(ct)).GetJobKeys(matcher, ct)).ToList();
+
+    #endregion
+
+    #region Interrupt
+
+    /// <summary>Interrupts a job by key.</summary>
+    public async ValueTask<bool> Interrupt(JobKey jobKey, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).Interrupt(jobKey, ct);
+
+    /// <summary>Interrupts a job by fire instance id.</summary>
+    public async ValueTask<bool> Interrupt(string fireInstanceId, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).Interrupt(fireInstanceId, ct);
+
+    #endregion
+
+    #region IsJobGroupPaused
+
+    /// <summary>Returns whether the given job group is paused.</summary>
+    public async ValueTask<bool> IsJobGroupPaused(string groupName, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).IsJobGroupPaused(groupName, ct);
+
+    #endregion
+
+    #region PauseJob / PauseJobs
+
+    /// <summary>Pauses a single job.</summary>
+    public async ValueTask PauseJob(JobKey jobKey, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).PauseJob(jobKey, ct);
+
+    /// <summary>Pauses jobs by matcher.</summary>
+    public async ValueTask PauseJobs(GroupMatcher<JobKey> matcher, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).PauseJobs(matcher, ct);
+
+    #endregion
+
+    #region ResumeJob / ResumeJobs
+
+    /// <summary>Resumes a single job.</summary>
+    public async ValueTask ResumeJob(JobKey jobKey, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).ResumeJob(jobKey, ct);
+
+    /// <summary>Resumes jobs by matcher.</summary>
+    public async ValueTask ResumeJobs(GroupMatcher<JobKey> matcher, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).ResumeJobs(matcher, ct);
+
+    #endregion
+
+    #region TriggerJob
+
+    /// <summary>Triggers a job immediately.</summary>
+    public async ValueTask TriggerJob(JobKey jobKey, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).TriggerJob(jobKey, ct);
+
+    /// <summary>Triggers a job immediately with job data.</summary>
+    public async ValueTask TriggerJob(JobKey jobKey, JobDataMap data, CancellationToken ct = default)
+        => await (await GetSchedulerAsync(ct)).TriggerJob(jobKey, data, ct);
+
+    #endregion
 }

@@ -2,9 +2,10 @@
 
 public record AddJobRequest(
     string Name,
+    string Group,
     string? Description,
     string JobType,
     bool Durable = true,
     bool RequestsRecovery = true,
-    Dictionary<string, object?>? Data = null
+    JobDataMap? JobDataMap = null
 );
