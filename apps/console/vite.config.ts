@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import plugin from '@vitejs/plugin-react';
+import path from "node:path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,4 +9,9 @@ export default defineConfig({
         port: 51545
     },
     base: '/console',
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, 'src'),
+        },
+    },
 })
