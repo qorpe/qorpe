@@ -6,7 +6,7 @@ import path from "node:path";
 export default defineConfig({
     plugins: [plugin()],
     server: {
-        port: 51545
+        port: 5173
     },
     base: '/console',
     resolve: {

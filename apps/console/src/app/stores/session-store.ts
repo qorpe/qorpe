@@ -5,6 +5,7 @@ import type { AuthTokens, UserIdentity } from "@/shared/types/auth";
 interface SessionState {
     tokens: AuthTokens | null;
     user: UserIdentity | null;
+    isAuthenticated: boolean;
     tenants: string[];
     selectedTenant: string | null;
     setTokens: (t: AuthTokens | null) => void;
@@ -19,13 +20,14 @@ export const useSessionStore = create<SessionState>()(
         (set) => ({
             tokens: null,
             user: null,
+            isAuthenticated: false,
             tenants: [],
             selectedTenant: null,
-            setTokens: (t) => set({ tokens: t }),
+            setTokens: (t) => set({ tokens: t, isAuthenticated: Boolean(t?.accessToken) }),
             setUser: (u) => set({ user: u }),
             setTenants: (list) => set({ tenants: list, selectedTenant: list[0] ?? null }),
             selectTenant: (tenant) => set({ selectedTenant: tenant }),
-            logout: () => set({ tokens: null, user: null, tenants: [], selectedTenant: null }),
+            logout: () => set({ tokens: null, user: null, isAuthenticated: false, tenants: [], selectedTenant: null }),
         }),
         { name: "qorpe-session" }
     )
