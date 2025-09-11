@@ -1,55 +1,32 @@
-import { create, type StateCreator } from "zustand";
-import { devtools, persist, createJSONStorage } from "zustand/middleware";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { AuthTokens, UserIdentity } from "@/shared/types/auth";
 
-export type ThemeMode = "light" | "dark";
+interface SessionState {
+    tokens: AuthTokens | null;
+    user: UserIdentity | null;
+    tenants: string[];
+    selectedTenant: string | null;
+    setTokens: (t: AuthTokens | null) => void;
+    setUser: (u: UserIdentity | null) => void;
+    setTenants: (list: string[]) => void;
+    selectTenant: (tenant: string) => void;
+    logout: () => void;
+}
 
-type SessionState = {
-    accessToken: string | null;
-    tenantKey: string | null;
-    theme: ThemeMode;
-};
-
-type SessionActions = {
-    setToken: (t: string | null) => void;
-    setTenant: (k: string | null) => void;
-    setTheme: (m: ThemeMode) => void;
-    clear: () => void;
-};
-
-/** Full store type. */
-export type SessionStore = SessionState & SessionActions;
-
-/** Typed StateCreator with middleware tuple annotations (per docs). */
-type SC = StateCreator<
-    SessionStore,
-    [["zustand/devtools", never], ["zustand/persist", unknown]],
-    [],
-    SessionStore
->;
-
-/** Factory (middleware-friendly) */
-const createSessionStore: SC = (set) => ({
-    accessToken: null,
-    tenantKey: null,
-    theme: "light",
-    setToken: (t) => set({ accessToken: t }),
-    setTenant: (k) => set({ tenantKey: k }),
-    setTheme: (m) => set({ theme: m }),
-    clear: () => set({ accessToken: null, tenantKey: null }),
-});
-
-/** Exported hook with devtools + persist (typed). */
-export const useSessionStore = create<SessionStore>()(
-    devtools(
-        persist(createSessionStore, {
-            name: "Qorpe.Session",
-            storage: createJSONStorage(() => localStorage),
-            partialize: (s) => ({
-                accessToken: s.accessToken,
-                tenantKey: s.tenantKey,
-                theme: s.theme,
-            }),
+export const useSessionStore = create<SessionState>()(
+    persist(
+        (set) => ({
+            tokens: null,
+            user: null,
+            tenants: [],
+            selectedTenant: null,
+            setTokens: (t) => set({ tokens: t }),
+            setUser: (u) => set({ user: u }),
+            setTenants: (list) => set({ tenants: list, selectedTenant: list[0] ?? null }),
+            selectTenant: (tenant) => set({ selectedTenant: tenant }),
+            logout: () => set({ tokens: null, user: null, tenants: [], selectedTenant: null }),
         }),
-        { name: "session-store" }
+        { name: "qorpe-session" }
     )
 );

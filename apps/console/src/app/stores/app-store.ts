@@ -1,41 +1,40 @@
-import { create, type StateCreator } from "zustand";
-import { devtools, persist, createJSONStorage } from "zustand/middleware";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { AppTab, ModuleKey, TabKey } from "@/shared/types/app";
 
-export type AppId = "scheduler" | "gate";
+interface AppState {
+    currentModule: ModuleKey;
+    tabs: AppTab[];
+    activeKey: TabKey | null;
+    setModule: (m: ModuleKey) => void;
+    openTab: (tab: AppTab) => void;
+    closeTab: (key: TabKey) => void;
+    setActive: (key: TabKey) => void;
+}
 
-type AppState = {
-    selectedApp: AppId;
-    tenantKey: string | null; // e.g., "acme" | "globex"
-};
-
-type AppActions = {
-    setSelectedApp: (app: AppId) => void;
-    setTenantKey: (key: string | null) => void;
-};
-
-export type AppStore = AppState & AppActions;
-
-type SC = StateCreator<
-    AppStore,
-    [["zustand/devtools", never], ["zustand/persist", unknown]],
-    [],
-    AppStore
->;
-
-const createAppStore: SC = (set) => ({
-    selectedApp: "scheduler",
-    tenantKey: null,
-    setSelectedApp: (app) => set({ selectedApp: app }),
-    setTenantKey: (key) => set({ tenantKey: key }),
-});
-
-export const useAppStore = create<AppStore>()(
-    devtools(
-        persist(createAppStore, {
-            name: "Qorpe.App",
-            storage: createJSONStorage(() => localStorage),
-            partialize: (s) => ({ selectedApp: s.selectedApp, tenantKey: s.tenantKey }),
+export const useAppStore = create<AppState>()(
+    persist(
+        (set, get) => ({
+            currentModule: "gate",
+            tabs: [],
+            activeKey: null,
+            setModule: (m) => set({ currentModule: m }),
+            openTab: (tab) => {
+                const exists = get().tabs.some((t) => t.key === tab.key);
+                set((s) => ({
+                    tabs: exists ? s.tabs : [...s.tabs, tab],
+                    activeKey: tab.key,
+                }));
+            },
+            closeTab: (key) => {
+                const { tabs, activeKey } = get();
+                const idx = tabs.findIndex((t) => t.key === key);
+                const next = tabs.filter((t) => t.key !== key);
+                const nextActive = activeKey === key ? next[Math.max(0, idx - 1)]?.key ?? null : activeKey;
+                set({ tabs: next, activeKey: nextActive });
+            },
+            setActive: (key) => set({ activeKey: key }),
         }),
-        { name: "app-store" }
+        { name: "qorpe-app" }
     )
 );

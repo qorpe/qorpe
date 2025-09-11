@@ -1,47 +1,36 @@
-import { createBrowserRouter, RouteObject } from "react-router-dom";
-import { protectedLoader } from "./auth";
-import AppLayout from "./app-layout";
-import LoginPage from "../modules/auth/login-page";
-import NotFoundPage from "./ui/not-found";
+import { createBrowserRouter, Navigate } from "react-router";
+import AppLayout from "@/app/layouts/app-layout";
+import Login from "@/features/hub/auth/pages/login";
+import NotFound from "@/app/pages/not-found";
+import GateRoutes from "@/features/gate/routes";
 
-// Scheduler pages
-import SchedulerHome from "../features/scheduler/pages/home";
-import SchedulerJobs from "../features/scheduler/jobs/pages/list-page";
-import SchedulerJobDetail from "../features/scheduler/jobs/pages/detail-page";
+import { useSessionStore } from "./stores/session-store";
+import { type JSX } from "react";
 
-// Gate pages (placeholder)
-import GateHome from "../features/gate/pages/home";
-import GateRoutes from "../features/gate/routes/pages/list-page";
-import GateRouteDetail from "../features/gate/routes/pages/detail-page";
-
-const appChildren: RouteObject[] = [
-    { index: true, element: <div>Dashboard</div> },
-
-    {
-        path: "scheduler",
-        children: [
-            { index: true, element: <SchedulerHome /> },
-            { path: "jobs", element: <SchedulerJobs /> },
-            { path: "jobs/:id", element: <SchedulerJobDetail /> },
-            // triggers vb. sonra eklenecek
-        ],
-    },
-
-    {
-        path: "gate",
-        children: [
-            { index: true, element: <GateHome /> },
-            { path: "routes", element: <GateRoutes /> },
-            { path: "routes/:id", element: <GateRouteDetail /> },
-            // clusters vb. sonra eklenecek
-        ],
-    },
-
-    { path: "*", element: <NotFoundPage /> },
-];
+/** Simple guard wrapper. */
+function Protected({ children }: { children: JSX.Element }) {
+    const isAuth = useSessionStore((s) => s.isAuthenticated);
+    return isAuth ? children : <Navigate to="/login" replace />;
+}
 
 export const router = createBrowserRouter([
-    { path: "/login", element: <LoginPage /> },
-    { path: "/app", element: <AppLayout />, loader: protectedLoader, children: appChildren },
-    { path: "*", element: <NotFoundPage /> },
+    { path: "/login", element: <Login /> },
+    {
+        path: "/",
+        element: (
+            <Protected>
+                <AppLayout />
+            </Protected>
+        ),
+        children: [
+            { index: true, element: <Navigate to="/gate/routes" replace /> },
+            { path: "/gate/routes", element: <GateRoutes /> },
+            { path: "/gate/clusters", element: <GateClusters /> },
+            { path: "/gate/settings", element: <GateSettings /> },
+            { path: "/scheduler/jobs", element: <SchedulerJobs /> },
+            { path: "/scheduler/triggers", element: <SchedulerTriggers /> },
+            { path: "/hub/tenants", element: <HubTenants /> },
+            { path: "*", element: <NotFound /> },
+        ],
+    },
 ]);
