@@ -26,3 +26,10 @@ export interface ModuleConfig {
     icon: React.ReactNode;
     sections: ModuleSection[];
 }
+
+export type TenantInfo = {
+    id: string;
+    key: string;          // "acme"
+    name?: string;
+    isActive?: boolean;
+};

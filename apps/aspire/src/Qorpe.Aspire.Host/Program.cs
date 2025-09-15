@@ -15,7 +15,7 @@ var qorpedb = postgres.AddDatabase("qorpe");
 #region Application(s)
 
 var console = builder.AddNpmApp("qorpe-console", "../../../console")
-    .WithHttpEndpoint(51545, 51545, isProxied: false)
+    .WithHttpEndpoint(5173, 5173, isProxied: false)
     .WithHttpHealthCheck("/");
 
 var hubHost = builder.AddProject<Projects.Qorpe_Hub_Host>("qorpe-hub-host")

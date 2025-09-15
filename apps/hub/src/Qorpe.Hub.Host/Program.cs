@@ -82,6 +82,12 @@ builder.Services.AddSingleton<IAuthorizationHandler, TenantMatchHandler>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUser, CurrentUser>();
 
+builder.Services.AddAntiforgery(opt =>
+{
+    opt.HeaderName = "X-CSRF-Token";
+    opt.Cookie.Name = "XSRF-TOKEN"; // non-HttpOnly
+});
+
 #region Api Versioning
 
 // API Versioning

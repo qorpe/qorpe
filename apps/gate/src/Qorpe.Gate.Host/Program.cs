@@ -36,6 +36,29 @@ builder.Services.AddJwtAuth(builder.Configuration.GetSection("JwtOptions"), o =>
     };
 });
 
+var allowedHosts = builder.Configuration["AllowedHosts"] ?? "*";
+var allowedOrigins = allowedHosts.Split(';', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("CorsPolicy", policy =>
+    {
+        if (allowedOrigins.Length == 1 && allowedOrigins[0] == "*")
+        {
+            policy.AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        }
+        else
+        {
+            policy.WithOrigins(allowedOrigins)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        }
+    });
+});
+
 builder.Services.AddAuthorization(o =>
 {
     o.AddPolicy("TenantMatch", p => p.Requirements.Add(new TenantMatchRequirement()));
@@ -93,6 +116,8 @@ else
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("CorsPolicy");
 
 // Gate Branch (works only under /gate)
 // only for /t/{tenant}/gate/v{version}/...

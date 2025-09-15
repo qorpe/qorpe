@@ -5,7 +5,6 @@ import axios, {
     type AxiosRequestConfig,
     type InternalAxiosRequestConfig,
 } from "axios";
-import type { AuthTokens } from "@/shared/types/auth";
 import { useSessionStore } from "@/app/stores/session-store";
 
 /** Type guard for AxiosHeaders. */
@@ -24,32 +23,23 @@ function setHeaderSafe(config: InternalAxiosRequestConfig, key: string, value: s
     }
 }
 
-/** Extract/set tokens through zustand (no direct import cycles). */
-const tokenStore = {
-    get: (): AuthTokens | null => useSessionStore.getState().tokens,
-    set: (t: AuthTokens | null) => useSessionStore.getState().setTokens(t),
-};
-
-/** Create and configure the Axios instance with JWT & refresh flow. */
+/** Axios instance with cookie refresh and RAM access token. */
 export const createHttp = (baseURL: string): AxiosInstance => {
     const instance = axios.create({
         baseURL,
-        withCredentials: true,
+        withCredentials: true, // send/receive cookies
         timeout: 15000,
     });
 
-    // Request: attach auth and tenant headers
+    // Attach Authorization & Tenant
     instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-        const tokens = tokenStore.get();
-        const tenant = useSessionStore.getState().selectedTenant;
-
+        const { tokens, selectedTenant } = useSessionStore.getState();
         if (tokens?.accessToken) setHeaderSafe(config, "Authorization", `Bearer ${tokens.accessToken}`);
-        if (tenant) setHeaderSafe(config, "X-Tenant-Key", tenant);
-
+        if (selectedTenant) setHeaderSafe(config, "X-Tenant-Key", selectedTenant);
         return config;
     });
 
-    // Response: single-flight refresh with queue
+    // Single-flight refresh queue
     let isRefreshing = false;
     const queue: Array<(t: string | null) => void> = [];
     const flush = (token: string | null) => {
@@ -62,35 +52,30 @@ export const createHttp = (baseURL: string): AxiosInstance => {
         async (error: AxiosError) => {
             const status = error.response?.status ?? 0;
             const original = error.config as AxiosRequestConfig & { _retry?: boolean };
-
             if (status !== 401 || original?._retry) return Promise.reject(error);
-            original._retry = true;
 
+            original._retry = true;
+            const { selectedTenant } = useSessionStore.getState();
+            if (!selectedTenant) {
+                // No tenant context; cannot refresh
+                useSessionStore.getState().clearSession();
+                return Promise.reject(error);
+            }
+
+            // Start a single refresh (cookie-based, no body)
             if (!isRefreshing) {
                 isRefreshing = true;
                 try {
-                    const tokens = tokenStore.get();
-                    if (!tokens?.refreshToken) {
-                        tokenStore.set(null);
-                        flush(null);
-                        return Promise.reject(error);
-                    }
-
-                    // Adjust to your API path/payload as needed
-                    const { data } = await axios.post<{ accessToken: string; refreshToken?: string }>(
-                        `${baseURL}/auth/refresh`,
-                        { refreshToken: tokens.refreshToken },
+                    const refreshUrl = `/t/${encodeURIComponent(selectedTenant)}/hub/v1/auth/refresh`;
+                    const { data } = await axios.post<{ accessToken: string }>(
+                        `${baseURL}${refreshUrl}`,
+                        {},
                         { withCredentials: true }
                     );
-
-                    const next: AuthTokens = {
-                        accessToken: data.accessToken,
-                        refreshToken: data.refreshToken ?? tokens.refreshToken,
-                    };
-                    tokenStore.set(next);
-                    flush(next.accessToken);
+                    useSessionStore.getState().applyNewAccessToken(data.accessToken);
+                    flush(data.accessToken);
                 } catch (e) {
-                    tokenStore.set(null);
+                    useSessionStore.getState().clearSession();
                     flush(null);
                     return Promise.reject(e);
                 } finally {
@@ -98,7 +83,7 @@ export const createHttp = (baseURL: string): AxiosInstance => {
                 }
             }
 
-            // Enqueue request until refresh finishes, then replay
+            // Enqueue the original request until refresh completes
             return new Promise((resolve, reject) => {
                 queue.push((newAccess) => {
                     if (!newAccess) return reject(error);
@@ -112,5 +97,5 @@ export const createHttp = (baseURL: string): AxiosInstance => {
     return instance;
 };
 
-/** Export a singleton client; prefer injecting this in feature code. */
-export const http = createHttp(import.meta.env.VITE_API_BASE_URL ?? "/api");
+/** Export a singleton client; */
+export const http = createHttp(import.meta.env.VITE_API_BASE_URL ?? "http://localhost:5223");

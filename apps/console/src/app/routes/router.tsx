@@ -8,31 +8,25 @@ import JobDetail from "@/features/scheduler/jobs/pages/job-detail";
 import JobCreate from "@/features/scheduler/jobs/pages/job-create";
 import ProtectedRoute from "@/app/routes/protected-route"
 
+// src/app/router.tsx
 export const router = createBrowserRouter([
-    // Public (auth layout)
     {
         element: <AuthLayout />,
-        children: [{ path: "/login", element: <Login /> }],
+        children: [{ path: "/console/login", element: <Login /> }],
     },
-
-    // Protected
     {
-        element: <ProtectedRoute />,
+        element: (
+            <ProtectedRoute>
+                <AppLayout />
+            </ProtectedRoute>
+        ),
         children: [
-            {
-                element: <AppLayout />,
-                children: [
-                    { index: true, element: <Navigate to="/scheduler/jobs" replace /> },
-
-                    // Scheduler - Jobs
-                    { path: "/scheduler/jobs", element: <JobList /> },
-                    { path: "/scheduler/jobs/new", element: <JobCreate /> },
-                    { path: "/scheduler/jobs/:id", element: <JobDetail /> },
-
-                    // ... other modules
-                    { path: "*", element: <NotFound /> },
-                ],
-            },
+            { index: true, element: <Navigate to="/console/scheduler/jobs" replace /> }, // 🔧 düzeltildi
+            { path: "/console/scheduler/jobs", element: <JobList /> },
+            { path: "/console/scheduler/jobs/new", element: <JobCreate /> },
+            { path: "/console/scheduler/jobs/:id", element: <JobDetail /> },
+            { path: "*", element: <NotFound /> },
         ],
     },
 ]);
+

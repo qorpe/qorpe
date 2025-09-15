@@ -1,13 +1,17 @@
 /** Authentication & identity types. */
 export interface AuthTokens {
     accessToken: string;
-    refreshToken: string;
 }
 
-export interface UserIdentity {
-    id: string;
-    email: string;
-    displayName: string;
-    roles: string[];
-    tenantKey?: string;
-}
+/** Minimal JWT payload mapped from backend claims. */
+export type JwtPayload = {
+    sub: string;
+    name?: string;
+    email?: string;
+    roles?: string[];
+    tid?: string;     // tenant key/id claim if you add it
+    exp?: number;
+    iat?: number;
+    nbf?: number;
+    [k: string]: unknown;
+};
