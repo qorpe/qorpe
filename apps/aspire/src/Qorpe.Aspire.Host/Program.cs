@@ -31,16 +31,22 @@ var gateHost = builder.AddProject<Projects.Qorpe_Gate_Host>("qorpe-gate-host")
     .WithReference(qorpedb)
     .WaitFor(qorpedb);
 
+var lexHost = builder.AddProject<Projects.Qorpe_Lex_Host>("qorpe-lex-host")
+    .WithReference(qorpedb)
+    .WaitFor(qorpedb);
+
 #endregion
 
 #region Service Discovery
 
 gateHost.WithReference(hubHost)
         .WithReference(schedulerHost)
+        .WithReference(lexHost)
         .WithReference(console);
 
 hubHost.WithReference(gateHost);
 schedulerHost.WithReference(gateHost);
+lexHost.WithReference(gateHost);
 console.WithReference(gateHost);
 
 #endregion

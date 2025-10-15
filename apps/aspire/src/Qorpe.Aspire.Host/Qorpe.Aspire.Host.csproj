@@ -19,6 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\gate\src\Qorpe.Gate.Host\Qorpe.Gate.Host.csproj" />
       <ProjectReference Include="..\..\..\hub\src\Qorpe.Hub.Host\Qorpe.Hub.Host.csproj" />
+      <ProjectReference Include="..\..\..\lex\src\Qorpe.Lex.Host\Qorpe.Lex.Host.csproj" />
       <ProjectReference Include="..\..\..\scheduler\src\Qorpe.Scheduler.Host\Qorpe.Scheduler.Host.csproj" />
     </ItemGroup>
 

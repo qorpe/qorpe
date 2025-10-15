@@ -31,7 +31,7 @@ public class AuthController(IAuthService svc, ICurrentUser currentUser, IHttpCon
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Path = "/",
             MaxAge = TimeSpan.FromDays(14),
             IsEssential = true
@@ -58,7 +58,7 @@ public class AuthController(IAuthService svc, ICurrentUser currentUser, IHttpCon
         {
             HttpOnly = true,
             Secure = true,
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Path = "/",
             MaxAge = TimeSpan.FromDays(14),
             IsEssential = true
@@ -81,7 +81,7 @@ public class AuthController(IAuthService svc, ICurrentUser currentUser, IHttpCon
         Response.Cookies.Delete("refresh_token", new CookieOptions
         {
             Path = "/",
-            SameSite = SameSiteMode.Strict,
+            SameSite = SameSiteMode.None,
             Secure = true
         });
 

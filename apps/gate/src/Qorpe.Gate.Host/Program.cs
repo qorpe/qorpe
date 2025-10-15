@@ -43,7 +43,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        if (allowedOrigins.Length == 1 && allowedOrigins[0] == "*")
+        if (allowedOrigins is ["*"])
         {
             policy.AllowAnyOrigin()
                 .AllowAnyHeader()
@@ -54,15 +54,20 @@ builder.Services.AddCors(options =>
             policy.WithOrigins(allowedOrigins)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials();
+                .AllowCredentials()
+                .WithExposedHeaders();
         }
     });
 });
 
-builder.Services.AddAuthorization(o =>
+builder.Services.ConfigureApplicationCookie(o =>
 {
-    o.AddPolicy("TenantMatch", p => p.Requirements.Add(new TenantMatchRequirement()));
+    o.Cookie.SameSite = SameSiteMode.None;
+    o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
+
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("TenantMatch", p => p.Requirements.Add(new TenantMatchRequirement()));
 
 builder.Services.AddSingleton<IAuthorizationHandler, TenantMatchHandler>();
 
@@ -116,6 +121,8 @@ else
 }
 
 app.UseHttpsRedirection();
+
+app.UseForwardedHeaders();
 
 app.UseCors("CorsPolicy");
 

@@ -65,7 +65,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
     },
 
     login: async (body) => {
-        const res = await authApi.login("default", body);
+        const res = await authApi.login("qorpe", body);
         set({ tokens: { accessToken: res.accessToken }, user: buildUser(res.accessToken, null), isAuthenticated: true });
 
         if (res.tenantKey) {

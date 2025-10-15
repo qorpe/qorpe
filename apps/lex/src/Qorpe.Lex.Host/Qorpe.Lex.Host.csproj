@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.10" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\libs\building-blocks\Qorpe.BuildingBlocks\Qorpe.BuildingBlocks.csproj" />
+    <ProjectReference Include="..\..\..\aspire\src\Qorpe.Aspire.ServiceDefaults\Qorpe.Aspire.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Qorpe.Lex.Application\Qorpe.Lex.Application.csproj" />
+    <ProjectReference Include="..\Qorpe.Lex.Contracts\Qorpe.Lex.Contracts.csproj" />
+    <ProjectReference Include="..\Qorpe.Lex.Infrastructure\Qorpe.Lex.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
