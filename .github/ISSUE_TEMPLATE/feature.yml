@@ -1,0 +1,25 @@
+name: Feature request
+description: Yeni özellik talebi
+labels: ["enhancement","prio:P2"]
+body:
+  - type: textarea
+    attributes:
+      label: Context
+      description: Neden gerekli? İş değeri?
+    validations: { required: true }
+  - type: textarea
+    attributes:
+      label: Acceptance Criteria (Done Definition)
+      description: Madde madde ölçülebilir koşullar.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations: { required: true }
+  - type: dropdown
+    attributes:
+      label: Area
+      options: ["marketing","seo","docs","webapp","rules","billing","assets","nav","footer","pricing"]
+  - type: input
+    attributes:
+      label: Target Release (Milestone veya sürüm etiketi)
+      placeholder: v0.9 / Q4

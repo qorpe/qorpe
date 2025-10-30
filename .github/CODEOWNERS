@@ -1,0 +1,7 @@
+# All files default to the owner below
+* @celikomr
+
+# Example granular ownership (adjust as you grow)
+# /apps/web/**        @celikomr
+# /src/**             @celikomr
+# /packages/**        @celikomr

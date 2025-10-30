@@ -1,0 +1,10 @@
+name: Branch Name
+on: [pull_request]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: deepakputhraya/action-branch-name@v1.0.2
+        with:
+          regex: '^(feature|fix|chore|docs|refactor)\/[-a-z0-9]+'
+          ignore: 'main|develop'

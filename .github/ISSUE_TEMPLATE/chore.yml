@@ -1,0 +1,7 @@
+name: Chore / Maintenance
+labels: ["chore","prio:P3"]
+body:
+  - type: textarea
+    attributes: { label: Scope, description: Teknik borç / düzenleme özeti }
+  - type: textarea
+    attributes: { label: Acceptance Criteria }

@@ -1,0 +1,15 @@
+name: Require Linked Issue
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+jobs:
+  require:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fail if no "Fixes #"
+        run: |
+          body="${{ github.event.pull_request.body }}"
+          if ! echo "$body" | grep -qiE 'Fixes\s+#[0-9]+'; then
+            echo "PR description must include 'Fixes #<issueId>'"
+            exit 1
+          fi

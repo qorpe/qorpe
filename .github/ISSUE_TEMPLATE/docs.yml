@@ -1,0 +1,7 @@
+name: Docs improvement
+labels: ["documentation","prio:P3"]
+body:
+  - type: textarea
+    attributes: { label: What to document?, description: Sayfa/başlık ve kapsam }
+  - type: textarea
+    attributes: { label: Acceptance Criteria }

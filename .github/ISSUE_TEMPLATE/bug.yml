@@ -1,0 +1,27 @@
+name: Bug report
+description: Hata bildirimi
+labels: ["bug","prio:P1"]
+body:
+  - type: textarea
+    attributes:
+      label: What happened?
+      description: Beklenen vs. gerçekleşen davranış.
+    validations: { required: true }
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations: { required: true }
+  - type: textarea
+    attributes:
+      label: Screenshots/Logs
+  - type: input
+    attributes:
+      label: Affected version / commit
+  - type: dropdown
+    attributes:
+      label: Area
+      options: ["marketing","seo","docs","webapp","rules","billing","assets","nav","footer","pricing"]

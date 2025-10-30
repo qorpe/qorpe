@@ -1,0 +1,64 @@
+# ---- GitHub defaults (colors aligned) ----
+- name: bug
+  color: d73a4a
+  description: Something isn't working
+- name: documentation
+  color: 0075ca
+  description: Improvements or additions to documentation
+- name: duplicate
+  color: cfd3d7
+  description: This issue or pull request already exists
+- name: enhancement
+  color: a2eeef
+  description: New feature or request
+- name: good first issue
+  color: 7057ff
+  description: Good for newcomers
+- name: help wanted
+  color: 008672
+  description: Extra attention is needed
+- name: invalid
+  color: e4e669
+  description: This doesn't seem right
+- name: question
+  color: d876e3
+  description: Further information is requested
+- name: wontfix
+  color: ffffff
+  description: This will not be worked on
+
+# ---- Qorpe extras (non-intrusive) ----
+- name: prio:P0
+  color: b60205
+- name: prio:P1
+  color: d93f0b
+- name: prio:P2
+  color: fbca04
+- name: prio:P3
+  color: cccccc
+
+- name: area:marketing
+  color: 0052cc
+- name: area:seo
+  color: 0b5fff
+- name: area:docs
+  color: 5319e7
+- name: area:webapp
+  color: 0366d6
+- name: area:rules
+  color: 1b1f23
+- name: area:billing
+  color: 795548
+- name: area:assets
+  color: 6f42c1
+- name: area:nav
+  color: 3d76ff
+- name: area:footer
+  color: 3d76ff
+- name: area:pricing
+  color: 3d76ff
+
+# optional convenience (kept but not required)
+- name: chore
+  color: 6a737d
+  description: Maintenance or refactor tasks
